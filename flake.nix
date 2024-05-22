@@ -32,10 +32,16 @@
       url = "github:holochain/lair/lair_keystore-v0.4.4";
       flake = false;
     };
+
+    # Holochain Launcher CLI
+    launcher-src = {
+      url = "github:holochain/launcher/holochain-0.3";
+      flake = false;
+    };
   };
 
   # outputs that this flake should produce
-  outputs = inputs @ { self, nixpkgs, flake-parts, rust-overlay, crane, holochain-src, lair-keystore-src, ... }:
+  outputs = inputs @ { self, nixpkgs, flake-parts, rust-overlay, crane, holochain-src, lair-keystore-src, launcher-src, ... }:
     # refer to flake-parts docs https://flake.parts/
     flake-parts.lib.mkFlake { inherit inputs; } {
       # systems that his flake can be used on
@@ -78,8 +84,8 @@
               };
               # additional packages needed for build
               buildInputs = [
-                pkgs.perl
                 pkgs.go
+                pkgs.perl
               ];
               # do not check built package as it either builds successfully or not
               doCheck = false;
@@ -115,20 +121,59 @@
               # do not check built package as it either builds successfully or not
               doCheck = false;
             };
+
+          # define how to build Holochain Launcher binary
+          launcher =
+            let
+              # Crane filters out all non-cargo related files. Define include filter with files needed for build.
+              includeFilesFilter = path: type: (craneLib.filterCargoSources path type);
+            in
+            craneLib.buildPackage {
+              pname = "hc-launch";
+              version = "workspace";
+              # only build hc-launch command
+              cargoExtraArgs = "--bin hc-launch";
+              # Use Launcher sources as defined in input dependencies and include only those files defined in the
+              # filter previously.
+              src = pkgs.lib.cleanSourceWith {
+                src = launcher-src;
+                filter = includeFilesFilter;
+              };
+              # additional packages needed for build
+              # perl needed for openssl on all platforms
+              buildInputs = [
+                pkgs.go
+                pkgs.perl
+              ]
+              ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
+                # additional packages needed for darwin platforms
+                pkgs.darwin.apple_sdk.frameworks.AppKit
+                pkgs.darwin.apple_sdk.frameworks.WebKit
+                # pkgs.darwin.apple_sdk.frameworks.CoreFoundation
+                # pkgs.darwin.apple_sdk.frameworks.CoreServices
+                # pkgs.darwin.apple_sdk.frameworks.Security
+                # pkgs.darwin.apple_sdk.frameworks.IOKit
+                #   # additional packages needed for darwin platforms on x86_64
+                #   pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
+              ]);
+              # do not check built package as it either builds successfully or not
+              doCheck = false;
+            };
         in
         {
           packages = {
-            inherit holochain;
-            inherit lair-keystore;
-            inherit rust;
+            # inherit holochain;
+            # inherit lair-keystore;
+            # inherit rust;
+            inherit launcher;
           };
 
           devShells = {
             default = pkgs.mkShell {
               packages = [
-                holochain
-                lair-keystore
-                rust
+                # holochain
+                # lair-keystore
+                # rust
               ];
             };
           };
