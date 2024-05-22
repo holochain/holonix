@@ -102,6 +102,8 @@
             craneLib.buildPackage {
               pname = "lair-keystore";
               version = "workspace";
+              # only build lair-keystore binary
+              cargoExtraArgs = "--bin lair-keystore";
               # Use Lair keystore sources as defined in input dependencies and include only those files defined in the
               # filter previously.
               src = pkgs.lib.cleanSourceWith {
@@ -126,12 +128,14 @@
           launcher =
             let
               # Crane filters out all non-cargo related files. Define include filter with files needed for build.
-              includeFilesFilter = path: type: (craneLib.filterCargoSources path type);
+              nonCargoBuildFiles = path: _type: builtins.match ".*(js)$" path != null;
+              includeFilesFilter = path: type:
+                (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
             in
             craneLib.buildPackage {
               pname = "hc-launch";
               version = "workspace";
-              # only build hc-launch command
+              # only build hc-launch binary
               cargoExtraArgs = "--bin hc-launch";
               # Use Launcher sources as defined in input dependencies and include only those files defined in the
               # filter previously.
