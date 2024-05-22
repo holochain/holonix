@@ -128,7 +128,7 @@
           launcher =
             let
               # Crane filters out all non-cargo related files. Define include filter with files needed for build.
-              nonCargoBuildFiles = path: _type: builtins.match ".*(js)$" path != null;
+              nonCargoBuildFiles = path: _type: builtins.match ".*(js|json)$" path != null;
               includeFilesFilter = path: type:
                 (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
             in
