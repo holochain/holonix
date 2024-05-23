@@ -57,7 +57,7 @@
           };
 
           # define Rust toolchain version and targets to be used in this flake
-          rust = (pkgs.rust-bin.stable."1.78.0".default.override
+          rust = (pkgs.rust-bin.stable."1.77.2".default.override
             {
               targets = [ "wasm32-unknown-unknown" ];
             });
