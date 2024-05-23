@@ -166,6 +166,8 @@
                 pkgs.darwin.apple_sdk_11_0.frameworks.AppKit
                 pkgs.darwin.apple_sdk_11_0.frameworks.WebKit
                 pkgs.darwin.apple_sdk_11_0.frameworks.Cocoa
+                pkgs.darwin.apple_sdk_11_0.frameworks.SystemConfiguration
+                pkgs.darwin.libobjc
                 # pkgs.darwin.apple_sdk.frameworks.CoreServices
                 # pkgs.darwin.apple_sdk.frameworks.Security
                 # pkgs.darwin.apple_sdk.frameworks.IOKit
