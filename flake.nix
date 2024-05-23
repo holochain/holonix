@@ -152,25 +152,9 @@
               ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
                 # additional packages needed for darwin platforms
                 # additional packages needed for darwin platforms on x86_64
-                # pkgs.darwin.apple_sdk.frameworks.AppKit
-                # pkgs.darwin.apple_sdk_11_0.frameworks.AppKit
-                # pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
-                # pkgs.darwin.apple_sdk_11_0.frameworks.CoreServices
-                # pkgs.darwin.apple_sdk_11_0.frameworks.WebKit
-                # pkgs.pkg-config
-                # pkgs.libiconv
-                pkgs.darwin.apple_sdk_10_12.frameworks.AppKit
-                pkgs.darwin.apple_sdk_10_12.frameworks.Cocoa
+                pkgs.darwin.apple_sdk_11_0.frameworks.AppKit
                 pkgs.darwin.apple_sdk_10_12.frameworks.WebKit
-                # pkgs.darwin.apple_sdk_10_12.frameworks.CoreServices
-                # pkgs.darwin.apple_sdk_10_12.frameworks.CoreFoundation
-                # pkgs.darwin.apple_sdk_10_12.frameworks.Foundation
-                # pkgs.darwin.apple_sdk_10_12.frameworks.Cocoa
-                # pkgs.darwin.apple_sdk_10_12.frameworks.SystemConfiguration
-                pkgs.darwin.libobjc
-                # pkgs.darwin.apple_sdk.frameworks.CoreServices
-                # pkgs.darwin.apple_sdk.frameworks.Security
-                # pkgs.darwin.apple_sdk.frameworks.IOKit
+                pkgs.darwin.apple_sdk_11_0.frameworks.CoreServices
               ]);
               # do not check built package as it either builds successfully or not
               doCheck = false;
