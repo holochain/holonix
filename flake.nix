@@ -151,19 +151,20 @@
               ]
               ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
                 # additional packages needed for darwin platforms
+                pkgs.darwin.apple_sdk.frameworks.Carbon
                 # pkgs.darwin.apple_sdk_11_0.frameworks.Carbon
                 # pkgs.darwin.apple_sdk_11_0.frameworks.WebKit
                 # additional packages needed for darwin platforms on x86_64
-                pkgs.darwin.apple_sdk_10_12.frameworks.AppKit
-                pkgs.darwin.apple_sdk_10_12.frameworks.CoreFoundation
-                pkgs.darwin.apple_sdk_10_12.frameworks.CoreServices
-                pkgs.darwin.apple_sdk_10_12.frameworks.Security
-                pkgs.darwin.apple_sdk_10_12.frameworks.IOKit
-                pkgs.darwin.apple_sdk_10_12.frameworks.WebKit
-                pkgs.glib
-                pkgs.pkg-config
-                pkgs.xcbuild
-                pkgs.libiconv
+                # pkgs.darwin.apple_sdk_10_12.frameworks.AppKit
+                # pkgs.darwin.apple_sdk_10_12.frameworks.CoreFoundation
+                # pkgs.darwin.apple_sdk_10_12.frameworks.CoreServices
+                # pkgs.darwin.apple_sdk_10_12.frameworks.Security
+                # pkgs.darwin.apple_sdk_10_12.frameworks.IOKit
+                # pkgs.darwin.apple_sdk_10_12.frameworks.WebKit
+                # pkgs.glib
+                # pkgs.pkg-config
+                # pkgs.xcbuild
+                # pkgs.libiconv
               ]);
               # do not check built package as it either builds successfully or not
               doCheck = false;
