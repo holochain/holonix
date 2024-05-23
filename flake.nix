@@ -157,16 +157,16 @@
                 # pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
                 # pkgs.darwin.apple_sdk_11_0.frameworks.CoreServices
                 # pkgs.darwin.apple_sdk_11_0.frameworks.WebKit
-                pkgs.pkg-config
-                pkgs.libiconv
-                pkgs.darwin.apple_sdk_10_12.frameworks.Security
-                pkgs.darwin.apple_sdk_10_12.frameworks.CoreServices
-                pkgs.darwin.apple_sdk_10_12.frameworks.CoreFoundation
-                pkgs.darwin.apple_sdk_10_12.frameworks.Foundation
-                pkgs.darwin.apple_sdk_10_12.frameworks.AppKit
-                pkgs.darwin.apple_sdk_10_12.frameworks.WebKit
-                pkgs.darwin.apple_sdk_10_12.frameworks.Cocoa
-                pkgs.darwin.apple_sdk_10_12.frameworks.SystemConfiguration
+                # pkgs.pkg-config
+                # pkgs.libiconv
+                pkgs.darwin.apple_sdk_10_12.frameworks.Carbon
+                # pkgs.darwin.apple_sdk_10_12.frameworks.CoreServices
+                # pkgs.darwin.apple_sdk_10_12.frameworks.CoreFoundation
+                # pkgs.darwin.apple_sdk_10_12.frameworks.Foundation
+                # pkgs.darwin.apple_sdk_10_12.frameworks.AppKit
+                # pkgs.darwin.apple_sdk_10_12.frameworks.WebKit
+                # pkgs.darwin.apple_sdk_10_12.frameworks.Cocoa
+                # pkgs.darwin.apple_sdk_10_12.frameworks.SystemConfiguration
                 pkgs.darwin.libobjc
                 # pkgs.darwin.apple_sdk.frameworks.CoreServices
                 # pkgs.darwin.apple_sdk.frameworks.Security
