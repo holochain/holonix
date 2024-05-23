@@ -135,6 +135,11 @@
             craneLib.buildPackage {
               pname = "hc-launch";
               version = "workspace";
+              stdenv =
+                if pkgs.stdenv.isDarwin then
+                  pkgs.overrideSDK pkgs.stdenv "11.0"
+                else
+                  pkgs.stdenv;
               # only build hc-launch binary
               cargoExtraArgs = "--bin hc-launch";
               # Use Launcher sources as defined in input dependencies and include only those files defined in the
@@ -145,28 +150,29 @@
               };
               # additional packages needed for build
               # perl needed for openssl on all platforms
-              buildInputs = [
-                pkgs.go
-                pkgs.perl
-              ]
-              ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
-                # additional packages needed for darwin platforms
-                pkgs.darwin.apple_sdk.frameworks.Carbon
-                pkgs.darwin.apple_sdk.frameworks.WebKit
-                # pkgs.darwin.apple_sdk_11_0.frameworks.Carbon
-                # pkgs.darwin.apple_sdk_11_0.frameworks.WebKit
-                # additional packages needed for darwin platforms on x86_64
-                # pkgs.darwin.apple_sdk_10_12.frameworks.AppKit
-                # pkgs.darwin.apple_sdk_10_12.frameworks.CoreFoundation
-                # pkgs.darwin.apple_sdk_10_12.frameworks.CoreServices
-                # pkgs.darwin.apple_sdk_10_12.frameworks.Security
-                # pkgs.darwin.apple_sdk_10_12.frameworks.IOKit
-                # pkgs.darwin.apple_sdk_10_12.frameworks.WebKit
-                # pkgs.glib
-                # pkgs.pkg-config
-                # pkgs.xcbuild
-                # pkgs.libiconv
-              ]);
+              buildInputs =
+                [
+                  pkgs.go
+                  pkgs.perl
+                ]
+                ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
+                  # additional packages needed for darwin platforms
+                  pkgs.darwin.apple_sdk.frameworks.Carbon
+                  pkgs.darwin.apple_sdk.frameworks.WebKit
+                  # pkgs.darwin.apple_sdk_11_0.frameworks.Carbon
+                  # pkgs.darwin.apple_sdk_11_0.frameworks.WebKit
+                  # additional packages needed for darwin platforms on x86_64
+                  # pkgs.darwin.apple_sdk_10_12.frameworks.AppKit
+                  # pkgs.darwin.apple_sdk_10_12.frameworks.CoreFoundation
+                  # pkgs.darwin.apple_sdk_10_12.frameworks.CoreServices
+                  # pkgs.darwin.apple_sdk_10_12.frameworks.Security
+                  # pkgs.darwin.apple_sdk_10_12.frameworks.IOKit
+                  # pkgs.darwin.apple_sdk_10_12.frameworks.WebKit
+                  # pkgs.glib
+                  # pkgs.pkg-config
+                  # pkgs.xcbuild
+                  # pkgs.libiconv
+                ]);
               # do not check built package as it either builds successfully or not
               doCheck = false;
             };
