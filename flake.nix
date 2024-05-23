@@ -152,7 +152,8 @@
               ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
                 # additional packages needed for darwin platforms
                 # additional packages needed for darwin platforms on x86_64
-                pkgs.darwin.apple_sdk.frameworks.AppKit
+                # pkgs.darwin.apple_sdk.frameworks.AppKit
+                pkgs.darwin.apple_sdk_11_0.frameworks.AppKit
                 pkgs.darwin.apple_sdk_11_0.frameworks.WebKit
                 # pkgs.darwin.apple_sdk.frameworks.CoreFoundation
                 # pkgs.darwin.apple_sdk.frameworks.CoreServices
