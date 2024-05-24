@@ -17,7 +17,8 @@
 
     # Rust toolchain
     rust-overlay = {
-      url = "github:oxalica/rust-overlay";
+      url = "github:jost-s/rust-overlay/fix/return-target-dependency-as-flat-list-for-darwin-std";
+      # url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
