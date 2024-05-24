@@ -4,7 +4,8 @@
 
   # specify all input dependencies needed to create the outputs of the flake
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:reckenrode/nixpkgs/override-sdk-list-inputs-fix";
+    # nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
     # utility to iterate over multiple target platforms
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -17,8 +18,8 @@
 
     # Rust toolchain
     rust-overlay = {
-      url = "github:jost-s/rust-overlay/fix/return-target-dependency-as-flat-list-for-darwin-std";
-      # url = "github:oxalica/rust-overlay";
+      # url = "github:jost-s/rust-overlay/fix/return-target-dependency-as-flat-list-for-darwin-std";
+      url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
