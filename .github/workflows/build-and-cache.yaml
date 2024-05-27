@@ -30,12 +30,12 @@ jobs:
         with:
           install_url: https://releases.nixos.org/nix/nix-2.18.0/install
 
-      - name: Use GitHub cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
+      # - name: Use GitHub cache
+      #   uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Build nix package
-        run: nix build -L .#${{ matrix.package }}
+      # - name: Build nix package
+      #   run: nix build -L .#${{ matrix.package }}
 
       - name: Setup tmate session
-        if: failure()
+        # if: failure()
         uses: mxschmitt/action-tmate@v3

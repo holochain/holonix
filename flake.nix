@@ -161,7 +161,6 @@
                   pkgs.darwin.apple_sdk.frameworks.Carbon
                   pkgs.darwin.apple_sdk.frameworks.WebKit
                   pkgs.darwin.apple_sdk.libs.xpc
-                  pkgs.libiconv
                 ]);
               # do not check built package as it either builds successfully or not
               doCheck = false;
