@@ -158,9 +158,9 @@
                 ]
                 ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
                   # additional packages needed for darwin platforms
-                  pkgs.darwin.apple_sdk.frameworks.Carbon
-                  pkgs.darwin.apple_sdk.frameworks.WebKit
-                  pkgs.darwin.apple_sdk.libs.xpc
+                  pkgs.darwin.apple_sdk_11_0.frameworks.Carbon
+                  pkgs.darwin.apple_sdk_11_0.frameworks.WebKit
+                  pkgs.darwin.apple_sdk_11_0.libs.xpc
                 ]);
               # do not check built package as it either builds successfully or not
               doCheck = false;
