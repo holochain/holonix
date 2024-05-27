@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1716156051,
-        "narHash": "sha256-TjUX7WWRcrhuUxDHsR8pDR2N7jitqZehgCVSy3kBeS8=",
+        "lastModified": 1716745752,
+        "narHash": "sha256-8K1R9Yg4r08rYk86Yq+lu3E9L3uRUb4xMqYHgl0VGS0=",
         "owner": "ipetkov",
         "repo": "crane",
-        "rev": "7443df1c478947bf96a2e699209f53b2db26209d",
+        "rev": "19ca94ec2d288de334ae932107816b4a97736cd8",
         "type": "github"
       },
       "original": {
@@ -109,16 +109,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1716520893,
-        "narHash": "sha256-WNHgNAWojDQY6NeAPiWM9AVMlq4SUjycTTq9OQoPTkc=",
+        "lastModified": 1714956911,
+        "narHash": "sha256-mPuukFPMvsSKJE48Qta7QUNpMdecp8vT6TUYn9b3G1o=",
         "owner": "reckenrode",
         "repo": "nixpkgs",
-        "rev": "4392e5a53cba868164811553e63a9fd30ec656b7",
+        "rev": "5e0f58b3e6fb3fc04969168c80920fd7d092b8f6",
         "type": "github"
       },
       "original": {
         "owner": "reckenrode",
-        "ref": "override-sdk-list-inputs-fix",
+        "ref": "ld64-clang18",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -154,11 +154,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1716517042,
-        "narHash": "sha256-PDPMpBVv+6XdV4FvBWk002IBGofDIWCpo9ewks0kStM=",
+        "lastModified": 1716841420,
+        "narHash": "sha256-42U9a/bnKKDmlzWfsxdBjkCjV17WmGVcdlalolX3g30=",
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "rev": "66a43411079d0d1b1b776c0a6ced20a5df896edb",
+        "rev": "a183bd311a828d51b49b040fb70bfbb98c5447ee",
         "type": "github"
       },
       "original": {
