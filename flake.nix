@@ -4,7 +4,7 @@
 
   # specify all input dependencies needed to create the outputs of the flake
   inputs = {
-    nixpkgs.url = "github:reckenrode/nixpkgs/ld64-clang18";
+    nixpkgs.url = "github:reckenrode/nixpkgs/ld64";
     # nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
 
     # utility to iterate over multiple target platforms
