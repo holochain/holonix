@@ -57,7 +57,7 @@
           };
 
           # define Rust toolchain version and targets to be used in this flake
-          rust = (pkgs.rust-bin.stable."1.77.2".default.override
+          rust = (pkgs.rust-bin.stable."1.78.0".default.override
             {
               targets = [ "wasm32-unknown-unknown" ];
             });
@@ -135,11 +135,11 @@
             craneLib.buildPackage {
               pname = "hc-launch";
               version = "workspace";
-              stdenv =
-                if pkgs.stdenv.isDarwin then
-                  pkgs.overrideSDK pkgs.stdenv "11.0"
-                else
-                  pkgs.stdenv;
+              # stdenv =
+              #   if pkgs.stdenv.isDarwin then
+              #     pkgs.overrideSDK pkgs.stdenv "11.0"
+              #   else
+              #     pkgs.stdenv;
               # only build hc-launch binary
               cargoExtraArgs = "--bin hc-launch";
               # Use Launcher sources as defined in input dependencies and include only those files defined in the
@@ -150,20 +150,17 @@
               };
               # additional packages needed for build
               # perl needed for openssl on all platforms
-              buildInputs =
-                [
-                  pkgs.go
-                  pkgs.perl
-                ]
-                ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
-                  pkgs.pkg-config
-                  pkgs.glib
-                ])
-                ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
-                  # additional packages needed for darwin platforms
-                  pkgs.darwin.apple_sdk_11_0.frameworks.Carbon
-                  pkgs.darwin.apple_sdk_11_0.frameworks.WebKit
-                ]);
+              buildInputs = [
+                pkgs.go
+                pkgs.perl
+              ]
+              ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
+                # additional packages needed for darwin platforms
+                pkgs.darwin.apple_sdk.frameworks.AppKit
+                pkgs.darwin.apple_sdk.frameworks.WebKit
+                #   # additional packages needed for darwin platforms on x86_64
+                #   pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
+              ]);
               # do not check built package as it either builds successfully or not
               doCheck = false;
             };
