@@ -155,6 +155,9 @@
                 pkgs.go
                 pkgs.perl
               ]
+              ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
+                pkgs.pkg-config
+              ])
               ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
                 # additional packages needed for darwin platforms
                 pkgs.darwin.apple_sdk.frameworks.AppKit
