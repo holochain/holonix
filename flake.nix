@@ -151,6 +151,7 @@
               # additional packages needed for build
               # perl needed for openssl on all platforms
               buildInputs = [
+                pkgs.glib
                 pkgs.go
                 pkgs.perl
               ]
