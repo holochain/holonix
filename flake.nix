@@ -157,6 +157,7 @@
               ]
               ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
                 pkgs.pkg-config
+                pkgs.webkitgtk.dev
               ])
               ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
                 # additional packages needed for darwin platforms
