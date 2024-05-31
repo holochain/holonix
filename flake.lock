@@ -33,9 +33,8 @@
         "type": "github"
       },
       "original": {
-        "owner": "hercules-ci",
-        "repo": "flake-parts",
-        "type": "github"
+        "id": "flake-parts",
+        "type": "indirect"
       }
     },
     "flake-utils": {
@@ -56,53 +55,19 @@
         "type": "github"
       }
     },
-    "holochain-src": {
+    "launcher": {
       "flake": false,
       "locked": {
-        "lastModified": 1716469959,
-        "narHash": "sha256-mT7e0ew8ffMY5esWUiB8uNWNvRhBqCPIu2lYZ3nAenw=",
-        "owner": "holochain",
-        "repo": "holochain",
-        "rev": "1663c381ababd530c9dfbe87c8b2a683ac1bf6f3",
-        "type": "github"
-      },
-      "original": {
-        "owner": "holochain",
-        "ref": "main",
-        "repo": "holochain",
-        "type": "github"
-      }
-    },
-    "lair-keystore-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1709335027,
-        "narHash": "sha256-rKMhh7TLuR1lqze2YFWZCGYKZQoB4dZxjpX3sb7r7Jk=",
-        "owner": "holochain",
-        "repo": "lair",
-        "rev": "826be915efc839d1d1b8a2156b158999b8de8d5b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "holochain",
-        "ref": "lair_keystore-v0.4.4",
-        "repo": "lair",
-        "type": "github"
-      }
-    },
-    "launcher-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1716406557,
-        "narHash": "sha256-6eWndYspznXKYIJcuPCWFZ3lxdh7TrlEUGP1zaE5Mgs=",
+        "lastModified": 1715106263,
+        "narHash": "sha256-a7iQ8pKGz6fghJrtXq0Xamp57GE8Hd3w5YQASzz5Wlk=",
         "owner": "holochain",
         "repo": "launcher",
-        "rev": "f20844aa5041432547c55176d71e67b32e302f77",
+        "rev": "92bd39e1c66912d61c35c4725d7b106959888670",
         "type": "github"
       },
       "original": {
         "owner": "holochain",
-        "ref": "holochain-0.3",
+        "ref": "holochain-weekly",
         "repo": "launcher",
         "type": "github"
       }
@@ -139,9 +104,7 @@
       "inputs": {
         "crane": "crane",
         "flake-parts": "flake-parts",
-        "holochain-src": "holochain-src",
-        "lair-keystore-src": "lair-keystore-src",
-        "launcher-src": "launcher-src",
+        "launcher": "launcher",
         "nixpkgs": "nixpkgs",
         "rust-overlay": "rust-overlay"
       }
