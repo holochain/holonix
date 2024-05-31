@@ -150,7 +150,7 @@
               # filter previously.
               src = pkgs.lib.cleanSourceWith {
                 src = launcher-src;
-                filter = includeFilesFilter;
+                # filter = includeFilesFilter;
               };
               # additional packages needed for build
               # perl needed for openssl on all platforms
