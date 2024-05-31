@@ -36,6 +36,8 @@ jobs:
       - name: Build nix package
         run: nix build -L .#${{ matrix.package }}
 
+      - run: result/bin/hc-launch --version
+
       # - name: Setup tmate session
       # if: failure()
       # uses: mxschmitt/action-tmate@v3
