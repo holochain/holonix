@@ -33,8 +33,9 @@
         "type": "github"
       },
       "original": {
-        "id": "flake-parts",
-        "type": "indirect"
+        "owner": "hercules-ci",
+        "repo": "flake-parts",
+        "type": "github"
       }
     },
     "flake-utils": {
@@ -55,19 +56,53 @@
         "type": "github"
       }
     },
-    "launcher": {
+    "holochain-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1715106263,
-        "narHash": "sha256-a7iQ8pKGz6fghJrtXq0Xamp57GE8Hd3w5YQASzz5Wlk=",
+        "lastModified": 1716944805,
+        "narHash": "sha256-JKwV3v71mBo1l7OW9d5S4jlzBktbGTC6+EyHnq1oeSI=",
         "owner": "holochain",
-        "repo": "launcher",
-        "rev": "92bd39e1c66912d61c35c4725d7b106959888670",
+        "repo": "holochain",
+        "rev": "f505a55342f9aba7bf15a0ab7203e631cddb89fe",
         "type": "github"
       },
       "original": {
         "owner": "holochain",
-        "ref": "holochain-weekly",
+        "ref": "main",
+        "repo": "holochain",
+        "type": "github"
+      }
+    },
+    "lair-keystore-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1709335027,
+        "narHash": "sha256-rKMhh7TLuR1lqze2YFWZCGYKZQoB4dZxjpX3sb7r7Jk=",
+        "owner": "holochain",
+        "repo": "lair",
+        "rev": "826be915efc839d1d1b8a2156b158999b8de8d5b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "holochain",
+        "ref": "lair_keystore-v0.4.4",
+        "repo": "lair",
+        "type": "github"
+      }
+    },
+    "launcher-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1716406557,
+        "narHash": "sha256-6eWndYspznXKYIJcuPCWFZ3lxdh7TrlEUGP1zaE5Mgs=",
+        "owner": "holochain",
+        "repo": "launcher",
+        "rev": "f20844aa5041432547c55176d71e67b32e302f77",
+        "type": "github"
+      },
+      "original": {
+        "owner": "holochain",
+        "ref": "holochain-0.3",
         "repo": "launcher",
         "type": "github"
       }
@@ -104,7 +139,9 @@
       "inputs": {
         "crane": "crane",
         "flake-parts": "flake-parts",
-        "launcher": "launcher",
+        "holochain-src": "holochain-src",
+        "lair-keystore-src": "lair-keystore-src",
+        "launcher-src": "launcher-src",
         "nixpkgs": "nixpkgs",
         "rust-overlay": "rust-overlay"
       }
