@@ -152,6 +152,7 @@
                 src = launcher-src;
                 # filter = includeFilesFilter;
               };
+              nativeBuildInputs = [ pkgs.pkg-config ];
               # additional packages needed for build
               # perl needed for openssl on all platforms
               buildInputs = [
