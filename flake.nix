@@ -152,13 +152,8 @@
                 src = launcher-src;
                 # filter = includeFilesFilter;
               };
-              nativeBuildInputs = [ pkgs.pkg-config ];
-              # additional packages needed for build
-              # perl needed for openssl on all platforms
-              buildInputs = [
-                pkgs.glib
-                pkgs.perl
-
+              nativeBuildInputs = [
+                pkgs.pkg-config
                 (if pkgs.system == "x86_64-darwin" then
                   pkgs.darwin.apple_sdk_11_0.stdenv.mkDerivation
                     {
@@ -173,6 +168,12 @@
                         makeWrapper ${pkgs.go}/bin/go $out/bin/go
                       '';
                     } else pkgs.go)
+              ];
+              # additional packages needed for build
+              # perl needed for openssl on all platforms
+              buildInputs = [
+                pkgs.glib
+                pkgs.perl
               ]
               ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
                 pkgs.pkg-config
