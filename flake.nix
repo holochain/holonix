@@ -135,6 +135,7 @@
                 if system == "x86_64-darwin"
                 then pkgs.darwin.apple_sdk_10_12
                 else pkgs.darwin.apple_sdk_11_0;
+              craneLib = (inputs.crane.mkLib pkgs).overrideToolchain rust;
             in
             craneLib.buildPackage {
               pname = "hc-launch";
@@ -144,6 +145,7 @@
                   pkgs.overrideSDK pkgs.stdenv "11.0"
                 else
                   pkgs.stdenv;
+
               # only build hc-launch binary
               cargoExtraArgs = "--bin hc-launch";
               # Use Launcher sources as defined in input dependencies and include only those files defined in the
