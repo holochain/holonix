@@ -139,11 +139,11 @@
             craneLib.buildPackage {
               pname = "hc-launch";
               version = "workspace";
-              # stdenv =
-              #   if pkgs.stdenv.isDarwin then
-              #     pkgs.overrideSDK pkgs.stdenv "11.0"
-              #   else
-              #     pkgs.stdenv;
+              stdenv =
+                if pkgs.stdenv.isDarwin then
+                  pkgs.overrideSDK pkgs.stdenv "11.0"
+                else
+                  pkgs.stdenv;
               # only build hc-launch binary
               cargoExtraArgs = "--bin hc-launch";
               # Use Launcher sources as defined in input dependencies and include only those files defined in the
