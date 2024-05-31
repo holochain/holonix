@@ -45,7 +45,7 @@
     # refer to flake-parts docs https://flake.parts/
     flake-parts.lib.mkFlake { inherit inputs; } {
       # systems that his flake can be used on
-      systems = [ "aarch64-darwin" "x86_64-linux" "x86_64-darwin" "aarch64-linux" ];
+      systems = [ "aarch64-darwin" "x86_64-linux" "x86_64-darwin" ];
 
       # for each system...
       perSystem = { config, pkgs, system, ... }:
@@ -57,7 +57,7 @@
           };
 
           # define Rust toolchain version and targets to be used in this flake
-          rust = (pkgs.rust-bin.stable."1.78.0".default.override
+          rust = (pkgs.rust-bin.stable."1.78.0".minimal.override
             {
               targets = [ "wasm32-unknown-unknown" ];
             });
