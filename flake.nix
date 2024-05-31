@@ -131,6 +131,10 @@
               nonCargoBuildFiles = path: _type: builtins.match ".*(js|json|png)$" path != null;
               includeFilesFilter = path: type:
                 (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
+              apple_sdk =
+                if system == "x86_64-darwin"
+                then pkgs.darwin.apple_sdk_10_12
+                else pkgs.darwin.apple_sdk_11_0;
             in
             craneLib.buildPackage {
               pname = "hc-launch";
@@ -152,8 +156,22 @@
               # perl needed for openssl on all platforms
               buildInputs = [
                 pkgs.glib
-                pkgs.go
                 pkgs.perl
+
+                (if pkgs.system == "x86_64-darwin" then
+                  pkgs.darwin.apple_sdk_11_0.stdenv.mkDerivation
+                    {
+                      name = "go";
+                      nativeBuildInputs = with pkgs; [
+                        makeBinaryWrapper
+                        go
+                      ];
+                      dontBuild = true;
+                      dontUnpack = true;
+                      installPhase = ''
+                        makeWrapper ${pkgs.go}/bin/go $out/bin/go
+                      '';
+                    } else pkgs.go)
               ]
               ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
                 pkgs.pkg-config
@@ -161,10 +179,8 @@
               ])
               ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
                 # additional packages needed for darwin platforms
-                pkgs.darwin.apple_sdk.frameworks.AppKit
-                pkgs.darwin.apple_sdk.frameworks.WebKit
-                #   # additional packages needed for darwin platforms on x86_64
-                #   pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
+                apple_sdk.frameworks.AppKit
+                apple_sdk.frameworks.WebKit
               ]);
               # do not check built package as it either builds successfully or not
               doCheck = false;
