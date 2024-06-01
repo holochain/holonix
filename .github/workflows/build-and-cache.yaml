@@ -7,10 +7,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-holochain:
+  build:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, macos-13]
+        package: [holochain, lair-keystore, hc-launch]
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -31,38 +32,10 @@ jobs:
         uses: DeterminateSystems/magic-nix-cache-action@main
 
       - name: Build nix package
-        run: nix build -L .#holochain
+        run: nix build -L .#${{ matrix.package }}
 
-      - name: Setup tmate session
-        if: failure()
-        uses: mxschmitt/action-tmate@v3
+      - run: result/bin/${{ matrix.package }} --version
 
-  build-lair:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, macos-13]
-      fail-fast: false
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - name: Print platform information
-        run: uname -ms
-
-      - name: Check out source code
-        uses: actions/checkout@v4
-
-      - name: Install nix
-        uses: cachix/install-nix-action@v25
-        with:
-          install_url: https://releases.nixos.org/nix/nix-2.18.0/install
-
-      - name: Use GitHub cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
-
-      - name: Build nix package
-        run: nix build -L .#lair-keystore
-
-      - name: Setup tmate session
-        if: failure()
-        uses: mxschmitt/action-tmate@v3
+      # - name: Setup tmate session
+      # if: failure()
+      # uses: mxschmitt/action-tmate@v3
