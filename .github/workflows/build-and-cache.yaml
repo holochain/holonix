@@ -10,7 +10,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, macos-13]
+        os: [macos-latest]
+        # os: [ubuntu-latest, macos-latest, macos-13]
         package: [launcher]
         # package: [holochain, lair-keystore, launcher]
       fail-fast: false
