@@ -131,80 +131,75 @@
               nonCargoBuildFiles = path: _type: builtins.match ".*(js|json|png)$" path != null;
               includeFilesFilter = path: type:
                 (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
+              # Use consistent version of Apple SDK throughout. Without this, building on x86_64-darwin fails.
+              # See below.
               apple_sdk =
                 if system == "x86_64-darwin"
                 then pkgs.darwin.apple_sdk_10_12
                 else pkgs.darwin.apple_sdk_11_0;
-
-              commonArgs = {
-                pname = "hc-launch";
-                version = "workspace";
-                # Use hc-launch sources as defined in input dependencies and include only those files defined in the
-                # filter previously.
-                src = pkgs.lib.cleanSourceWith {
-                  src = hc-launch-src;
-                  filter = includeFilesFilter;
-                };
-                # Only build hc-launch command
-                cargoExtraArgs = "--bin hc-launch";
-
-                # commands required at build time
-                nativeBuildInputs = (
-                  if pkgs.stdenv.isLinux then [ pkgs.pkg-config ]
-                  else [ ]
-                );
-
-                # build inputs required for linking to execute at runtime
-                buildInputs = [
-                  pkgs.perl
-                ]
-                ++ (pkgs.lib.optionals pkgs.stdenv.isLinux
-                  [
-                    pkgs.glib
-                    pkgs.go
-                    pkgs.webkitgtk.dev
-                  ])
-                ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
-                  [
-                    apple_sdk.frameworks.AppKit
-                    apple_sdk.frameworks.WebKit
-
-                    (if pkgs.system == "x86_64-darwin" then
-                      pkgs.darwin.apple_sdk_11_0.stdenv.mkDerivation
-                        {
-                          name = "go";
-                          nativeBuildInputs = with pkgs; [
-                            makeBinaryWrapper
-                            go
-                          ];
-                          dontBuild = true;
-                          dontUnpack = true;
-                          installPhase = ''
-                            makeWrapper ${pkgs.go}/bin/go $out/bin/go
-                          '';
-                        }
-                    else pkgs.go)
-                  ];
-
-                # do not check built package as it either builds successfully or not
-                doCheck = false;
-              };
-
-              # derivation building all dependencies
-              deps = craneLib.buildDepsOnly commonArgs;
-
             in
-            # derivation with the main crates
-            craneLib.buildPackage
-              (commonArgs // {
-                cargoArtifacts = deps;
+            craneLib.buildPackage {
+              pname = "hc-launch";
+              version = "workspace";
+              # Use hc-launch sources as defined in input dependencies and include only those files defined in the
+              # filter previously.
+              src = pkgs.lib.cleanSourceWith {
+                src = hc-launch-src;
+                filter = includeFilesFilter;
+              };
+              # Only build hc-launch command
+              cargoExtraArgs = "--bin hc-launch";
 
-                stdenv =
-                  if pkgs.stdenv.isDarwin then
-                    pkgs.overrideSDK pkgs.stdenv "11.0"
-                  else
-                    pkgs.stdenv;
-              });
+              # Override stdenv Apple SDK packages. It's unclear why this is needed, but building on x86_64-darwin
+              # fails without it.
+              # https://discourse.nixos.org/t/need-help-from-darwin-users-syntax-errors-in-library-frameworks-foundation-framework-headers/30467/3
+              stdenv =
+                if pkgs.stdenv.isDarwin then
+                  pkgs.overrideSDK pkgs.stdenv "11.0"
+                else
+                  pkgs.stdenv;
+
+              # commands required at build time
+              nativeBuildInputs = (
+                if pkgs.stdenv.isLinux then [ pkgs.pkg-config ]
+                else [ ]
+              );
+
+              # build inputs required for linking to execute at runtime
+              buildInputs = [
+                pkgs.perl
+              ]
+              ++ (pkgs.lib.optionals pkgs.stdenv.isLinux
+                [
+                  pkgs.glib
+                  pkgs.go
+                  pkgs.webkitgtk.dev
+                ])
+              ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
+                [
+                  apple_sdk.frameworks.AppKit
+                  apple_sdk.frameworks.WebKit
+
+                  (if pkgs.system == "x86_64-darwin" then
+                    pkgs.darwin.apple_sdk_11_0.stdenv.mkDerivation
+                      {
+                        name = "go";
+                        nativeBuildInputs = with pkgs; [
+                          makeBinaryWrapper
+                          go
+                        ];
+                        dontBuild = true;
+                        dontUnpack = true;
+                        installPhase = ''
+                          makeWrapper ${pkgs.go}/bin/go $out/bin/go
+                        '';
+                      }
+                  else pkgs.go)
+                ];
+
+              # do not check built package as it either builds successfully or not
+              doCheck = false;
+            };
         in
         {
 
