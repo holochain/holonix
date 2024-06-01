@@ -56,6 +56,23 @@
         "type": "github"
       }
     },
+    "hc-launch-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1716406557,
+        "narHash": "sha256-6eWndYspznXKYIJcuPCWFZ3lxdh7TrlEUGP1zaE5Mgs=",
+        "owner": "holochain",
+        "repo": "launcher",
+        "rev": "f20844aa5041432547c55176d71e67b32e302f77",
+        "type": "github"
+      },
+      "original": {
+        "owner": "holochain",
+        "ref": "holochain-0.3",
+        "repo": "launcher",
+        "type": "github"
+      }
+    },
     "holochain-src": {
       "flake": false,
       "locked": {
@@ -87,23 +104,6 @@
         "owner": "holochain",
         "ref": "lair_keystore-v0.4.4",
         "repo": "lair",
-        "type": "github"
-      }
-    },
-    "launcher-src": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1716406557,
-        "narHash": "sha256-6eWndYspznXKYIJcuPCWFZ3lxdh7TrlEUGP1zaE5Mgs=",
-        "owner": "holochain",
-        "repo": "launcher",
-        "rev": "f20844aa5041432547c55176d71e67b32e302f77",
-        "type": "github"
-      },
-      "original": {
-        "owner": "holochain",
-        "ref": "holochain-0.3",
-        "repo": "launcher",
         "type": "github"
       }
     },
@@ -139,9 +139,9 @@
       "inputs": {
         "crane": "crane",
         "flake-parts": "flake-parts",
+        "hc-launch-src": "hc-launch-src",
         "holochain-src": "holochain-src",
         "lair-keystore-src": "lair-keystore-src",
-        "launcher-src": "launcher-src",
         "nixpkgs": "nixpkgs",
         "rust-overlay": "rust-overlay"
       }

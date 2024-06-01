@@ -33,15 +33,15 @@
       flake = false;
     };
 
-    # Holochain Launcher CLI
-    launcher-src = {
+    # Holochain Launch CLI
+    hc-launch-src = {
       url = "github:holochain/launcher/holochain-0.3";
       flake = false;
     };
   };
 
   # outputs that this flake should produce
-  outputs = inputs @ { self, nixpkgs, flake-parts, rust-overlay, crane, holochain-src, lair-keystore-src, launcher-src, ... }:
+  outputs = inputs @ { self, nixpkgs, flake-parts, rust-overlay, crane, holochain-src, lair-keystore-src, hc-launch-src, ... }:
     # refer to flake-parts docs https://flake.parts/
     flake-parts.lib.mkFlake { inherit inputs; } {
       # systems that his flake can be used on
@@ -124,8 +124,8 @@
               doCheck = false;
             };
 
-          # define how to build Holochain Launcher binary
-          launcher =
+          # define how to build hc-launch binary
+          hc-launch =
             let
               # Crane filters out all non-cargo related files. Define include filter with files needed for build.
               nonCargoBuildFiles = path: _type: builtins.match ".*(js|json|png)$" path != null;
@@ -139,20 +139,22 @@
               commonArgs = {
                 pname = "hc-launch";
                 version = "workspace";
-                # Use Launcher sources as defined in input dependencies and include only those files defined in the
+                # Use hc-launch sources as defined in input dependencies and include only those files defined in the
                 # filter previously.
                 src = pkgs.lib.cleanSourceWith {
-                  src = launcher-src;
+                  src = hc-launch-src;
                   filter = includeFilesFilter;
                 };
                 # Only build hc-launch command
                 cargoExtraArgs = "--bin hc-launch";
 
+                # commands required at build time
                 nativeBuildInputs = (
                   if pkgs.stdenv.isLinux then [ pkgs.pkg-config ]
                   else [ ]
                 );
 
+                # build inputs required for linking to execute at runtime
                 buildInputs = [
                   pkgs.perl
                 ]
@@ -207,18 +209,18 @@
         {
 
           packages = {
-            # inherit holochain;
-            # inherit lair-keystore;
-            # inherit rust;
-            inherit launcher;
+            inherit holochain;
+            inherit lair-keystore;
+            inherit rust;
+            inherit hc-launch;
           };
 
           devShells = {
             default = pkgs.mkShell {
               packages = [
-                # holochain
-                # lair-keystore
-                # rust
+                holochain
+                lair-keystore
+                rust
               ];
             };
           };

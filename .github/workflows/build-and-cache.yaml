@@ -10,10 +10,8 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-latest]
-        # os: [ubuntu-latest, macos-latest, macos-13]
-        package: [launcher]
-        # package: [holochain, lair-keystore, launcher]
+        os: [ubuntu-latest, macos-latest, macos-13]
+        package: [holochain, lair-keystore, hc-launch]
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -36,7 +34,7 @@ jobs:
       - name: Build nix package
         run: nix build -L .#${{ matrix.package }}
 
-      - run: result/bin/hc-launch --version
+      - run: result/bin/${{ matrix.package }} --version
 
       # - name: Setup tmate session
       # if: failure()
