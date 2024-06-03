@@ -59,16 +59,16 @@
     "hc-launch-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1716406557,
-        "narHash": "sha256-6eWndYspznXKYIJcuPCWFZ3lxdh7TrlEUGP1zaE5Mgs=",
+        "lastModified": 1715106263,
+        "narHash": "sha256-a7iQ8pKGz6fghJrtXq0Xamp57GE8Hd3w5YQASzz5Wlk=",
         "owner": "holochain",
         "repo": "launcher",
-        "rev": "f20844aa5041432547c55176d71e67b32e302f77",
+        "rev": "92bd39e1c66912d61c35c4725d7b106959888670",
         "type": "github"
       },
       "original": {
         "owner": "holochain",
-        "ref": "holochain-0.3",
+        "ref": "holochain-weekly",
         "repo": "launcher",
         "type": "github"
       }
