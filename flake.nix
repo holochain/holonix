@@ -241,6 +241,7 @@
             };
         in
         {
+          # Configure a formatter so that `nix fmt` can be used for format this file.
           formatter = pkgs.nixpkgs-fmt;
 
           packages = {
@@ -251,6 +252,9 @@
             inherit rust;
           };
 
+          # Define runnable applications for use with `nix run`.
+          # These can be used like `nix run "github:holochain/holonix#hc-scaffold" -- --version`.
+          # https://flake.parts/options/flake-parts.html?highlight=perSystem.apps#opt-perSystem.apps
           apps = {
             holochain.program = "${holochain}/bin/holochain";
             lair-keystore.program = "${lair-keystore}/bin/lair-keystore";
