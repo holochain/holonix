@@ -73,6 +73,23 @@
         "type": "github"
       }
     },
+    "hc-scaffold": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1716496525,
+        "narHash": "sha256-DB4KmZ5rVXcEiet843ivQuT9iB1JHuzIUl45ZBjPJXg=",
+        "owner": "holochain",
+        "repo": "scaffolding",
+        "rev": "d99193b228a4ff972987ded190886d8dddc374bf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "holochain",
+        "ref": "holochain-weekly",
+        "repo": "scaffolding",
+        "type": "github"
+      }
+    },
     "holochain-src": {
       "flake": false,
       "locked": {
@@ -140,6 +157,7 @@
         "crane": "crane",
         "flake-parts": "flake-parts",
         "hc-launch-src": "hc-launch-src",
+        "hc-scaffold": "hc-scaffold",
         "holochain-src": "holochain-src",
         "lair-keystore-src": "lair-keystore-src",
         "nixpkgs": "nixpkgs",
