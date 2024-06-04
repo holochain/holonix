@@ -35,7 +35,7 @@ jobs:
         run: nix build -L .#${{ matrix.package }}
 
       - name: Run nix app
-        run: nix run .#${{ matrix.package }} --version
+        run: nix run .#${{ matrix.package }} -- --version
 
       - run: result/bin/${{ matrix.package }} --version
 
