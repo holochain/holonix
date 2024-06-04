@@ -252,10 +252,10 @@
           };
 
           apps = {
-            holochain = "${holochain}/bin/holochain";
-            lair-keystore = "${lair-keystore}/bin/lair-keystore";
+            holochain.program = "${holochain}/bin/holochain";
+            lair-keystore.program = "${lair-keystore}/bin/lair-keystore";
             hc-launch.program = "${hc-launch}/bin/hc-launch";
-            hc-scaffold = "${hc-scaffold}/bin/hc-scaffold";
+            hc-scaffold.program = "${hc-scaffold}/bin/hc-scaffold";
           };
 
           devShells = {
