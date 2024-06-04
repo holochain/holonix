@@ -31,6 +31,12 @@ jobs:
       - name: Use GitHub cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
+      - name: Check Nix formatting
+        run: nix fmt . -- --check
+
+      - name: Check Nix flake
+        run: nix flake check --all-systems
+
       - name: Build nix package
         run: nix build -L .#${{ matrix.package }}
 

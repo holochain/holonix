@@ -229,15 +229,15 @@
 
           hc-scaffold =
             craneLib.buildPackage {
-                pname = "lair-keystore";
-                src = craneLib.cleanCargoSource inputs.hc-scaffold;
+              pname = "hc-scaffold";
+              src = craneLib.cleanCargoSource inputs.hc-scaffold;
 
-                doCheck = false;
+              doCheck = false;
 
-                buildInputs = [
-                    pkgs.go
-                    pkgs.perl
-                ];
+              buildInputs = [
+                pkgs.go
+                pkgs.perl
+              ];
             };
         in
         {
@@ -246,15 +246,16 @@
           packages = {
             inherit holochain;
             inherit lair-keystore;
-            inherit rust;
             inherit hc-launch;
             inherit hc-scaffold;
+            inherit rust;
           };
 
           apps = {
             holochain = "${holochain}/bin/holochain";
             lair-keystore = "${lair-keystore}/bin/lair-keystore";
             hc-launch.program = "${hc-launch}/bin/hc-launch";
+            hc-scaffold = "${hc-scaffold}/bin/hc-scaffold";
           };
 
           devShells = {
@@ -262,6 +263,7 @@
               packages = [
                 holochain
                 lair-keystore
+                hc-launch
                 hc-scaffold
                 rust
               ];
