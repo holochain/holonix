@@ -38,6 +38,11 @@
       url = "github:holochain/launcher/holochain-weekly";
       flake = false;
     };
+
+    hc-scaffold = {
+      url = "github:holochain/scaffolding/holochain-weekly";
+      flake = false;
+    };
   };
 
   # outputs that this flake should produce
@@ -210,6 +215,19 @@
                   else
                     pkgs.stdenv;
               });
+
+          hc-scaffold =
+            craneLib.buildPackage {
+                pname = "lair-keystore";
+                src = craneLib.cleanCargoSource inputs.hc-scaffold;
+
+                doCheck = false;
+
+                buildInputs = [
+                    pkgs.go
+                    pkgs.perl
+                ];
+            };
         in
         {
 
@@ -218,6 +236,7 @@
             inherit lair-keystore;
             inherit rust;
             inherit hc-launch;
+            inherit hc-scaffold;
           };
 
           devShells = {
@@ -225,6 +244,7 @@
               packages = [
                 holochain
                 lair-keystore
+                hc-scaffold
                 rust
               ];
             };
