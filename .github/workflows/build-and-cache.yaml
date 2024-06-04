@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, macos-13]
-        package: [holochain, lair-keystore, hc-launch hc-scaffold]
+        package: [holochain, lair-keystore, hc-launch, hc-scaffold]
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
