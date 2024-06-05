@@ -7,11 +7,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  nix-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v27
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.22.1/install
+
+      - name: Check Nix formatting
+        run: nix fmt . -- --check
+
+      - name: Check Nix flake
+        run: nix flake check --all-systems
+
   build:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, macos-13]
-        package: [holochain, lair-keystore, hc-launch, hc-scaffold]
+        packages:
+          - [holochain, hc, hc-run-local-services, hc-sandbox, hcterm]
+          - [lair-keystore]
+          - [hc-launch]
+          - [hc-scaffold]
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -24,17 +46,16 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install nix
-        uses: cachix/install-nix-action@v25
+        uses: cachix/install-nix-action@v27
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.18.0/install
+          install_url: https://releases.nixos.org/nix/nix-2.22.1/install
 
       - name: Use GitHub cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Build nix package
-        run: nix build -L .#${{ matrix.package }}
-
-      - run: result/bin/${{ matrix.package }} --version
+      - name: Run nix app
+        run: |
+          echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | xargs -I% nix run .#% -- --version
 
       # - name: Setup tmate session
       # if: failure()

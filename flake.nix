@@ -22,19 +22,19 @@
     };
 
     # Holochain sources
-    holochain-src = {
+    holochain = {
       url = "github:holochain/holochain/main";
       flake = false;
     };
 
     # Lair keystore sources
-    lair-keystore-src = {
+    lair-keystore = {
       url = "github:holochain/lair/lair_keystore-v0.4.4";
       flake = false;
     };
 
     # Holochain Launch CLI
-    hc-launch-src = {
+    hc-launch = {
       url = "github:holochain/launcher/holochain-weekly";
       flake = false;
     };
@@ -46,7 +46,7 @@
   };
 
   # outputs that this flake should produce
-  outputs = inputs @ { self, nixpkgs, flake-parts, rust-overlay, crane, holochain-src, lair-keystore-src, hc-launch-src, ... }:
+  outputs = inputs @ { self, nixpkgs, flake-parts, rust-overlay, crane, ... }:
     # refer to flake-parts docs https://flake.parts/
     flake-parts.lib.mkFlake { inherit inputs; } {
       # systems that his flake can be used on
@@ -61,8 +61,10 @@
             inherit system overlays;
           };
 
+          rustVersion = "1.78.0";
+
           # define Rust toolchain version and targets to be used in this flake
-          rust = (pkgs.rust-bin.stable."1.78.0".minimal.override
+          rust = (pkgs.rust-bin.stable.${rustVersion}.minimal.override
             {
               targets = [ "wasm32-unknown-unknown" ];
             });
@@ -77,14 +79,17 @@
               nonCargoBuildFiles = path: _type: builtins.match ".*(json|sql|wasm.gz)$" path != null;
               includeFilesFilter = path: type:
                 (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
+
+              # Crane doesn't know which version to select from a workspace, so we tell it where to look
+              crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.holochain + "/crates/holochain/Cargo.toml"; };
             in
             craneLib.buildPackage {
               pname = "holochain";
-              version = "workspace";
+              version = crateInfo.version;
               # Use Holochain sources as defined in input dependencies and include only those files defined in the
               # filter previously.
               src = pkgs.lib.cleanSourceWith {
-                src = holochain-src;
+                src = inputs.holochain;
                 filter = includeFilesFilter;
               };
               # additional packages needed for build
@@ -103,16 +108,19 @@
               nonCargoBuildFiles = path: _type: builtins.match ".*(sql|md)$" path != null;
               includeFilesFilter = path: type:
                 (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
+
+              # Crane doesn't know which version to select from a workspace, so we tell it where to look
+              crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.lair-keystore + "/crates/lair_keystore/Cargo.toml"; };
             in
             craneLib.buildPackage {
               pname = "lair-keystore";
-              version = "workspace";
+              version = crateInfo.version;
               # only build lair-keystore binary
               cargoExtraArgs = "--bin lair-keystore";
               # Use Lair keystore sources as defined in input dependencies and include only those files defined in the
               # filter previously.
               src = pkgs.lib.cleanSourceWith {
-                src = lair-keystore-src;
+                src = inputs.lair-keystore;
                 filter = includeFilesFilter;
               };
               # additional packages needed for build
@@ -136,6 +144,10 @@
               nonCargoBuildFiles = path: _type: builtins.match ".*(js|json|png)$" path != null;
               includeFilesFilter = path: type:
                 (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
+
+              # Crane doesn't know which version to select from a workspace, so we tell it where to look
+              crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.hc-launch + "/crates/hc_launch/src-tauri/Cargo.toml"; };
+
               # Use consistent version of Apple SDK throughout. Without this, building on x86_64-darwin fails.
               # See below.
               apple_sdk =
@@ -145,11 +157,11 @@
 
               commonArgs = {
                 pname = "hc-launch";
-                version = "workspace";
+                version = crateInfo.version;
                 # Use hc-launch sources as defined in input dependencies and include only those files defined in the
                 # filter previously.
                 src = pkgs.lib.cleanSourceWith {
-                  src = hc-launch-src;
+                  src = inputs.hc-launch;
                   filter = includeFilesFilter;
                 };
                 # Only build hc-launch command
@@ -199,7 +211,6 @@
 
               # derivation building all dependencies
               deps = craneLib.buildDepsOnly commonArgs;
-
             in
             # derivation with the main crates
             craneLib.buildPackage
@@ -218,25 +229,41 @@
 
           hc-scaffold =
             craneLib.buildPackage {
-                pname = "lair-keystore";
-                src = craneLib.cleanCargoSource inputs.hc-scaffold;
+              pname = "hc-scaffold";
+              src = craneLib.cleanCargoSource inputs.hc-scaffold;
 
-                doCheck = false;
+              doCheck = false;
 
-                buildInputs = [
-                    pkgs.go
-                    pkgs.perl
-                ];
+              buildInputs = [
+                pkgs.go
+                pkgs.perl
+              ];
             };
         in
         {
+          # Configure a formatter so that `nix fmt` can be used to format this file.
+          formatter = pkgs.nixpkgs-fmt;
 
           packages = {
             inherit holochain;
             inherit lair-keystore;
-            inherit rust;
             inherit hc-launch;
             inherit hc-scaffold;
+            inherit rust;
+          };
+
+          # Define runnable applications for use with `nix run`.
+          # These can be used like `nix run "github:holochain/holonix#hc-scaffold" -- --version`.
+          # https://flake.parts/options/flake-parts.html?highlight=perSystem.apps#opt-perSystem.apps
+          apps = {
+            holochain.program = "${holochain}/bin/holochain";
+            hc.program = "${holochain}/bin/hc";
+            hc-run-local-services.program = "${holochain}/bin/hc-run-local-services";
+            hc-sandbox.program = "${holochain}/bin/hc-sandbox";
+            hcterm.program = "${holochain}/bin/hcterm";
+            lair-keystore.program = "${lair-keystore}/bin/lair-keystore";
+            hc-launch.program = "${hc-launch}/bin/hc-launch";
+            hc-scaffold.program = "${hc-scaffold}/bin/hc-scaffold";
           };
 
           devShells = {
@@ -244,6 +271,7 @@
               packages = [
                 holochain
                 lair-keystore
+                hc-launch
                 hc-scaffold
                 rust
               ];
