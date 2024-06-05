@@ -241,7 +241,7 @@
             };
         in
         {
-          # Configure a formatter so that `nix fmt` can be used for format this file.
+          # Configure a formatter so that `nix fmt` can be used to format this file.
           formatter = pkgs.nixpkgs-fmt;
 
           packages = {
