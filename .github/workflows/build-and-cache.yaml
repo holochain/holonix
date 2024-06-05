@@ -67,7 +67,8 @@ jobs:
       - name: Init from template
         run: |
           cd $(mktemp -d)
-          nix flake init -t "github:holochain/holonix/${{ steps.extract_branch.ouptuts.branch }}#${{ matrix.templates }}"
+          echo "Fetching template from branch ${{ steps.extract_branch.outputs.branch }}"
+          nix flake init -t "github:holochain/holonix/${{ steps.extract_branch.ouptuts.branch }}#${{ matrix.template }}"
           nix develop -c holochain --version
 
       # - name: Setup tmate session
