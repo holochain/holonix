@@ -35,8 +35,7 @@ jobs:
           - [ hc-launch ]
           - [ hc-scaffold ]
         include:
-          - os: [ ubuntu-latest, macos-latest, macos-13 ]
-            template: [ holonix-default ]
+            - template: [ holonix-default ]
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
