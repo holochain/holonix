@@ -35,7 +35,9 @@ jobs:
           - [ hc-launch ]
           - [ hc-scaffold ]
         include:
-            - template: [ holonix-default ]
+          - os: ubuntu-latest
+            template:
+              - holonix-default
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -65,6 +67,7 @@ jobs:
         id: extract_branch
 
       - name: Init from template
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           cd $(mktemp -d)
           echo "Fetching template from branch ${{ steps.extract_branch.outputs.branch }}"
