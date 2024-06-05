@@ -43,6 +43,11 @@
       url = "github:holochain/scaffolding/holochain-weekly";
       flake = false;
     };
+
+    holonix-default = {
+      path = "templates/default";
+      description = "Holonix default template";
+    };
   };
 
   # outputs that this flake should produce
