@@ -19,14 +19,14 @@
         {
           formatter = pkgs.nixpkgs-fmt;
 
-          packages = with pkgs; [
-            nodejs_20 # For UI development
-            binaryen # For WASM optimisation
-            # Add any other packages you need here
-          ];
-
           devShells.default = pkgs.mkShell {
             inputsFrom = [ inputs'.holonix.devShells ];
+
+            packages = with pkgs; [
+              nodejs_20 # For UI development
+              binaryen # For WASM optimisation
+              # Add any other packages you need here
+            ];
           };
         };
     };
