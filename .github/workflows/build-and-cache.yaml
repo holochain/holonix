@@ -29,7 +29,11 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, macos-13]
-        package: [holochain, lair-keystore, hc-launch, hc-scaffold]
+        packages:
+          - [holochain, hc, hc-run-local-services, hc-sandbox, hcterm]
+          - [lair-keystore]
+          - [hc-launch]
+          - [hc-scaffold]
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -49,13 +53,9 @@ jobs:
       - name: Use GitHub cache
         uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Build nix package
-        run: nix build -L .#${{ matrix.package }}
-
-      - run: result/bin/${{ matrix.package }} --version
-
       - name: Run nix app
-        run: nix run .#${{ matrix.package }} -- --version
+        run: |
+          echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | xargs -I% nix run .#% -- --version
 
       # - name: Setup tmate session
       # if: failure()

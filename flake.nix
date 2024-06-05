@@ -257,6 +257,10 @@
           # https://flake.parts/options/flake-parts.html?highlight=perSystem.apps#opt-perSystem.apps
           apps = {
             holochain.program = "${holochain}/bin/holochain";
+            hc.program = "${holochain}/bin/hc";
+            hc-run-local-services.program = "${holochain}/bin/hc-run-local-services";
+            hc-sandbox = "${holochain}/bin/hc-sandbox";
+            hcterm.program = "${holochain}/bin/hcterm";
             lair-keystore.program = "${lair-keystore}/bin/lair-keystore";
             hc-launch.program = "${hc-launch}/bin/hc-launch";
             hc-scaffold.program = "${hc-scaffold}/bin/hc-scaffold";
