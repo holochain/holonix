@@ -48,7 +48,7 @@
   # outputs that this flake should produce
   outputs = inputs @ { self, nixpkgs, flake-parts, rust-overlay, crane, ... }:
     # refer to flake-parts docs https://flake.parts/
-    (flake-parts.lib.mkFlake { inherit inputs; } {
+    flake-parts.lib.mkFlake { inherit inputs; } {
       # systems that his flake can be used on
       systems = [ "aarch64-darwin" "x86_64-linux" "x86_64-darwin" ];
 
@@ -278,7 +278,7 @@
             };
           };
         };
-    }) // {
+    } // {
       # Add content which is not platform specific after using flake-parts to generate platform specific content.
       templates = {
         # A template that can be used to create a flake that depends on this flake, with recommended defaults.
