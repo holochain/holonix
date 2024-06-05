@@ -43,11 +43,6 @@
       url = "github:holochain/scaffolding/holochain-weekly";
       flake = false;
     };
-
-    holonix-default = {
-      path = "templates/default";
-      description = "Holonix default template";
-    };
   };
 
   # outputs that this flake should produce
@@ -269,6 +264,13 @@
             lair-keystore.program = "${lair-keystore}/bin/lair-keystore";
             hc-launch.program = "${hc-launch}/bin/hc-launch";
             hc-scaffold.program = "${hc-scaffold}/bin/hc-scaffold";
+          };
+
+          templates = {
+              holonix-default = {
+                path = "templates/default";
+                description = "Holonix default template";
+              };
           };
 
           devShells = {
