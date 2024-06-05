@@ -48,7 +48,7 @@
   # outputs that this flake should produce
   outputs = inputs @ { self, nixpkgs, flake-parts, rust-overlay, crane, ... }:
     # refer to flake-parts docs https://flake.parts/
-    flake-parts.lib.mkFlake { inherit inputs; } {
+    (flake-parts.lib.mkFlake { inherit inputs; } {
       # systems that his flake can be used on
       systems = [ "aarch64-darwin" "x86_64-linux" "x86_64-darwin" ];
 
@@ -126,7 +126,7 @@
               # additional packages needed for build
               # perl needed for openssl on all platforms
               buildInputs = [ pkgs.perl ]
-                ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
+              ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
                 # additional packages needed for darwin platforms
                 pkgs.libiconv
                 pkgs.darwin.apple_sdk.frameworks.Security
@@ -266,13 +266,6 @@
             hc-scaffold.program = "${hc-scaffold}/bin/hc-scaffold";
           };
 
-          templates = {
-              holonix-default = {
-                path = "templates/default";
-                description = "Holonix default template";
-              };
-          };
-
           devShells = {
             default = pkgs.mkShell {
               packages = [
@@ -285,5 +278,14 @@
             };
           };
         };
+    }) // {
+      # Add content which is not platform specific after using flake-parts to generate platform specific content.
+      templates = {
+        # A template that can be used to create a flake that depends on this flake, with recommended defaults.
+        holonix-default = {
+          path = ./templates/default;
+          description = "Holonix default template";
+        };
+      };
     };
 }
