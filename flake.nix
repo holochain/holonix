@@ -259,7 +259,7 @@
             holochain.program = "${holochain}/bin/holochain";
             hc.program = "${holochain}/bin/hc";
             hc-run-local-services.program = "${holochain}/bin/hc-run-local-services";
-            hc-sandbox = "${holochain}/bin/hc-sandbox";
+            hc-sandbox.program = "${holochain}/bin/hc-sandbox";
             hcterm.program = "${holochain}/bin/hcterm";
             lair-keystore.program = "${lair-keystore}/bin/lair-keystore";
             hc-launch.program = "${hc-launch}/bin/hc-launch";
