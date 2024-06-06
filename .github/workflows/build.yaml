@@ -41,19 +41,19 @@ jobs:
 
       - name: Test bump-holochain.sh
         run: |
-          MINOR_VERSION=$(./scripts/bump.sh main-0.1 false | tail -n 1)
+          MINOR_VERSION=$(./scripts/bump-holochain.sh main-0.1 false | tail -n 1)
           if [[ "$MINOR_VERSION" != "0.1.8" ]]; then
               echo "bump.sh failed to find 0.1.8: [${MINOR_VERSION}]"
               exit 1
           fi
           
-          RC_VERSION=$(./scripts/bump.sh main-0.1-rc false | tail -n 1)
+          RC_VERSION=$(./scripts/bump-holochain.sh main-0.1-rc false | tail -n 1)
           if [[ "$RC_VERSION" != "0.1.7-rc.0" ]]; then
               echo "bump.sh failed to find 0.1.7-rc.0: [${RC_VERSION}]"
               exit 1
           fi
           
-          CURRENT_VERSION=$(./scripts/bump.sh main false | tail -n 1)
+          CURRENT_VERSION=$(./scripts/bump-holochain.sh main false | tail -n 1)
           if [[ "$CURRENT_VERSION" != 0.4.*dev* ]]; then
               echo "bump.sh failed to find current version: [${CURRENT_VERSION}]"
               exit 1
