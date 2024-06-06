@@ -283,7 +283,7 @@
       # Add content which is not platform specific after using flake-parts to generate platform specific content.
       templates = {
         # A template that can be used to create a flake that depends on this flake, with recommended defaults.
-        holonix-default = {
+        default = {
           path = ./templates/default;
           description = "Holonix default template";
         };
