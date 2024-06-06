@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: ludeeus/action-shellcheck@v2
+      - uses: azohra/shell-linter@latest
 
       - name: Test bump-holochain.sh
         run: |
