@@ -44,7 +44,7 @@ jobs:
         run: |
           # Create a workspace and initialise a new default Holonix flake
           cd $(mktemp -d)
-          nix flake init -t "github:holochain/holonix/${{ matrix.branch }}#holonix-default" # TODO
+          nix flake init -t "github:holochain/holonix/${{ matrix.branch }}
 
           # See https://docs.cachix.org/pushing#id1
           nix develop --build -L --profile result-develop
