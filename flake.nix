@@ -247,7 +247,7 @@
                 buildInputs = [
                   pkgs.go
                   pkgs.perl
-                ] ++ lib.optionals pkgs.stdenv.isDarwin [
+                ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
                   pkgs.openssl # Required by libgit2-sys on darwin
                 ];
               };
