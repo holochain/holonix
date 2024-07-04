@@ -248,7 +248,10 @@
                   pkgs.go
                   pkgs.perl
                 ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
-                  pkgs.openssl # Required by libgit2-sys on darwin
+                  # additional packages needed for darwin platforms
+                  pkgs.libiconv
+                  pkgs.darwin.apple_sdk.frameworks.Security
+                  pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
                 ];
               };
           in
