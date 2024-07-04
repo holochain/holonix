@@ -253,6 +253,15 @@
                   pkgs.darwin.apple_sdk.frameworks.Security
                   pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
                 ];
+
+                # Override stdenv Apple SDK packages. It's unclear why this is needed, but building on x86_64-darwin
+                # fails without it.
+                # https://discourse.nixos.org/t/need-help-from-darwin-users-syntax-errors-in-library-frameworks-foundation-framework-headers/30467/3
+                stdenv =
+                  if pkgs.stdenv.isDarwin then
+                    pkgs.overrideSDK pkgs.stdenv "11.0"
+                  else
+                    pkgs.stdenv;
               };
           in
           {
