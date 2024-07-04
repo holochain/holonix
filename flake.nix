@@ -40,7 +40,7 @@
     };
 
     hc-scaffold = {
-      url = "github:holochain/scaffolding/update-git2-dependency-features";
+      url = "github:holochain/scaffolding/holochain-weekly";
       flake = false;
     };
   };
@@ -249,6 +249,7 @@
                   pkgs.perl
                 ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
                   # additional packages needed for darwin platforms
+                  pkgs.libgit2
                   pkgs.libiconv
                   pkgs.darwin.apple_sdk.frameworks.Security
                   pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
