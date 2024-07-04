@@ -58,16 +58,16 @@
     "hc-scaffold": {
       "flake": false,
       "locked": {
-        "lastModified": 1719577631,
-        "narHash": "sha256-LPdMm14MPEQBbt6NgzVtA5Z38tGC032G0dg90qgJZlo=",
+        "lastModified": 1720008069,
+        "narHash": "sha256-fGoIp4EcoHlF1g72ZP/AzVojeyCzH722KK0sJYe7FAU=",
         "owner": "holochain",
         "repo": "scaffolding",
-        "rev": "b481b2b3cb0a88bb01097dd26ea0dba84491c58a",
+        "rev": "f1bf5ef152a1bc8095bc6f3728708acb7c9100dc",
         "type": "github"
       },
       "original": {
         "owner": "holochain",
-        "ref": "holochain-weekly",
+        "ref": "update-git2-dependency-features",
         "repo": "scaffolding",
         "type": "github"
       }
