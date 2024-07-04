@@ -250,6 +250,7 @@
                 ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
                   # additional packages needed for darwin platforms
                   pkgs.libgit2
+                  pkgs.pkg-config
                   pkgs.libiconv
                   pkgs.darwin.apple_sdk.frameworks.Security
                   pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
