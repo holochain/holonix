@@ -244,6 +244,8 @@
 
                 doCheck = false;
 
+                CC_ENABLE_DEBUG_OUTPUT="1";
+
                 buildInputs = [
                   pkgs.go
                   pkgs.perl
