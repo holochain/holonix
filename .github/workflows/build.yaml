@@ -21,7 +21,7 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v27
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.22.1/install
+          install_url: https://releases.nixos.org/nix/nix-2.23.2/install
 
       - name: Use GitHub cache
         uses: DeterminateSystems/magic-nix-cache-action@main
@@ -99,7 +99,7 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v27
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.22.1/install
+          install_url: https://releases.nixos.org/nix/nix-2.23.2/install
 
       - name: Use GitHub cache
         uses: DeterminateSystems/magic-nix-cache-action@main
