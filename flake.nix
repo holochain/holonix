@@ -23,7 +23,7 @@
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain/holochain-0.4.0-dev.10";
+      url = "github:holochain/holochain/holochain-0.4.0-dev.11";
       flake = false;
     };
 
@@ -229,15 +229,28 @@
                 });
 
             hc-scaffold =
+              let
+                # Crane filters out all non-cargo related files. Define include filter with files needed for build.
+                nonCargoBuildFiles = path: _type: builtins.match ".*(gitignore|md)$" path != null;
+                includeFilesFilter = path: type:
+                  (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
+              in
               craneLib.buildPackage {
                 pname = "hc-scaffold";
-                src = craneLib.cleanCargoSource inputs.hc-scaffold;
+                src = pkgs.lib.cleanSourceWith {
+                  src = inputs.hc-scaffold;
+                  filter = includeFilesFilter;
+                };
 
                 doCheck = false;
 
                 buildInputs = [
                   pkgs.go
                   pkgs.perl
+                ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
+                  # Required by the git2 crate, see https://github.com/rust-lang/git2-rs/blob/master/libgit2-sys/build.rs#L251
+                  pkgs.darwin.apple_sdk.frameworks.Security
+                  pkgs.darwin.apple_sdk.frameworks.CoreFoundation
                 ];
               };
           in
