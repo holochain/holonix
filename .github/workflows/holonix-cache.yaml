@@ -52,7 +52,8 @@ jobs:
         shell: bash
         run: |
           changed_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-          echo "branch=${"${{ inputs.branch }}":-$changed_branch}" >> $GITHUB_OUTPUT
+          input_branch='${{ inputs.branch }}'
+          echo "branch=${input_branch:-$changed_branch}" >> $GITHUB_OUTPUT
         id: extract_branch
 
       - name: Print branch
