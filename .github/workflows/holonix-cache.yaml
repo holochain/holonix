@@ -49,53 +49,56 @@ jobs:
           name: holochain-ci
 
       - name: Extract branch name
+        id: select_branch
         shell: bash
         run: |
+          # Figure out what branch was used to trigger the workflow (i.e. the `push` trigger)
           changed_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          
+          # Get the input branch override if it exists. This will be set if the workflow is triggered manually or by a
+          # workflow call.
           input_branch='${{ inputs.branch }}'
+          
+          # Pick a branch to work with, preferring the input branch if it exists.
           echo "branch=${input_branch:-$changed_branch}" >> $GITHUB_OUTPUT
-        id: extract_branch
 
-      - name: Print branch
-        run: echo ${{ steps.extract_branch.outputs.branch }}
+      - name: Cache default Holonix flake on [${{ steps.select_branch.outputs.branch }}]
+        env:
+          # NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
+          CACHIX_AUTH_TOKEN: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+        run: |
+          # Create a workspace and initialise a new default Holonix flake
+          cd $(mktemp -d)
+          nix flake init -t "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}
 
-#      - name: Cache default Holonix flake on [${{ matrix.branch }}]
-#        env:
-#          # NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
-#          CACHIX_AUTH_TOKEN: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-#        run: |
-#          # Create a workspace and initialise a new default Holonix flake
-#          cd $(mktemp -d)
-#          nix flake init -t "github:holochain/holonix/${{ matrix.branch }}
-#
-#          # See https://docs.cachix.org/pushing#id1
-#          nix develop --build -L --profile result-develop
-#
-#          nix build -L --profile result-build
-#
-#          # Push both results to the cache
-#          for i in result-*; do
-#            cachix push holochain-ci $i
-#          done
-#  cache-check:
-#    needs:
-#      - cache-update
-#    strategy:
-#      fail-fast: false
-#      matrix:
-#        os: [ ubuntu-latest, macos-latest, macos-13 ]
-#        branch: [ main, main-0.2, main-0.3 ]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: cachix/install-nix-action@v27
-#        with:
-#          install_url: https://releases.nixos.org/nix/nix-2.22.1/install
-#      - uses: cachix/cachix-action@v15
-#        with:
-#          name: holochain-ci
-#      - name: Check the Holonix cache
-#        uses: holochain/nix-cache-check@v1
-#        # env:
-#        #  NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
-#        with:
-#          derivation: "github:holochain/holonix/${{ matrix.branch }}" # The default shell in the Holonix flake
+          # See https://docs.cachix.org/pushing#id1
+          nix develop --build -L --profile result-develop
+
+          nix build -L --profile result-build
+
+          # Push both results to the cache
+          for i in result-*; do
+            cachix push holochain-ci $i
+          done
+
+  cache-check:
+    needs:
+      - cache-update
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, macos-latest, macos-13 ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: cachix/install-nix-action@v27
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.23.2/install
+      - uses: cachix/cachix-action@v15
+        with:
+          name: holochain-ci
+      - name: Check the Holonix cache
+        uses: holochain/nix-cache-check@v1
+        # env:
+        #  NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
+        with:
+          derivation: "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}" # The default shell in the Holonix flake
