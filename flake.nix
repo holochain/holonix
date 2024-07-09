@@ -40,7 +40,7 @@
     };
 
     hc-scaffold = {
-      url = "github:holochain/scaffolding/update-git2-dependency-features";
+      url = "github:holochain/scaffolding/holochain-weekly";
       flake = false;
     };
   };
