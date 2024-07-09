@@ -63,11 +63,11 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ macos-13 ] # ubuntu-latest, macos-latest,
+        os: [ ubuntu-latest, macos-latest, macos-13 ]
         packages:
-#          - [ holochain, hc, hc-run-local-services, hc-sandbox, hcterm ]
-#          - [ lair-keystore ]
-#          - [ hc-launch ]
+          - [ holochain, hc, hc-run-local-services, hc-sandbox, hcterm ]
+          - [ lair-keystore ]
+          - [ hc-launch ]
           - [ hc-scaffold ]
         include:
           - os: ubuntu-latest
