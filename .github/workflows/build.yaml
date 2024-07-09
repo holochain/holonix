@@ -106,7 +106,7 @@ jobs:
 
       - name: Run nix app
         run: |
-          echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | xargs -I% nix run -L .#% -- --version
+          echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | xargs -I% nix run .#% -- --version
 
       - name: Extract branch name
         shell: bash
