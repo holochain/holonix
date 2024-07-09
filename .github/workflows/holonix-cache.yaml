@@ -49,15 +49,10 @@ jobs:
           name: holochain-ci
 
       - name: Extract branch name
-        if: github.event_name == 'push'
         shell: bash
-        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
-
-      - name: Use input branch name
-        if: github.event_name != 'push'
-        shell: bash
-        run: echo "${{ inputs.branch }}" >> $GITHUB_OUTPUT
+        run: |
+          changed_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          echo "branch=${${{ inputs.branch }}:-$changed_branch}" >> $GITHUB_OUTPUT
         id: extract_branch
 
       - name: Print branch
