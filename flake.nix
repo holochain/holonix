@@ -249,7 +249,6 @@
                   pkgs.perl
                 ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
                   # additional packages needed for darwin platforms
-                  pkgs.libiconv
                   pkgs.darwin.apple_sdk.frameworks.Security
                   pkgs.darwin.apple_sdk.frameworks.CoreFoundation
                 ];
