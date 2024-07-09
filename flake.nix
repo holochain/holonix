@@ -40,7 +40,7 @@
     };
 
     hc-scaffold = {
-      url = "github:holochain/scaffolding/holochain-weekly";
+      url = "github:holochain/scaffolding/update-git2-dependency-features";
       flake = false;
     };
   };
@@ -244,28 +244,15 @@
 
                 doCheck = false;
 
-                CC_ENABLE_DEBUG_OUTPUT = "1";
-
                 buildInputs = [
                   pkgs.go
                   pkgs.perl
                 ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
                   # additional packages needed for darwin platforms
-                  pkgs.libgit2
-                  pkgs.pkg-config
                   pkgs.libiconv
-                  pkgs.darwin.apple_sdk_11_0.frameworks.Security
-                  pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
+                  pkgs.darwin.apple_sdk.frameworks.Security
+                  pkgs.darwin.apple_sdk.frameworks.CoreFoundation
                 ];
-
-                # Override stdenv Apple SDK packages. It's unclear why this is needed, but building on x86_64-darwin
-                # fails without it.
-                # https://discourse.nixos.org/t/need-help-from-darwin-users-syntax-errors-in-library-frameworks-foundation-framework-headers/30467/3
-                stdenv =
-                  if pkgs.stdenv.isDarwin then
-                    pkgs.overrideSDK pkgs.stdenv "11.0"
-                  else
-                    pkgs.stdenv;
               };
           in
           {
