@@ -244,7 +244,7 @@
 
                 doCheck = false;
 
-                CC_ENABLE_DEBUG_OUTPUT="1";
+                CC_ENABLE_DEBUG_OUTPUT = "1";
 
                 buildInputs = [
                   pkgs.go
@@ -254,7 +254,7 @@
                   pkgs.libgit2
                   pkgs.pkg-config
                   pkgs.libiconv
-                  pkgs.darwin.apple_sdk.frameworks.Security
+                  pkgs.darwin.apple_sdk_11_0.frameworks.Security
                   pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
                 ];
 
