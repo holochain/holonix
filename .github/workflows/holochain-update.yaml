@@ -3,7 +3,7 @@ name: "Update Holochain version"
 on:
   workflow_dispatch:
     inputs:
-      version:
+      branch:
         description: "The Holonix version to update Holochain on"
         required: true
         default: "main"
@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.inputs.branch }}
+          ref: ${{ inputs.branch }}
       - uses: cachix/install-nix-action@v27
         with:
           install_url: https://releases.nixos.org/nix/nix-2.23.2/install
@@ -37,8 +37,8 @@ jobs:
         with:
           token: ${{ secrets.HRA_GITHUB_TOKEN }}
           committer: "Holochain Release Automation <hra+gh@holochain.org>"
-          title: "Update Holochain version in Holonix on ${{ github.event.inputs.branch }}"
-          branch: holonix-update/${{ github.event.inputs.branch }}
+          title: "Update Holochain version in Holonix on ${{ inputs.branch }}"
+          branch: holonix-update/${{ inputs.branch }}
           draft: false
           delete-branch: true
       - name: Enable auto-merge
