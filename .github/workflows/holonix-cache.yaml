@@ -82,8 +82,6 @@ jobs:
           # See https://docs.cachix.org/pushing#id1
           nix develop --build --profile result-develop
 
-          nix build --profile result-build
-
           # Push both results to the cache
           for i in result-*; do
             cachix push holochain-ci $i
