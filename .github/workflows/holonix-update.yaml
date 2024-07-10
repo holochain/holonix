@@ -13,17 +13,17 @@ on:
           - main-0.3
           - main-0.2
       update-holochain:
-        description: "Whether Holochain should be updated"
+        description: "Should Holochain be updated?"
         type: boolean
         default: false
         required: true
       update-scaffolding:
-        description: "Whether Scaffolding should be updated"
+        description: "Should Scaffolding be updated?"
         type: boolean
         default: false
         required: true
       update-launcher:
-        description: "Whether Launcher should be updated"
+        description: "Should Launcher be updated?"
         type: boolean
         default: false
         required: true
