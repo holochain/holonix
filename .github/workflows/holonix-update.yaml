@@ -1,4 +1,4 @@
-name: "Update Holochain version"
+name: "Update Holonix versions"
 
 on:
   workflow_dispatch:
@@ -12,6 +12,21 @@ on:
           - main
           - main-0.3
           - main-0.2
+      update-holochain:
+        description: "Whether Holochain should be updated"
+        type: boolean
+        default: false
+        required: true
+      update-scaffolding:
+        description: "Whether Scaffolding should be updated"
+        type: boolean
+        default: false
+        required: true
+      update-launcher:
+        description: "Whether Launcher should be updated"
+        type: boolean
+        default: false
+        required: true
 
 concurrency:
   group: ${{ github.ref_name }}
@@ -26,11 +41,18 @@ jobs:
       - uses: cachix/install-nix-action@v27
         with:
           install_url: https://releases.nixos.org/nix/nix-2.23.2/install
-      - name: Run the update script
-        env:
-          GH_TOKEN: ${{ secrets.HRA_GITHUB_TOKEN }}
+      - name: Run the Holochain bump script
+        if: ${{ inputs.update-holochain }}
         run: |
           ./scripts/bump-holochain.sh
+      - name: Run the Scaffolding bump script
+        if: ${{ inputs.update-scaffolding }}
+        run: |
+          nix flake update hc-scaffold
+      - name: Run the Launcher bump script
+        if: ${{ inputs.update-launcher }}
+        run: |
+          nix flake update hc-launch
       - name: Create pull request
         id: cpr
         uses: peter-evans/create-pull-request@v6
