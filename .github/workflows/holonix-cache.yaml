@@ -47,6 +47,7 @@ jobs:
       - uses: cachix/cachix-action@v15
         with:
           name: holochain-ci
+          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
 
       - name: Extract branch name
         id: select_branch
