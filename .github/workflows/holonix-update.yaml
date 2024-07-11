@@ -27,6 +27,23 @@ on:
         type: boolean
         default: false
         required: true
+  workflow_call:
+    inputs:
+      branch:
+        type: string
+        required: true
+      update-holochain:
+        type: boolean
+        default: false
+        required: false
+      update-scaffolding:
+        type: boolean
+        default: false
+        required: true
+      update-launcher:
+        type: boolean
+        default: false
+        required: true
 
 concurrency:
   group: ${{ github.ref_name }}
