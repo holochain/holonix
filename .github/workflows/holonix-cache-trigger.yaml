@@ -12,14 +12,14 @@ on:
 
 jobs:
   update-cache-main:
-    uses: holochain/holonix./github/workflows/holonix-cache.yaml@main
+    uses: holochain/holonix/.github/workflows/holonix-cache.yaml@main
     with:
       branch: main
   update-cache-main-0_3:
-    uses: holochain/holonix./github/workflows/holonix-cache.yaml@main
+    uses: holochain/holonix/.github/workflows/holonix-cache.yaml@main
     with:
       branch: main-0.3
   update-cache-main-0_2:
-    uses: holochain/holonix./github/workflows/holonix-cache.yaml@main
+    uses: holochain/holonix/.github/workflows/holonix-cache.yaml@main
     with:
       branch: main-0.2
