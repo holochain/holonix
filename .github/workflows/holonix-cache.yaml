@@ -116,4 +116,4 @@ jobs:
         #  NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
         with:
           # The default shell in the Holonix flake
-          derivation: "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}#devShells${{ matrix.platform }}.default"
+          derivation: "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}#devShells.${{ matrix.platform }}.default"
