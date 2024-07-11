@@ -3,9 +3,9 @@ name: "Holonix cache trigger"
 # Because other things use the same cache, run once a day to make sure that the cache is up-to-date.
 
 on:
-  # Run once a day
+  # At 1:00am on every 2nd day
   schedule:
-    - cron: "@daily"
+    - cron: "0 1 */2 * *"
   # For debugging, allow the workflow to be run manually
   workflow_dispatch:
     inputs: {}
