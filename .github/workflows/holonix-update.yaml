@@ -39,11 +39,11 @@ on:
       update-scaffolding:
         type: boolean
         default: false
-        required: true
+        required: false
       update-launcher:
         type: boolean
         default: false
-        required: true
+        required: false
 
 concurrency:
   group: ${{ github.ref_name }}
