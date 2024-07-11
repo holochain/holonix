@@ -95,6 +95,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-latest, macos-latest, macos-13 ]
+        include:
+          - os: ubuntu-latest
+            platform: x86_64-linux
+          - os: macos-latest
+            platform: aarch64-darwin
+          - os: macos-13
+            platform: x86_64-darwin
     runs-on: ubuntu-latest
     steps:
       - uses: cachix/install-nix-action@v27
@@ -108,4 +115,5 @@ jobs:
         # env:
         #  NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
         with:
-          derivation: "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}" # The default shell in the Holonix flake
+          # The default shell in the Holonix flake
+          derivation: "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}#devShells${{ matrix.platform }}.default"
