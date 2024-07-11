@@ -76,11 +76,12 @@ jobs:
           CACHIX_AUTH_TOKEN: "${{ secrets.CACHIX_AUTH_TOKEN }}"
         run: |
           # Create a workspace and initialise a new default Holonix flake
-          cd $(mktemp -d)
-          nix flake init -t "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}"
+          # cd $(mktemp -d)
+          # nix flake init -t "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}"
+          # nix develop --build -L --profile result-develop
 
           # See https://docs.cachix.org/pushing#id1
-          nix develop --build -L --profile result-develop
+          nix develop --build -L --profile result-develop "github:holochain/holonix"
 
           # Push both results to the cache
           for i in result-*; do
