@@ -80,7 +80,7 @@ jobs:
           nix flake init -t "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}"
 
           # See https://docs.cachix.org/pushing#id1
-          nix develop --build --profile result-develop
+          nix develop --build -L --profile result-develop
 
           # Push both results to the cache
           for i in result-*; do
