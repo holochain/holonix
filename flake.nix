@@ -35,7 +35,7 @@
 
     # Holochain Launch CLI
     hc-launch = {
-      url = "github:holochain/launcher/holochain-weekly";
+      url = "github:holochain/hc-launch/holochain-weekly";
       flake = false;
     };
 
