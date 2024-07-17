@@ -67,6 +67,7 @@
             # define Rust toolchain version and targets to be used in this flake
             rust = (pkgs.rust-bin.stable.${rustVersion}.minimal.override
               {
+                extensions = [ "clippy" "rustfmt" ];
                 targets = [ "wasm32-unknown-unknown" ];
               });
 
