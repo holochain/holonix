@@ -4,7 +4,7 @@
 
   # specify all input dependencies needed to create the outputs of the flake
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=24.05";
 
     # utility to iterate over multiple target platforms
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -254,6 +254,39 @@
                   pkgs.darwin.apple_sdk.frameworks.CoreFoundation
                 ];
               };
+
+            # Shell script to show what versions of the Holochain tools are installed.
+            # It can be included as a package into the dev shell and is then available by its name - `hn-introspect`.
+            hn-introspect = pkgs.writeShellScriptBin "hn-introspect" ''
+              #!/usr/bin/env bash
+
+              if ! type "hc-scaffold" > /dev/null; then
+                echo "hc-scaffold   : not installed"
+              else
+                echo "hc-scaffold   : $(hc-scaffold --version)"
+              fi
+
+              if ! type "hc-launch" > /dev/null; then
+                echo "hc-launch     : not installed"
+              else
+                echo "hc-launch     : $(hc-launch --version)"
+              fi
+
+              if ! type "lair-keystore" > /dev/null; then
+                echo "Lair keystore : not installed"
+              else
+                echo "Lair keystore : $(lair-keystore --version)"
+              fi
+
+              if ! type "holochain" > /dev/null; then
+                echo "Holochain     : not installed"
+              else
+                echo "Holochain     : $(holochain --version)"
+
+                printf "\nHolochain build info: "
+                holochain --build-info | ${pkgs.jq}/bin/jq
+              fi
+            '';
           in
           {
             # Configure a formatter so that `nix fmt` can be used to format this file.
@@ -265,6 +298,7 @@
               inherit hc-launch;
               inherit hc-scaffold;
               inherit rust;
+              inherit hn-introspect;
             };
 
             # Define runnable applications for use with `nix run`.
@@ -288,6 +322,7 @@
                   lair-keystore
                   hc-launch
                   hc-scaffold
+                  hn-introspect
                   rust
                 ];
               };
