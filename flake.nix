@@ -261,27 +261,33 @@
               #!/usr/bin/env bash
 
               if ! type "hc-scaffold" > /dev/null; then
-                echo "hc-scaffold   : not installed"
+                echo "hc-scaffold     : not installed"
               else
-                echo "hc-scaffold   : $(hc-scaffold --version)"
+                echo "hc-scaffold     : $(hc-scaffold --version)"
               fi
 
               if ! type "hc-launch" > /dev/null; then
-                echo "hc-launch     : not installed"
+                echo "hc-launch       : not installed"
               else
-                echo "hc-launch     : $(hc-launch --version)"
+                echo "hc-launch       : $(hc-launch --version)"
               fi
 
               if ! type "lair-keystore" > /dev/null; then
-                echo "Lair keystore : not installed"
+                echo "Lair keystore   : not installed"
               else
-                echo "Lair keystore : $(lair-keystore --version)"
+                echo "Lair keystore   : $(lair-keystore --version)"
+              fi
+
+              if ! type "holo-dev-server" > /dev/null; then
+                echo "Holo dev server : not installed"
+              else
+                echo "Holo dev server : $(holo-dev-server --version)"
               fi
 
               if ! type "holochain" > /dev/null; then
-                echo "Holochain     : not installed"
+                echo "Holochain       : not installed"
               else
-                echo "Holochain     : $(holochain --version)"
+                echo "Holochain       : $(holochain --version)"
 
                 printf "\nHolochain build info: "
                 holochain --build-info | ${pkgs.jq}/bin/jq

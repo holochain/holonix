@@ -141,7 +141,3 @@ jobs:
           nix flake init -t "github:holochain/holonix/${{ steps.extract_branch.outputs.branch }}#${{ matrix.template }}"
           nix develop --override-input holonix "github:holochain/holonix/${{ steps.extract_branch.outputs.branch }}" -c holochain --version
           nix develop --override-input holonix "github:holochain/holonix/${{ steps.extract_branch.outputs.branch }}" -c hn-introspect
-          
-          if [[ "${{ matrix.template }}" == "holo" ]]; then
-                nix develop --override-input holonix "github:holochain/holonix/${{ steps.extract_branch.outputs.branch }}" -c holo-dev-server --version
-          fi
