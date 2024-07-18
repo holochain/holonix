@@ -81,7 +81,7 @@ jobs:
           # nix develop --build -L --profile result-develop
 
           # See https://docs.cachix.org/pushing#id1
-          nix develop --build -L --profile result-develop "github:holochain/holonix"
+          nix develop --build -L --profile result-develop "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}"
 
           # Push both results to the cache
           for i in result-*; do
