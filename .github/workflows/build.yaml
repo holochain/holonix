@@ -120,6 +120,7 @@ jobs:
           echo "Fetching template from branch ${{ steps.extract_branch.outputs.branch }}"
           nix flake init -t "github:holochain/holonix/${{ steps.extract_branch.outputs.branch }}#${{ matrix.template }}"
           nix develop -c holochain --version
+          nix develop -c hn-introspect
 
       # - name: Setup tmate session
       # if: failure()
