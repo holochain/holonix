@@ -336,6 +336,10 @@
           path = ./templates/default;
           description = "Holonix default template";
         };
+        holo = {
+          path = ./templates/holo;
+          description = "Holonix template for Holo-enabled app development";
+        };
       };
     };
 }
