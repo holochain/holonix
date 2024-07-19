@@ -109,9 +109,9 @@ jobs:
           echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | xargs -I% nix run .#% -- --version
 
       - name: Extract branch name
+        id: extract_branch
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
 
       - name: Init from template
         if: ${{ matrix.os == 'ubuntu-latest' }}
@@ -119,7 +119,8 @@ jobs:
           cd $(mktemp -d)
           echo "Fetching template from branch ${{ steps.extract_branch.outputs.branch }}"
           nix flake init -t "github:holochain/holonix/${{ steps.extract_branch.outputs.branch }}#${{ matrix.template }}"
-          nix develop -c holochain --version
+          nix develop --override-input holonix "github:holochain/holonix/${{ steps.extract_branch.outputs.branch }}" -c holochain --version
+          nix develop --override-input holonix "github:holochain/holonix/${{ steps.extract_branch.outputs.branch }}" -c hn-introspect
 
       # - name: Setup tmate session
       # if: failure()
