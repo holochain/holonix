@@ -263,25 +263,25 @@
               if ! type "hc-scaffold" > /dev/null; then
                 echo "hc-scaffold   : not installed"
               else
-                echo "hc-scaffold   : $(hc-scaffold --version)"
+                echo "hc-scaffold   : $(hc-scaffold --version) (${builtins.substring 0 7 inputs.hc-scaffold.rev})"
               fi
 
               if ! type "hc-launch" > /dev/null; then
                 echo "hc-launch     : not installed"
               else
-                echo "hc-launch     : $(hc-launch --version)"
+                echo "hc-launch     : $(hc-launch --version) (${builtins.substring 0 7 inputs.hc-launch.rev})"
               fi
 
               if ! type "lair-keystore" > /dev/null; then
                 echo "Lair keystore : not installed"
               else
-                echo "Lair keystore : $(lair-keystore --version)"
+                echo "Lair keystore : $(lair-keystore --version) (${builtins.substring 0 7 inputs.lair-keystore.rev})"
               fi
 
               if ! type "holochain" > /dev/null; then
                 echo "Holochain     : not installed"
               else
-                echo "Holochain     : $(holochain --version)"
+                echo "Holochain     : $(holochain --version) (${builtins.substring 0 7 inputs.holochain.rev})"
 
                 printf "\nHolochain build info: "
                 holochain --build-info | ${pkgs.jq}/bin/jq
