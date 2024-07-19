@@ -75,18 +75,15 @@ jobs:
           # NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
           CACHIX_AUTH_TOKEN: "${{ secrets.CACHIX_AUTH_TOKEN }}"
         run: |
-          # Create a workspace and initialise a new default Holonix flake
-          # cd $(mktemp -d)
-          # nix flake init -t "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}"
-          # nix develop --build -L --profile result-develop
-
           # See https://docs.cachix.org/pushing#id1
-          nix develop --build -L --profile result-develop "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}"
+          nix develop --build -L --profile result-develop "github:holochain/holonix?ref=${{ steps.select_branch.outputs.branch }}"
 
           # Push both results to the cache
           for i in result-*; do
             cachix push holochain-ci $i
           done
+    outputs:
+      branch: ${{ steps.select_branch.outputs.branch }}
 
   cache-check:
     needs:
@@ -116,4 +113,4 @@ jobs:
         #  NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
         with:
           # The default shell in the Holonix flake
-          derivation: "github:holochain/holonix/${{ steps.select_branch.outputs.branch }}#devShells.${{ matrix.platform }}.default"
+          derivation: "github:holochain/holonix?ref=${{ needs.cache-update.outputs.branch }}#devShells.${{ matrix.platform }}.default"

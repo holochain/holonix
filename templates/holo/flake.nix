@@ -1,11 +1,13 @@
 {
-  description = "Flake for Holochain app development";
+  description = "Flake for Holo-enabled Holochain app development";
 
   inputs = {
-    holonix.url = "github:holochain/holonix?ref=main-0.3";
+    holonix.url = "github:holochain/holonix?ref=main";
 
     nixpkgs.follows = "holonix/nixpkgs";
     flake-parts.follows = "holonix/flake-parts";
+
+    hds-releases.url = "github:holo-host/hds-releases?ref=2024-07-16-220445";
   };
 
   outputs = inputs@{ flake-parts, ... }: flake-parts.lib.mkFlake { inherit inputs; } {
@@ -23,6 +25,7 @@
           hc-scaffold
           hn-introspect
           rust # For Rust development, with the WASM target included for zome builds
+          inputs'.hds-releases.packages.holo-dev-server-bin
         ]) ++ (with pkgs; [
           nodejs_20 # For UI development
           binaryen # For WASM optimisation

@@ -10,10 +10,6 @@ jobs:
   nix-check:
     runs-on: ubuntu-latest
 
-    permissions:
-      contents: read
-      id-token: write
-
     steps:
       - name: Check out source code
         uses: actions/checkout@v4
@@ -23,8 +19,9 @@ jobs:
         with:
           install_url: https://releases.nixos.org/nix/nix-2.23.2/install
 
-      - name: Use GitHub cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: cachix/cachix-action@v15
+        with:
+          name: holochain-ci
 
       - name: Check Nix formatting
         run: nix fmt . -- --check
@@ -69,16 +66,9 @@ jobs:
           - [ lair-keystore ]
           - [ hc-launch ]
           - [ hc-scaffold ]
-        include:
-          - os: ubuntu-latest
-            template: default
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
-
-    permissions:
-      contents: read
-      id-token: write
 
     steps:
       - name: Maximize build space
@@ -101,26 +91,53 @@ jobs:
         with:
           install_url: https://releases.nixos.org/nix/nix-2.23.2/install
 
-      - name: Use GitHub cache
-        uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: cachix/cachix-action@v15
+        with:
+          name: holochain-ci
 
       - name: Run nix app
         run: |
           echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | xargs -I% nix run .#% -- --version
 
+  template:
+    strategy:
+      matrix:
+        templates:
+          - default
+          - holo
+
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Maximize build space
+        uses: AdityaGarg8/remove-unwanted-software@v2
+        with:
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v27
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.23.2/install
+
+      - uses: cachix/cachix-action@v15
+        with:
+          name: holochain-ci
+
       - name: Extract branch name
+        id: extract_branch
         shell: bash
         run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-        id: extract_branch
 
       - name: Init from template
-        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           cd $(mktemp -d)
           echo "Fetching template from branch ${{ steps.extract_branch.outputs.branch }}"
-          nix flake init -t "github:holochain/holonix/${{ steps.extract_branch.outputs.branch }}#${{ matrix.template }}"
-          nix develop -c holochain --version
+          nix flake init -t "github:holochain/holonix?ref=${{ steps.extract_branch.outputs.branch }}#${{ matrix.template }}"
+          nix develop --override-input holonix "github:holochain/holonix?ref=${{ steps.extract_branch.outputs.branch }}" -c hn-introspect
 
-      # - name: Setup tmate session
-      # if: failure()
-      # uses: mxschmitt/action-tmate@v3
