@@ -46,7 +46,7 @@ on:
         required: false
 
 concurrency:
-  group: ${{ github.ref_name }}
+  group: ${{ github.workflow }}-${{ inputs.branch }}
 
 jobs:
   update-holochain-version:
