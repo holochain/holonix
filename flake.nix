@@ -260,37 +260,37 @@
             hn-introspect = pkgs.writeShellScriptBin "hn-introspect" ''
               #!/usr/bin/env bash
 
-              if ! type "hc-scaffold" > /dev/null; then
-                echo "hc-scaffold   : not installed"
+              if command -v "hc-scaffold" > /dev/null; then
+                echo "hc-scaffold     : $(hc-scaffold --version) (${builtins.substring 0 7 inputs.hc-scaffold.rev})"
               else
-                echo "hc-scaffold   : $(hc-scaffold --version) (${builtins.substring 0 7 inputs.hc-scaffold.rev})"
+                echo "hc-scaffold     : not installed"
               fi
 
-              if ! type "hc-launch" > /dev/null; then
-                echo "hc-launch     : not installed"
+              if command -v "hc-launch" > /dev/null; then
+                echo "hc-launch       : $(hc-launch --version) (${builtins.substring 0 7 inputs.hc-launch.rev})"
               else
-                echo "hc-launch     : $(hc-launch --version) (${builtins.substring 0 7 inputs.hc-launch.rev})"
+                echo "hc-launch       : not installed"
               fi
 
-              if ! type "lair-keystore" > /dev/null; then
-                echo "Lair keystore : not installed"
+              if command -v "lair-keystore" > /dev/null; then
+                echo "Lair keystore   : $(lair-keystore --version) (${builtins.substring 0 7 inputs.lair-keystore.rev})"
               else
-                echo "Lair keystore : $(lair-keystore --version) (${builtins.substring 0 7 inputs.lair-keystore.rev})"
+                echo "Lair keystore   : not installed"
               fi
 
-              if ! type "holo-dev-server" > /dev/null; then
-                echo "Holo dev server : not installed"
-              else
+              if command -v "holo-dev-server" > /dev/null; then
                 echo "Holo dev server : $(holo-dev-server --version)"
+              else
+                echo "Holo dev server : not installed"
               fi
 
-              if ! type "holochain" > /dev/null; then
-                echo "Holochain     : not installed"
-              else
-                echo "Holochain     : $(holochain --version) (${builtins.substring 0 7 inputs.holochain.rev})"
+              if command -v "holochain" > /dev/null; then
+                echo "Holochain       : $(holochain --version) (${builtins.substring 0 7 inputs.holochain.rev})"
 
                 printf "\nHolochain build info: "
                 holochain --build-info | ${pkgs.jq}/bin/jq
+              else
+                echo "Holochain       : not installed"
               fi
             '';
           in
