@@ -1,6 +1,16 @@
 name: build
 
-on: push
+on:
+  push:
+    branches:
+      - main
+      - main-0.3
+      - main-0.2
+  pull_request:
+    branches:
+      - main
+      - main-0.3
+      - main-0.2
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
