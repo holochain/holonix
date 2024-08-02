@@ -74,8 +74,12 @@
             # instruct crane to use Rust toolchain specified above
             craneLib = (crane.mkLib pkgs).overrideToolchain rust;
 
-            # define how to build Holochain binaries
-            holochain =
+            # Define a function to build Holochain binaries. This allows consumers to customize the
+            # build by overriding function arguments.
+            holochainBuilder =
+              # Specify features to be built into Holochain. Can be overridden by the consumer.
+              # See the custom feature template for an example.
+              { cargoExtraArgs ? "" }:
               let
                 # Crane filters out all non-cargo related files. Define include filter with files needed for build.
                 nonCargoBuildFiles = path: _type: builtins.match ".*(json|sql|wasm.gz)$" path != null;
@@ -99,9 +103,15 @@
                   pkgs.go
                   pkgs.perl
                 ];
+                # Build Holochain, CLI and local services (bootstrap + signal server) binaries.
+                # Pass extra arguments like feature flags to build command.
+                cargoExtraArgs = "--bin holochain --bin hc --bin hc-run-local-services " + cargoExtraArgs;
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
               };
+
+            # Default Holochain build, made overridable to allow consumers to extend cargo build arguments.
+            holochain = pkgs.lib.makeOverridable holochainBuilder { };
 
             # define how to build Lair keystore binary
             lair-keystore =
