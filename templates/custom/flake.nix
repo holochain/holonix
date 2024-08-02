@@ -12,8 +12,8 @@
     systems = builtins.attrNames inputs.holonix.devShells;
     perSystem = { inputs', pkgs, ... }:
       let
-        # Disable default features and enable CHC (chain head coordination) feature for holochain package.
-        cargoExtraArgs = "--no-default-features --features chc";
+        # Enable CHC (chain head coordination) feature for Holochain package.
+        cargoExtraArgs = "--features chc";
         # Override arguments passed in to Holochain build with above feature arguments.
         customHolochain = inputs'.holonix.packages.holochain.override { inherit cargoExtraArgs; };
       in
