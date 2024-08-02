@@ -352,6 +352,10 @@
           path = ./templates/default;
           description = "Holonix default template";
         };
+        custom = {
+          path = ./templates/custom;
+          description = "Holonix template for custom Holochain build";
+        };
         holo = {
           path = ./templates/holo;
           description = "Holonix template for Holo-enabled app development";
