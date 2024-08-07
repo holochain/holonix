@@ -23,7 +23,7 @@
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain/holochain-0.4.0-dev.15";
+      url = "github:holochain/holochain/holochain-0.4.0-dev.16";
       flake = false;
     };
 
@@ -105,7 +105,8 @@
                 ];
                 # Build Holochain, CLI and local services (bootstrap + signal server) binaries.
                 # Pass extra arguments like feature flags to build command.
-                cargoExtraArgs = "--bin holochain --bin hc --bin hc-sandbox --bin hcterm --bin hc-run-local-services " + cargoExtraArgs;
+                cargoExtraArgs = "--bin hcterm ";
+                # cargoExtraArgs = "--bin holochain --bin hc --bin hc-sandbox --bin hcterm --bin hc-run-local-services " + cargoExtraArgs;
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
               };
