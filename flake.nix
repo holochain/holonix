@@ -105,8 +105,7 @@
                 ];
                 # Build Holochain, CLI and local services (bootstrap + signal server) binaries.
                 # Pass extra arguments like feature flags to build command.
-                cargoExtraArgs = "--bin hcterm ";
-                # cargoExtraArgs = "--bin holochain --bin hc --bin hc-sandbox --bin hcterm --bin hc-run-local-services " + cargoExtraArgs;
+                cargoExtraArgs = "--bin holochain --bin hc --bin hc-sandbox --bin hcterm --bin hc-run-local-services " + cargoExtraArgs;
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
               };
