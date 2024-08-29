@@ -20,7 +20,7 @@
           holochain
           lair-keystore
           hc-launch
-          hc-scaffold
+          # hc-scaffold
           hn-introspect
           rust # For Rust development, with the WASM target included for zome builds
         ]) ++ (with pkgs; [

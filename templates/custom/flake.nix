@@ -29,7 +29,7 @@
           ]
           ++ (with inputs'.holonix.packages; [
             lair-keystore
-            hc-launch
+            # hc-launch
             hc-scaffold
             hn-introspect
             rust # For Rust development, with the WASM target included for zome builds

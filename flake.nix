@@ -335,7 +335,7 @@
                 packages = [
                   holochain
                   lair-keystore
-                  hc-launch
+                  # hc-launch
                   hc-scaffold
                   hn-introspect
                   rust
