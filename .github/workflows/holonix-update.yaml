@@ -1,0 +1,88 @@
+name: "Update Holonix versions"
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "The Holonix version to update Holochain on"
+        required: true
+        default: "main"
+        type: choice
+        options:
+          - main
+          - main-0.3
+          - main-0.2
+      update-holochain:
+        description: "Should Holochain be updated?"
+        type: boolean
+        default: false
+        required: true
+      update-scaffolding:
+        description: "Should Scaffolding be updated?"
+        type: boolean
+        default: false
+        required: true
+      update-launcher:
+        description: "Should Launcher be updated?"
+        type: boolean
+        default: false
+        required: true
+  workflow_call:
+    inputs:
+      branch:
+        type: string
+        required: true
+      update-holochain:
+        type: boolean
+        default: false
+        required: false
+      update-scaffolding:
+        type: boolean
+        default: false
+        required: false
+      update-launcher:
+        type: boolean
+        default: false
+        required: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ inputs.branch }}
+
+jobs:
+  update-holochain-version:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+      - uses: cachix/install-nix-action@v27
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.23.2/install
+      - name: Run the Holochain bump script
+        if: ${{ inputs.update-holochain }}
+        run: |
+          ./scripts/bump-holochain.sh
+      - name: Run the Scaffolding bump script
+        if: ${{ inputs.update-scaffolding }}
+        run: |
+          nix flake update hc-scaffold
+      - name: Run the Launcher bump script
+        if: ${{ inputs.update-launcher }}
+        run: |
+          nix flake update hc-launch
+      - name: Create pull request
+        id: cpr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          git-token: ${{ secrets.HRA_GITHUB_TOKEN }}
+          committer: "Holochain Release Automation <hra+gh@holochain.org>"
+          title: "Update Holonix versions on ${{ inputs.branch }}"
+          branch: holochain-update
+          branch-suffix: short-commit-hash
+          draft: false
+          delete-branch: true
+      - name: Enable auto-merge
+        if: steps.cpr.outputs.pull-request-operation == 'created' && github.event_name != 'workflow_call'
+        env:
+          GH_TOKEN: ${{ secrets.HRA_GITHUB_TOKEN }}
+        run: gh pr merge --squash --auto "${{ steps.cpr.outputs.pull-request-number }}"

@@ -56,7 +56,41 @@
         "type": "github"
       }
     },
-    "holochain-src": {
+    "hc-launch": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1684183666,
+        "narHash": "sha256-rOE/W/BBYyZKOyypKb8X9Vpc4ty1TNRoI/fV5+01JPw=",
+        "owner": "holochain",
+        "repo": "hc-launch",
+        "rev": "75ecdd0aa191ed830cc209a984a6030e656042ff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "holochain",
+        "ref": "holochain-0.2",
+        "repo": "hc-launch",
+        "type": "github"
+      }
+    },
+    "hc-scaffold": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1718795177,
+        "narHash": "sha256-TES8dHfS/Y5j5UwcfAoDGnqkXgITQlmIsPWa/SZimio=",
+        "owner": "holochain",
+        "repo": "scaffolding",
+        "rev": "c6acd6663c88fcc824f0682d881071e5d3a7ebd2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "holochain",
+        "ref": "holochain-0.2",
+        "repo": "scaffolding",
+        "type": "github"
+      }
+    },
+    "holochain": {
       "flake": false,
       "locked": {
         "lastModified": 1714468636,
@@ -68,12 +102,12 @@
       },
       "original": {
         "owner": "holochain",
-        "ref": "main-0.2",
+        "ref": "holochain-0.2.8",
         "repo": "holochain",
         "type": "github"
       }
     },
-    "lair-keystore-src": {
+    "lair-keystore": {
       "flake": false,
       "locked": {
         "lastModified": 1706550351,
@@ -92,16 +126,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1716137900,
-        "narHash": "sha256-sowPU+tLQv8GlqtVtsXioTKeaQvlMz/pefcdwg8MvfM=",
+        "lastModified": 1717179513,
+        "narHash": "sha256-vboIEwIQojofItm2xGCdZCzW96U85l9nDW3ifMuAIdM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "6c0b7a92c30122196a761b440ac0d46d3d9954f1",
+        "rev": "63dacb46bf939521bdc93981b4cbb7ecb58427a0",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-unstable",
+        "ref": "24.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -122,8 +156,10 @@
       "inputs": {
         "crane": "crane",
         "flake-parts": "flake-parts",
-        "holochain-src": "holochain-src",
-        "lair-keystore-src": "lair-keystore-src",
+        "hc-launch": "hc-launch",
+        "hc-scaffold": "hc-scaffold",
+        "holochain": "holochain",
+        "lair-keystore": "lair-keystore",
         "nixpkgs": "nixpkgs",
         "rust-overlay": "rust-overlay"
       }

@@ -1,0 +1,153 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+      - main-0.3
+      - main-0.2
+  pull_request:
+    branches:
+      - main
+      - main-0.3
+      - main-0.2
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  nix-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v27
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.23.2/install
+
+      - uses: cachix/cachix-action@v15
+        with:
+          name: holochain-ci
+
+      - name: Check Nix formatting
+        run: nix fmt . -- --check
+
+      - name: Check Nix flake
+        run: nix flake check --all-systems
+
+  script-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azohra/shell-linter@latest
+
+      - name: Test bump-holochain.sh
+        run: |
+          MINOR_VERSION=$(./scripts/bump-holochain.sh main-0.1 false | tail -n 1)
+          if [[ "$MINOR_VERSION" != "holochain-0.1.8" ]]; then
+              echo "bump.sh failed to find 0.1.8: [${MINOR_VERSION}]"
+              exit 1
+          fi
+
+          RC_VERSION=$(./scripts/bump-holochain.sh main-0.1-rc false | tail -n 1)
+          if [[ "$RC_VERSION" != "holochain-0.1.7-rc.0" ]]; then
+              echo "bump.sh failed to find 0.1.7-rc.0: [${RC_VERSION}]"
+              exit 1
+          fi
+
+          # Print tag that would be used to update flake on main branch
+          CURRENT_VERSION=$(./scripts/bump-holochain.sh main false | tail -n 1)
+          if [[ "$CURRENT_VERSION" != holochain-0.4.*dev* ]]; then
+              echo "bump.sh failed to find current version: [${CURRENT_VERSION}]"
+              exit 1
+          fi
+
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, macos-13]
+        packages:
+          - [holochain, hc, hc-run-local-services, hc-sandbox, hcterm]
+          - [lair-keystore]
+          - [hc-launch]
+          - [hc-scaffold]
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Maximize build space
+        if: runner.os == 'Linux'
+        uses: AdityaGarg8/remove-unwanted-software@v2
+        with:
+          remove-dotnet: "true"
+          remove-android: "true"
+          remove-codeql: "true"
+          remove-docker-images: "true"
+
+      - name: Print platform information
+        run: uname -ms
+
+      - name: Check out source code
+        uses: actions/checkout@v4
+
+      - name: Install nix
+        uses: cachix/install-nix-action@v27
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.23.2/install
+
+      - uses: cachix/cachix-action@v15
+        with:
+          name: holochain-ci
+
+      - name: Run nix app
+        run: |
+          echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | xargs -I% nix run .#% -- --version
+
+  template:
+    strategy:
+      matrix:
+        templates:
+          - default
+          - custom
+          - holo
+
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Maximize build space
+        uses: AdityaGarg8/remove-unwanted-software@v2
+        with:
+          remove-dotnet: "true"
+          remove-android: "true"
+          remove-codeql: "true"
+          remove-docker-images: "true"
+
+      - uses: actions/checkout@v4
+
+      - uses: cachix/install-nix-action@v27
+        with:
+          install_url: https://releases.nixos.org/nix/nix-2.23.2/install
+
+      - uses: cachix/cachix-action@v15
+        with:
+          name: holochain-ci
+
+      - name: Extract branch name
+        id: extract_branch
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+
+      - name: Init from template
+        run: |
+          cd $(mktemp -d)
+          echo "Fetching template from branch ${{ steps.extract_branch.outputs.branch }}"
+          nix flake init -t "github:holochain/holonix?ref=${{ steps.extract_branch.outputs.branch }}#${{ matrix.template }}"
+          nix develop --override-input holonix "github:holochain/holonix?ref=${{ steps.extract_branch.outputs.branch }}" -c hn-introspect
