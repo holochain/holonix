@@ -105,7 +105,7 @@
                 ];
                 # Build Holochain, CLI and local services (bootstrap + signal server) binaries.
                 # Pass extra arguments like feature flags to build command.
-                cargoExtraArgs = "--bin holochain --bin hc --bin hc-sandbox --bin hcterm --bin hc-run-local-services " + cargoExtraArgs;
+                cargoExtraArgs = "--bin holochain --bin hc --bin hc-sandbox --bin hc-run-local-services " + cargoExtraArgs;
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
               };
@@ -325,7 +325,6 @@
               hc.program = "${holochain}/bin/hc";
               hc-run-local-services.program = "${holochain}/bin/hc-run-local-services";
               hc-sandbox.program = "${holochain}/bin/hc-sandbox";
-              hcterm.program = "${holochain}/bin/hcterm";
               lair-keystore.program = "${lair-keystore}/bin/lair-keystore";
               hc-launch.program = "${hc-launch}/bin/hc-launch";
               hc-scaffold.program = "${hc-scaffold}/bin/hc-scaffold";
