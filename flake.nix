@@ -12,7 +12,6 @@
     # lib to build a nix package from a rust crate
     crane = {
       url = "github:ipetkov/crane";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Rust toolchain
@@ -362,4 +361,9 @@
         };
       };
     };
+
+  nixConfig = {
+    substituters = [ "https://cache.nixos.org" "https://holochain-ci.cachix.org" ];
+    trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" "holochain-ci.cachix.org-1:5IUSkZc0aoRS53rfkvH9Kid40NpyjwCMCzwRTXy+QN8=" ];
+  };
 }
