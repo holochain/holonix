@@ -12,7 +12,6 @@
     # lib to build a nix package from a rust crate
     crane = {
       url = "github:ipetkov/crane";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Rust toolchain
@@ -361,5 +360,10 @@
           description = "Holonix template for Holo-enabled app development";
         };
       };
+    };
+
+    nixConfig = {
+      substituters = [ "https://holochain-ci.cachix.org" ];
+      trusted-public-keys = [ "holochain-ci.cachix.org-1:5IUSkZc0aoRS53rfkvH9Kid40NpyjwCMCzwRTXy+QN8=" ];
     };
 }
