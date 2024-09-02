@@ -145,5 +145,5 @@ jobs:
         run: |
           cd $(mktemp -d)
           echo "Fetching template from branch ${{ steps.extract_branch.outputs.branch }}"
-          nix flake init -t "github:holochain/holonix?ref=${{ steps.extract_branch.outputs.branch }}#${{ matrix.template }}"
+          nix flake init --accept-flake-config -t "github:holochain/holonix?ref=${{ steps.extract_branch.outputs.branch }}#${{ matrix.template }}"
           nix develop --override-input holonix "github:holochain/holonix?ref=${{ steps.extract_branch.outputs.branch }}" -c hn-introspect
