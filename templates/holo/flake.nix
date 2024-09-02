@@ -31,6 +31,10 @@
           binaryen # For WASM optimisation
           # Add any other packages you need here
         ]);
+
+        shellHook = ''
+          export PS1='\[\033[1;34m\][holonix:\w]\$\[\033[0m\] '
+        '';
       };
     };
   };

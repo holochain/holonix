@@ -51,7 +51,7 @@
     flake-parts.lib.mkFlake { inherit inputs; }
       {
         # systems that his flake can be used on
-        systems = [ "aarch64-darwin" "x86_64-linux" "x86_64-darwin" ];
+        systems = [ "aarch64-darwin" "x86_64-linux" "x86_64-darwin" "aarch64-linux" ];
 
         # for each system...
         perSystem = { config, pkgs, system, ... }:
@@ -74,8 +74,12 @@
             # instruct crane to use Rust toolchain specified above
             craneLib = (crane.mkLib pkgs).overrideToolchain rust;
 
-            # define how to build Holochain binaries
-            holochain =
+            # Define a function to build Holochain binaries. This allows consumers to customize the
+            # build by overriding function arguments.
+            holochainBuilder =
+              # Specify features to be built into Holochain. Can be overridden by the consumer.
+              # See the custom feature template for an example.
+              { cargoExtraArgs ? "" }:
               let
                 # Crane filters out all non-cargo related files. Define include filter with files needed for build.
                 nonCargoBuildFiles = path: _type: builtins.match ".*(json|sql|wasm.gz)$" path != null;
@@ -99,9 +103,15 @@
                   pkgs.go
                   pkgs.perl
                 ];
+                # Build Holochain, CLI and local services (bootstrap + signal server) binaries.
+                # Pass extra arguments like feature flags to build command.
+                cargoExtraArgs = "--bin holochain --bin hc --bin hc-sandbox --bin hcterm --bin hc-run-local-services " + cargoExtraArgs;
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
               };
+
+            # Default Holochain build, made overridable to allow consumers to extend cargo build arguments.
+            holochain = pkgs.lib.makeOverridable holochainBuilder { };
 
             # define how to build Lair keystore binary
             lair-keystore =
@@ -260,37 +270,37 @@
             hn-introspect = pkgs.writeShellScriptBin "hn-introspect" ''
               #!/usr/bin/env bash
 
-              if ! type "hc-scaffold" > /dev/null; then
-                echo "hc-scaffold   : not installed"
+              if command -v "hc-scaffold" > /dev/null; then
+                echo "hc-scaffold     : $(hc-scaffold --version) (${builtins.substring 0 7 inputs.hc-scaffold.rev})"
               else
-                echo "hc-scaffold   : $(hc-scaffold --version) (${builtins.substring 0 7 inputs.hc-scaffold.rev})"
+                echo "hc-scaffold     : not installed"
               fi
 
-              if ! type "hc-launch" > /dev/null; then
-                echo "hc-launch     : not installed"
+              if command -v "hc-launch" > /dev/null; then
+                echo "hc-launch       : $(hc-launch --version) (${builtins.substring 0 7 inputs.hc-launch.rev})"
               else
-                echo "hc-launch     : $(hc-launch --version) (${builtins.substring 0 7 inputs.hc-launch.rev})"
+                echo "hc-launch       : not installed"
               fi
 
-              if ! type "lair-keystore" > /dev/null; then
-                echo "Lair keystore : not installed"
+              if command -v "lair-keystore" > /dev/null; then
+                echo "Lair keystore   : $(lair-keystore --version) (${builtins.substring 0 7 inputs.lair-keystore.rev})"
               else
-                echo "Lair keystore : $(lair-keystore --version) (${builtins.substring 0 7 inputs.lair-keystore.rev})"
+                echo "Lair keystore   : not installed"
               fi
 
-              if ! type "holo-dev-server" > /dev/null; then
-                echo "Holo dev server : not installed"
-              else
+              if command -v "holo-dev-server" > /dev/null; then
                 echo "Holo dev server : $(holo-dev-server --version)"
+              else
+                echo "Holo dev server : not installed"
               fi
 
-              if ! type "holochain" > /dev/null; then
-                echo "Holochain     : not installed"
-              else
-                echo "Holochain     : $(holochain --version) (${builtins.substring 0 7 inputs.holochain.rev})"
+              if command -v "holochain" > /dev/null; then
+                echo "Holochain       : $(holochain --version) (${builtins.substring 0 7 inputs.holochain.rev})"
 
                 printf "\nHolochain build info: "
                 holochain --build-info | ${pkgs.jq}/bin/jq
+              else
+                echo "Holochain       : not installed"
               fi
             '';
           in
@@ -341,6 +351,10 @@
         default = {
           path = ./templates/default;
           description = "Holonix default template";
+        };
+        custom = {
+          path = ./templates/custom;
+          description = "Holonix template for custom Holochain build";
         };
         holo = {
           path = ./templates/holo;
