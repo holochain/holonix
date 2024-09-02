@@ -46,7 +46,7 @@ on:
         required: false
 
 concurrency:
-  group: ${{ github.ref_name }}
+  group: ${{ github.workflow }}-${{ inputs.branch }}
 
 jobs:
   update-holochain-version:
@@ -82,7 +82,7 @@ jobs:
           draft: false
           delete-branch: true
       - name: Enable auto-merge
-        if: steps.cpr.outputs.pull-request-operation == 'created'
+        if: steps.cpr.outputs.pull-request-operation == 'created' && github.event_name != 'workflow_call'
         env:
           GH_TOKEN: ${{ secrets.HRA_GITHUB_TOKEN }}
         run: gh pr merge --squash --auto "${{ steps.cpr.outputs.pull-request-number }}"

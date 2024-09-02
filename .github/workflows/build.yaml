@@ -1,6 +1,16 @@
 name: build
 
-on: push
+on:
+  push:
+    branches:
+      - main
+      - main-0.3
+      - main-0.2
+  pull_request:
+    branches:
+      - main
+      - main-0.3
+      - main-0.2
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
@@ -43,13 +53,13 @@ jobs:
               echo "bump.sh failed to find 0.1.8: [${MINOR_VERSION}]"
               exit 1
           fi
-          
+
           RC_VERSION=$(./scripts/bump-holochain.sh main-0.1-rc false | tail -n 1)
           if [[ "$RC_VERSION" != "holochain-0.1.7-rc.0" ]]; then
               echo "bump.sh failed to find 0.1.7-rc.0: [${RC_VERSION}]"
               exit 1
           fi
-          
+
           # Print tag that would be used to update flake on main branch
           CURRENT_VERSION=$(./scripts/bump-holochain.sh main false | tail -n 1)
           if [[ "$CURRENT_VERSION" != holochain-0.4.*dev* ]]; then
@@ -60,12 +70,12 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, macos-13 ]
+        os: [ubuntu-latest, macos-latest, macos-13]
         packages:
-          - [ holochain, hc, hc-run-local-services, hc-sandbox, hcterm ]
-          - [ lair-keystore ]
-          - [ hc-launch ]
-          - [ hc-scaffold ]
+          - [holochain, hc, hc-run-local-services, hc-sandbox]
+          - [lair-keystore]
+          - [hc-launch]
+          - [hc-scaffold]
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -75,10 +85,10 @@ jobs:
         if: runner.os == 'Linux'
         uses: AdityaGarg8/remove-unwanted-software@v2
         with:
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
+          remove-dotnet: "true"
+          remove-android: "true"
+          remove-codeql: "true"
+          remove-docker-images: "true"
 
       - name: Print platform information
         run: uname -ms
@@ -104,6 +114,7 @@ jobs:
       matrix:
         templates:
           - default
+          - custom
           - holo
 
       fail-fast: false
@@ -114,10 +125,10 @@ jobs:
       - name: Maximize build space
         uses: AdityaGarg8/remove-unwanted-software@v2
         with:
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
+          remove-dotnet: "true"
+          remove-android: "true"
+          remove-codeql: "true"
+          remove-docker-images: "true"
 
       - uses: actions/checkout@v4
 
@@ -140,4 +151,3 @@ jobs:
           echo "Fetching template from branch ${{ steps.extract_branch.outputs.branch }}"
           nix flake init -t "github:holochain/holonix?ref=${{ steps.extract_branch.outputs.branch }}#${{ matrix.template }}"
           nix develop --override-input holonix "github:holochain/holonix?ref=${{ steps.extract_branch.outputs.branch }}" -c hn-introspect
-
