@@ -57,7 +57,7 @@ jobs:
           ref: ${{ inputs.branch }}
       - uses: cachix/install-nix-action@v27
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.23.2/install
+          install_url: https://releases.nixos.org/nix/nix-2.24.4/install
       - name: Run the Holochain bump script
         if: ${{ inputs.update-holochain }}
         run: |
