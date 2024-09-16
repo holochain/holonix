@@ -71,6 +71,7 @@ jobs:
 
   build:
     strategy:
+      max-parallel: 2
       matrix:
         os: [ubuntu-latest, macos-latest, macos-13]
         packages:
@@ -118,6 +119,7 @@ jobs:
 
   template:
     strategy:
+      max-parallel: 2
       matrix:
         templates:
           - default
