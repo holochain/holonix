@@ -72,7 +72,6 @@ jobs:
   build:
     needs: [nix-check, script-test]
     strategy:
-      max-parallel: 2
       matrix:
         os: [ubuntu-latest, macos-latest, macos-13]
         packages:
@@ -106,8 +105,6 @@ jobs:
           install_url: https://releases.nixos.org/nix/nix-2.24.4/install
           # https://nixos.wiki/wiki/Maintainers:Fastly#BETA:_Try_cache_v2.21
           extra_nix_config: |
-            substituters = https://aseipp-nix-cache.freetls.fastly.net https://cache.nixos.org
-            trusted-public-keys = cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
             accept-flake-config = true
 
       - uses: cachix/cachix-action@v15
@@ -121,7 +118,6 @@ jobs:
   template:
     needs: build
     strategy:
-      max-parallel: 2
       matrix:
         templates:
           - default
