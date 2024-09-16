@@ -111,7 +111,7 @@ jobs:
 
       - name: Run nix app
         run: |
-          echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | while read app; do nix run --fallback ".#$app" -- --version; done
+          echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | while read app; do nix run -L --fallback ".#$app" -- --version; done
 
   template:
     strategy:
