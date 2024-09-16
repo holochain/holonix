@@ -70,11 +70,12 @@ jobs:
           fi
 
   build:
+    needs: [nix-check, script-test]
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, macos-13]
         packages:
-          - [holochain, hc, hc-run-local-services, hc-sandbox, hcterm]
+          - [holochain,hc,hc-run-local-services,hc-sandbox,hcterm]
           - [lair-keystore]
           - [hc-launch]
           - [hc-scaffold]
@@ -101,7 +102,7 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v27
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.4/install
+          install_url: https://releases.nixos.org/nix/nix-2.24.6/install
           extra_nix_config: |
             accept-flake-config = true
 
@@ -111,9 +112,10 @@ jobs:
 
       - name: Run nix app
         run: |
-          echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | xargs -I% nix run .#% -- --version
+          echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | while read app; do nix run ".#$app" -- --version; done
 
   template:
+    needs: build
     strategy:
       matrix:
         templates:
