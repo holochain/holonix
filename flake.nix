@@ -4,7 +4,7 @@
 
   # specify all input dependencies needed to create the outputs of the flake
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=24.05";
 
     # utility to iterate over multiple target platforms
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -142,7 +142,7 @@
                   pkgs.libiconv
                   pkgs.darwin.apple_sdk.frameworks.Security
                   # additional packages needed for darwin platforms on x86_64
-                  pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
+#                  pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
                 ]);
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
