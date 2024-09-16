@@ -70,6 +70,7 @@ jobs:
           fi
 
   build:
+    needs: [nix-check, script-test]
     strategy:
       max-parallel: 2
       matrix:
