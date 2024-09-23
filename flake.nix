@@ -240,24 +240,16 @@
 
             hc-scaffold =
               let
-                # Crane filters out all non-cargo related files. Define include filter with files needed for build
-                excludedDirs = [
-                  ".git"
-                  "target"
-                  "result"
-                ];
-                scaffoldFilter = path: type:
-                  let
-                    baseName = baseNameOf path;
-                    isExcluded = builtins.elem baseName excludedDirs;
-                  in
-                    !(type == "directory" && isExcluded);
+                # Crane filters out all non-cargo related files. Define include filter with files needed for build.
+                nonCargoBuildFiles = path: _type: builtins.match ".*(gitignore|md|hbs)$" path != null;
+                includeFilesFilter = path: type:
+                  (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
               in
               craneLib.buildPackage {
                 pname = "hc-scaffold";
                 src = pkgs.lib.cleanSourceWith {
                   src = inputs.hc-scaffold;
-                  filter = scaffoldFilter;
+                  filter = includeFilesFilter;
                 };
 
                 doCheck = false;
