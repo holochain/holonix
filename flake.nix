@@ -240,16 +240,34 @@
 
             hc-scaffold =
               let
-                # Crane filters out all non-cargo related files. Define include filter with files needed for build.
-                nonCargoBuildFiles = path: _type: builtins.match ".*(gitignore|md)$" path != null;
-                includeFilesFilter = path: type:
-                  (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
+                pkgs = import nixpkgs {
+                  inherit system;
+                  overlays = [ (import rust-overlay) ];
+                };
+                rustToolchain = pkgs.rust-bin.stable."1.79.0".minimal;
+                craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
+                crateInfo = craneLib.crateNameFromCargoToml { cargoToml = ./Cargo.toml; };
+
+                # source filtering to ensure builds using include_str! or include_bytes! succeed
+                # https://crane.dev/faq/building-with-non-rust-includes.html
+                excludedDirs = [
+                  ".git"
+                  "target"
+                  "result"
+                  # Add more directories to exclude here
+                ];
+                scaffoldFilter = path: type:
+                  let
+                    baseName = baseNameOf path;
+                    isExcluded = builtins.elem baseName excludedDirs;
+                  in
+                    !(type == "directory" && isExcluded);
               in
               craneLib.buildPackage {
                 pname = "hc-scaffold";
                 src = pkgs.lib.cleanSourceWith {
                   src = inputs.hc-scaffold;
-                  filter = includeFilesFilter;
+                  filter = scaffoldFilter;
                 };
 
                 doCheck = false;
