@@ -240,17 +240,11 @@
 
             hc-scaffold =
               let
-                pkgs = import nixpkgs {
-                  inherit system;
-                  overlays = [ (import rust-overlay) ];
-                };
-
                 # Crane filters out all non-cargo related files. Define include filter with files needed for build
                 excludedDirs = [
                   ".git"
                   "target"
                   "result"
-                  # Add more directories to exclude here
                 ];
                 scaffoldFilter = path: type:
                   let
