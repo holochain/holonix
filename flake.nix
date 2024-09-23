@@ -248,8 +248,7 @@
                 craneLib = (crane.mkLib pkgs).overrideToolchain rustToolchain;
                 crateInfo = craneLib.crateNameFromCargoToml { cargoToml = ./Cargo.toml; };
 
-                # source filtering to ensure builds using include_str! or include_bytes! succeed
-                # https://crane.dev/faq/building-with-non-rust-includes.html
+                # Crane filters out all non-cargo related files. Define include filter with files needed for build
                 excludedDirs = [
                   ".git"
                   "target"
