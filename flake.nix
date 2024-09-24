@@ -359,6 +359,10 @@
           path = ./templates/holo;
           description = "Holonix template for Holo-enabled app development";
         };
+        rust-stable = {
+            path = "./templates/rust-stable";
+            description = "Flake for Holochain app development with Rust stable";
+        };
       };
     };
 
