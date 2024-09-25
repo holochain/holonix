@@ -28,7 +28,7 @@
 
     # Lair keystore sources
     lair-keystore = {
-      url = "github:holochain/lair/lair_keystore-v0.5.1";
+      url = "github:holochain/lair/lair_keystore-v0.5.2";
       flake = false;
     };
 
