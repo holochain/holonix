@@ -25,6 +25,7 @@
 
           # Define a Rust setup that works for your project. This should be a functional default
           # for a scaffolded project but can be adjusted.
+          # Options: https://github.com/oxalica/rust-overlay?tab=readme-ov-file#cheat-sheet-common-usage-of-rust-bin
           rust = (pkgs.rust-bin.stable.latest.minimal.override
             {
               extensions = [ "clippy" "rustfmt" ];
