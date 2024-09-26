@@ -122,6 +122,7 @@ jobs:
           - default
           - custom
           - holo
+          - rust-stable
 
       fail-fast: false
 
