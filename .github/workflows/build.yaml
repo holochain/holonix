@@ -82,19 +82,19 @@ jobs:
 
       - name: Test bump-lair.sh
         run: |
-          VERSION_CHECK=$(./scripts/bump-lair.sh "" false | tail -n 2 | head -n 1)
+          VERSION_CHECK=$(./scripts/bump-lair.sh false | tail -n 2 | head -n 1)
           if ! echo "$VERSION_CHECK" | grep -q "Holochain depends on Lair version"; then
               echo "bump-lair.sh failed to find version: [$VERSION_CHECK]"
               exit 1
           fi
           
-          NO_CHANGE_CHECK=$(./scripts/bump-lair.sh "" false | tail -n 1)
+          NO_CHANGE_CHECK=$(./scripts/bump-lair.sh false | tail -n 1)
           if ! echo "$NO_CHANGE_CHECK" | grep -q "Lair version is already up to date"; then
               echo "bump-lair.sh should not be making a change: [$NO_CHANGE_CHECK]"
               exit 1
           fi
           
-          FORCE_VERSION_CHECK=$(./scripts/bump-lair.sh "0.5.0" false | tail -n 1)
+          FORCE_VERSION_CHECK=$(./scripts/bump-lair.sh false "0.5.0" | tail -n 1)
           if ! echo "$FORCE_VERSION_CHECK" | grep -q "lair_keystore-v0.5.0"; then
               echo "bump-lair.sh should be planning a bump to v0.5.0: [$FORCE_VERSION_CHECK]"
               exit 1

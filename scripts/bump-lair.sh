@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Bump script to update the Lair version in flake.nix
-# Usage: ./scripts/bump-lair.sh [force-version] [apply]
+# Usage: ./scripts/bump-lair.sh [apply] [force-version]
 #
 # The force-version and apply arguments are only for testing. The force-version can be set to any value and the apply
 # argument can be set to false to prevent modifications to the flake.nix file.
@@ -23,7 +23,7 @@ if [ ! -f "./flake.nix" ]; then
     exit 1
 fi
 
-lair_version=${1:-$(nix shell nixpkgs#jq --command nix develop --command holochain --build-info | jq -r ".lair_keystore_version_req")}
+lair_version=${2:-$(nix shell nixpkgs#jq --command nix develop --command holochain --build-info | jq -r ".lair_keystore_version_req")}
 
 echo "Holochain depends on Lair version: $lair_version"
 
@@ -32,7 +32,7 @@ if grep -q "github:holochain/lair/lair_keystore-v${lair_version}" ./flake.nix; t
     exit 0
 fi
 
-APPLY=${2:-true}
+APPLY=${1:-true}
 if [ "$APPLY" == "true" ]; then
     sed --in-place "s#url = \"github:holochain/lair/.*\";#url = \"github:holochain/lair/lair_keystore-v${lair_version}\";#" ./flake.nix
     nix flake update lair_keystore
