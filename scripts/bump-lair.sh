@@ -23,7 +23,7 @@ if [ ! -f "./flake.nix" ]; then
     exit 1
 fi
 
-lair_version=${2:-$(nix shell nixpkgs#jq --command nix develop --command holochain --build-info | jq -r ".lair_keystore_version_req")}
+lair_version=${2:-$(nix shell nixpkgs#jq --command nix run .#holochain -- --build-info | jq -r ".lair_keystore_version_req")}
 
 echo "Holochain depends on Lair version: $lair_version"
 
