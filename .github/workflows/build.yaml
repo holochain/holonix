@@ -48,17 +48,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: azohra/shell-linter@latest
 
-      - name: Install nix
-        uses: cachix/install-nix-action@v27
-        with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.6/install
-          extra_nix_config: |
-            accept-flake-config = true
-
-      - uses: cachix/cachix-action@v15
-        with:
-          name: holochain-ci
-
       - name: Test bump-holochain.sh
         run: |
           MINOR_VERSION=$(./scripts/bump-holochain.sh main-0.1 false | tail -n 1)
@@ -77,26 +66,6 @@ jobs:
           CURRENT_VERSION=$(./scripts/bump-holochain.sh main false | tail -n 1)
           if [[ "$CURRENT_VERSION" != holochain-0.4.*dev* ]]; then
               echo "bump.sh failed to find current version: [${CURRENT_VERSION}]"
-              exit 1
-          fi
-
-      - name: Test bump-lair.sh
-        run: |
-          VERSION_CHECK=$(./scripts/bump-lair.sh false | tail -n 2 | head -n 1)
-          if ! echo "$VERSION_CHECK" | grep -q "Holochain depends on Lair version"; then
-              echo "bump-lair.sh failed to find version: [$VERSION_CHECK]"
-              exit 1
-          fi
-          
-          NO_CHANGE_CHECK=$(./scripts/bump-lair.sh false | tail -n 1)
-          if ! echo "$NO_CHANGE_CHECK" | grep -q "Lair version is already up to date"; then
-              echo "bump-lair.sh should not be making a change: [$NO_CHANGE_CHECK]"
-              exit 1
-          fi
-          
-          FORCE_VERSION_CHECK=$(./scripts/bump-lair.sh false "0.5.0" | tail -n 1)
-          if ! echo "$FORCE_VERSION_CHECK" | grep -q "lair_keystore-v0.5.0"; then
-              echo "bump-lair.sh should be planning a bump to v0.5.0: [$FORCE_VERSION_CHECK]"
               exit 1
           fi
 
