@@ -35,7 +35,7 @@ fi
 APPLY=${1:-true}
 if [ "$APPLY" == "true" ]; then
     sed --in-place "s#url = \"github:holochain/lair/.*\";#url = \"github:holochain/lair/lair_keystore-v${lair_version}\";#" ./flake.nix
-    nix flake update lair_keystore
+    nix flake update lair-keystore
 else
     printf "Would have updated flake.nix to use: \nlair_keystore-v%s\n" "$lair_version"
 fi
