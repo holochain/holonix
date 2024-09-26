@@ -61,6 +61,7 @@ jobs:
         run: |
           gh pr checkout $PR_NUMBER --repo holochain/holonix
           ./scripts/bump-holochain.sh
+          ./scripts/bump-lair.sh
           git add flake.nix flake.lock
           git commit -m "Bump Holochain version"
           git pull --rebase

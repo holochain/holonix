@@ -60,10 +60,11 @@ jobs:
           install_url: https://releases.nixos.org/nix/nix-2.24.4/install
           extra_nix_config: |
             accept-flake-config = true
-      - name: Run the Holochain bump script
+      - name: Run the Holochain and Lair bump scripts
         if: ${{ inputs.update-holochain }}
         run: |
           ./scripts/bump-holochain.sh
+          ./scripts/bump-lair.sh
       - name: Run the Scaffolding bump script
         if: ${{ inputs.update-scaffolding }}
         run: |
@@ -79,6 +80,15 @@ jobs:
           git-token: ${{ secrets.HRA_GITHUB_TOKEN }}
           committer: "Holochain Release Automation <hra+gh@holochain.org>"
           title: "Update Holonix versions on ${{ inputs.branch }}"
+          body: |
+            Automated Holochain version bump.
+            
+            To apply more updates to this PR you can ask the bot to make changes. Try commenting with:
+              - `@hra bump holochain`
+              - `@hra bump hc-launch`
+              - `@hra bump hc-scaffold`
+            
+            You must be in the list of allowed users for this to work!
           branch: holochain-update
           branch-suffix: short-commit-hash
           draft: false
