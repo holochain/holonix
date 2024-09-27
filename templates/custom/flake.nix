@@ -12,8 +12,9 @@
     systems = builtins.attrNames inputs.holonix.devShells;
     perSystem = { inputs', pkgs, ... }:
       let
-        # Enable CHC (chain head coordination) feature for Holochain package.
-        cargoExtraArgs = "--features chc";
+        # Disable default features and enable wasmer_wamr for a wasm interpreter,
+        # as well as re-enabling tx5 and sqlite-encrypted.
+        cargoExtraArgs = "--no-default-features --features wasmer_wamr,sqlite-encrypted,tx5";
         # Override arguments passed in to Holochain build with above feature arguments.
         customHolochain = inputs'.holonix.packages.holochain.override { inherit cargoExtraArgs; };
       in
