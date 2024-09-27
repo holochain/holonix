@@ -22,8 +22,6 @@
         formatter = pkgs.nixpkgs-fmt;
 
         devShells.default = pkgs.mkShell {
-          inputsFrom = [ inputs'.holonix.devShells ];
-
           packages = [
             # Include custom build of Holochain in dev shell.
             customHolochain

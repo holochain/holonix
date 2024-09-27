@@ -22,13 +22,13 @@
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain/holochain-0.4.0-dev.25";
+      url = "github:holochain/holochain/holochain-0.4.0-dev.27";
       flake = false;
     };
 
     # Lair keystore sources
     lair-keystore = {
-      url = "github:holochain/lair/lair_keystore-v0.5.1";
+      url = "github:holochain/lair/lair_keystore-v0.5.2";
       flake = false;
     };
 
@@ -351,13 +351,17 @@
           path = ./templates/default;
           description = "Holonix default template";
         };
-        custom = {
-          path = ./templates/custom;
-          description = "Holonix template for custom Holochain build";
-        };
         holo = {
           path = ./templates/holo;
           description = "Holonix template for Holo-enabled app development";
+        };
+        custom-holochain = {
+          path = ./templates/custom-holochain;
+          description = "Holonix template for custom Holochain build";
+        };
+        custom-rust = {
+          path = ./templates/custom-rust;
+          description = "Flake for Holochain app development with Rust stable";
         };
       };
     };
