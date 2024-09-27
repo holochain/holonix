@@ -132,7 +132,7 @@ To initialize a flake based on the custom template, run the following command in
 nix flake init -t github:holochain/holonix#custom
 ```
 
-In [the generated `flake.nix` file](./templates/custom/flake.nix), locate the section that specifies the cargo build parameters to be passed to the Holochain build.
+In [the generated `flake.nix` file](./templates/custom-holochain/flake.nix), locate the section that specifies the cargo build parameters to be passed to the Holochain build.
 
 ```nix
 let
