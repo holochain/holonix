@@ -97,6 +97,8 @@
                   src = inputs.holochain;
                   filter = includeFilesFilter;
                 };
+                # Do release builds because they run faster
+                CARGO_PROFILE = "release";
                 # additional packages needed for build
                 buildInputs = [
                   pkgs.go
@@ -134,6 +136,8 @@
                   src = inputs.lair-keystore;
                   filter = includeFilesFilter;
                 };
+                # Do release builds because they run faster
+                CARGO_PROFILE = "release";
                 # additional packages needed for build
                 # perl needed for openssl on all platforms
                 buildInputs = [ pkgs.perl ]
@@ -177,6 +181,9 @@
                   };
                   # Only build hc-launch command
                   cargoExtraArgs = "--bin hc-launch";
+
+                  # Do release builds because they run faster
+                  CARGO_PROFILE = "release";
 
                   # commands required at build time
                   nativeBuildInputs = (
@@ -251,6 +258,9 @@
                   src = inputs.hc-scaffold;
                   filter = includeFilesFilter;
                 };
+
+                # Do release builds because they run faster
+                CARGO_PROFILE = "release";
 
                 doCheck = false;
 
