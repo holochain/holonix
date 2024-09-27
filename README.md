@@ -150,5 +150,5 @@ Note that the resulting custom binary of Holochain is not cached, so it must be 
 
 ## References
 
-[Nix Flake Wiki](https://wiki.nixos.org/wiki/Flakes)
-[Nix Reference Manual](https://nix.dev/manual/nix/latest)
+- [Nix Flake Wiki](https://wiki.nixos.org/wiki/Flakes)
+- [Nix Reference Manual](https://nix.dev/manual/nix/latest)
