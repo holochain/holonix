@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       branch:
-        description: "The Holonix version to update Holochain on"
+        description: "The Holonix version to update inputs for"
         required: true
         default: "main"
         type: choice
