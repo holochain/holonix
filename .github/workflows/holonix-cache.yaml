@@ -5,9 +5,7 @@ on:
   # idempotent, so it won't do any harm.
   push:
     branches:
-      - main
-      - main-0.2
-      - main-0.3
+      - main-0.4
   workflow_call:
     inputs:
       branch:
@@ -22,9 +20,7 @@ on:
         default: "main"
         type: choice
         options:
-          - main
-          - main-0.2
-          - main-0.3
+          - main-0.4
 
 concurrency:
   group: ${{ github.workflow }}-${{ inputs.branch }}-${{ github.ref_name }}
