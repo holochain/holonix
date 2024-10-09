@@ -64,7 +64,7 @@ jobs:
 
           # Print tag that would be used to update flake on main branch
           CURRENT_VERSION=$(./scripts/bump-holochain.sh main false | tail -n 1)
-          if [[ "$CURRENT_VERSION" != holochain-0.4.*dev* ]]; then
+          if [[ "$CURRENT_VERSION" != holochain-0.5.*dev* ]]; then
               echo "bump.sh failed to find current version: [${CURRENT_VERSION}]"
               exit 1
           fi
