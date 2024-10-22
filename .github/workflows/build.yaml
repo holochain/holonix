@@ -70,6 +70,9 @@ jobs:
           fi
 
   build:
+    needs:
+      - nix-check
+      - script-test
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, macos-13]
@@ -79,6 +82,7 @@ jobs:
           - [hc-launch]
           - [hc-scaffold]
       fail-fast: false
+      max-parallel: 1
 
     runs-on: ${{ matrix.os }}
 
@@ -111,9 +115,10 @@ jobs:
 
       - name: Run nix app
         run: |
-          echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | xargs -I% nix run .#% -- --version
+          echo '${{ toJSON(matrix.packages) }}' | jq -r '.[]' | while read app; do nix run ".#$app" -- --version; done
 
   template:
+    needs: build
     strategy:
       matrix:
         templates:
