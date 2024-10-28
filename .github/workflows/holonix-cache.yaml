@@ -37,16 +37,16 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: cachix/install-nix-action@v27
+      - uses: cachix/install-nix-action@v30
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.4/install
+          install_url: https://releases.nixos.org/nix/nix-2.24.9/install
           extra_nix_config: |
             accept-flake-config = true
       - uses: cachix/cachix-action@v15
         with:
           name: holochain-ci
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - name: Maximize build space
+      - name: Maximize build space (Linux)
         if: runner.os == 'Linux'
         uses: AdityaGarg8/remove-unwanted-software@v2
         with:
@@ -54,6 +54,15 @@ jobs:
           remove-android: 'true'
           remove-codeql: 'true'
           remove-docker-images: 'true'
+      - name: Maximise build space (Mac OS)
+        if: runner.os == 'macOS'
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+      - name: Check disk space before
+        run: df -h /
       - name: Extract branch name
         id: select_branch
         shell: bash
@@ -99,9 +108,9 @@ jobs:
             platform: x86_64-darwin
     runs-on: ubuntu-latest
     steps:
-      - uses: cachix/install-nix-action@v27
+      - uses: cachix/install-nix-action@v30
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.4/install
+          install_url: https://releases.nixos.org/nix/nix-2.24.9/install
           extra_nix_config: |
             accept-flake-config = true
       - uses: cachix/cachix-action@v15
