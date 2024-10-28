@@ -41,9 +41,9 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: cachix/install-nix-action@v27
+      - uses: cachix/install-nix-action@v30
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.4/install
+          install_url: https://releases.nixos.org/nix/nix-2.24.9/install
           extra_nix_config: |
             accept-flake-config = true
       - uses: cachix/cachix-action@v15
@@ -103,9 +103,9 @@ jobs:
             platform: x86_64-darwin
     runs-on: ubuntu-latest
     steps:
-      - uses: cachix/install-nix-action@v27
+      - uses: cachix/install-nix-action@v30
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.4/install
+          install_url: https://releases.nixos.org/nix/nix-2.24.9/install
           extra_nix_config: |
             accept-flake-config = true
       - uses: cachix/cachix-action@v15
