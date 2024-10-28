@@ -50,7 +50,7 @@ jobs:
         with:
           name: holochain-ci
           authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
-      - name: Maximize build space
+      - name: Maximize build space (Linux)
         if: runner.os == 'Linux'
         uses: AdityaGarg8/remove-unwanted-software@v2
         with:
@@ -58,6 +58,15 @@ jobs:
           remove-android: 'true'
           remove-codeql: 'true'
           remove-docker-images: 'true'
+      - name: Maximise build space (Mac OS)
+        if: runner.os == 'macOS'
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+      - name: Check disk space before
+        run: df -h /
       - name: Extract branch name
         id: select_branch
         shell: bash
