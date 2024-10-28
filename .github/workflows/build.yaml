@@ -86,7 +86,7 @@ jobs:
     steps:
       - name: Maximize build space
         if: runner.os == 'Linux'
-        uses: AdityaGarg8/remove-unwanted-software@v2
+        uses: AdityaGarg8/remove-unwanted-software@v4
         with:
           remove-dotnet: "true"
           remove-android: "true"
@@ -130,7 +130,7 @@ jobs:
 
     steps:
       - name: Maximize build space
-        uses: AdityaGarg8/remove-unwanted-software@v2
+        uses: AdityaGarg8/remove-unwanted-software@v4
         with:
           remove-dotnet: "true"
           remove-android: "true"
