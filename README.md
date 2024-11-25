@@ -63,12 +63,12 @@ The next time you enter the dev shell, the updated binaries will be downloaded a
 
 ## Including other versions of Holochain
 
-By default the Holonix input references the `main` branch of the Holonix repository. Whatever the current revision of that branch at the moment of invoking the dev shell for the first time is will be written to the `flake.lock` file. The `main` branch uses version 0.4 of Holochain and compatible versions of scaffolding etc.
+By default the Holonix input references the `main` branch of the Holonix repository. Whatever the current revision of that branch at the moment of invoking the dev shell for the first time is will be written to the `flake.lock` file. The `main` branch uses version 0.5 of Holochain and compatible versions of scaffolding etc.
 
-If you want to develop using the 0.3 branch of Holochain instead, you can create the corresponding Nix flake running this command inside your project folder:
+If you want to develop using the 0.3 (recommended) or 0.4 (RC) release series of Holochain instead, you can create the corresponding Nix flake by running this command inside your project folder, replacing `<ver>` with the correct version number:
 
 ```shell
-nix flake init -t github:holochain/holonix?ref=main-0.3
+nix flake init -t github:holochain/holonix?ref=main-<ver>
 ```
 
 Alternatively you can modify an existing `flake.nix` file, changing the `holonix` url in the inputs section to point to `main-0.3`.
