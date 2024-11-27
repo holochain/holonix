@@ -80,14 +80,22 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - name: Maximize build space
+      - name: Maximize build space (Linux)
         if: runner.os == 'Linux'
         uses: AdityaGarg8/remove-unwanted-software@v2
         with:
-          remove-dotnet: "true"
-          remove-android: "true"
-          remove-codeql: "true"
-          remove-docker-images: "true"
+          remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
+
+      - name: Maximise build space (Mac OS)
+        if: runner.os == 'macOS'
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /opt/ghc
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
 
       - name: Print platform information
         run: uname -ms
