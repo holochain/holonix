@@ -27,7 +27,7 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v30
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.9/install
+          install_url: https://releases.nixos.org/nix/nix-2.25.2/install
           extra_nix_config: |
             accept-flake-config = true
 
@@ -113,7 +113,7 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v30
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.4/install
+          install_url: https://releases.nixos.org/nix/nix-2.25.2/install
           extra_nix_config: |
             accept-flake-config = true
 
@@ -151,7 +151,7 @@ jobs:
 
       - uses: cachix/install-nix-action@v30
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.9/install
+          install_url: https://releases.nixos.org/nix/nix-2.25.2/install
           extra_nix_config: |
             accept-flake-config = true
 
