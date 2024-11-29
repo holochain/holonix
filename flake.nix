@@ -22,13 +22,13 @@
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain/holochain-0.4.0-rc.1";
+      url = "github:holochain/holochain/holochain-0.4.0-rc.2";
       flake = false;
     };
 
     # Lair keystore sources
     lair-keystore = {
-      url = "github:holochain/lair/lair_keystore-v0.5.2";
+      url = "github:holochain/lair/lair_keystore-v0.5.3";
       flake = false;
     };
 
