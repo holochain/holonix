@@ -4,7 +4,7 @@
 
   # specify all input dependencies needed to create the outputs of the flake
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=24.05";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.11";
 
     # utility to iterate over multiple target platforms
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -61,7 +61,7 @@
               inherit system overlays;
             };
 
-            rustVersion = "1.81.0";
+            rustVersion = "1.83.0";
 
             # define Rust toolchain version and targets to be used in this flake
             rust = (pkgs.rust-bin.stable.${rustVersion}.minimal.override
