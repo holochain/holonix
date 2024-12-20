@@ -103,8 +103,8 @@
                 };
                 # additional packages needed for build
                 buildInputs = [
-                  pkgs.perl
                   pkgs.go
+                  pkgs.perl
                 ] ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin apple_sdk);
 
                 # Build Holochain, CLI and local services (bootstrap + signal server) binaries.
