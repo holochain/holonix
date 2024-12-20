@@ -87,6 +87,8 @@
 
                 # Crane doesn't know which version to select from a workspace, so we tell it where to look
                 crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.holochain + "/crates/holochain/Cargo.toml"; };
+
+                apple_sdk = if system == "x86_64-darwin" then pkgs.apple-sdk_10_15 else pkgs.apple-sdk_11;
               in
               craneLib.buildPackage {
                 pname = "holochain";
@@ -100,27 +102,10 @@
                 # additional packages needed for build
                 buildInputs = [
                   pkgs.perl
-                ] ++ (pkgs.lib.optionals pkgs.stdenv.isLinux
-                  [
-                    pkgs.go
-                  ]) ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
-                  [
-                    (if pkgs.system == "x86_64-darwin" then
-                      pkgs.darwin.apple_sdk_11_0.stdenv.mkDerivation
-                        {
-                          name = "go";
-                          nativeBuildInputs = with pkgs; [
-                            makeBinaryWrapper
-                            go
-                          ];
-                          dontBuild = true;
-                          dontUnpack = true;
-                          installPhase = ''
-                            makeWrapper ${pkgs.go}/bin/go $out/bin/go
-                          '';
-                        }
-                    else pkgs.go)
-                  ];
+                  pkgs.go
+                ] ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
+                  apple_sdk
+                ]);
 
                 # Build Holochain, CLI and local services (bootstrap + signal server) binaries.
                 # Pass extra arguments like feature flags to build command.
