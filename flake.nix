@@ -99,9 +99,11 @@
                 };
                 # additional packages needed for build
                 buildInputs = [
-                  pkgs.go
                   pkgs.perl
-                ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
+                ] ++ (pkgs.lib.optionals pkgs.stdenv.isLinux
+                  [
+                    pkgs.go
+                  ]) ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
                   [
                     (if pkgs.system == "x86_64-darwin" then
                       pkgs.darwin.apple_sdk_11_0.stdenv.mkDerivation
