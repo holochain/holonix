@@ -101,7 +101,25 @@
                 buildInputs = [
                   pkgs.go
                   pkgs.perl
-                ];
+                ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
+                  [
+                    (if pkgs.system == "x86_64-darwin" then
+                      pkgs.darwin.apple_sdk_11_0.stdenv.mkDerivation
+                        {
+                          name = "go";
+                          nativeBuildInputs = with pkgs; [
+                            makeBinaryWrapper
+                            go
+                          ];
+                          dontBuild = true;
+                          dontUnpack = true;
+                          installPhase = ''
+                            makeWrapper ${pkgs.go}/bin/go $out/bin/go
+                          '';
+                        }
+                    else pkgs.go)
+                  ];
+
                 # Build Holochain, CLI and local services (bootstrap + signal server) binaries.
                 # Pass extra arguments like feature flags to build command.
                 cargoExtraArgs = "--bin holochain --bin hc --bin hc-sandbox --bin hcterm --bin hc-run-local-services " + cargoExtraArgs;
