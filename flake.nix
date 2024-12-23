@@ -291,12 +291,6 @@
                 echo "Lair keystore   : not installed"
               fi
 
-              if command -v "holo-dev-server" > /dev/null; then
-                echo "Holo dev server : $(holo-dev-server --version)"
-              else
-                echo "Holo dev server : not installed"
-              fi
-
               if command -v "holochain" > /dev/null; then
                 echo "Holochain       : $(holochain --version) (${builtins.substring 0 7 inputs.holochain.rev})"
 
@@ -357,10 +351,6 @@
         custom = {
           path = ./templates/custom;
           description = "Holonix template for custom Holochain build";
-        };
-        holo = {
-          path = ./templates/holo;
-          description = "Holonix template for Holo-enabled app development";
         };
       };
     };
