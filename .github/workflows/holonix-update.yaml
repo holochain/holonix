@@ -68,11 +68,11 @@ jobs:
       - name: Run the Scaffolding bump script
         if: ${{ inputs.update-scaffolding }}
         run: |
-          nix flake update hc-scaffold
+          nix flake update hc-scaffold --refresh
       - name: Run the Launcher bump script
         if: ${{ inputs.update-launcher }}
         run: |
-          nix flake update hc-launch
+          nix flake update hc-launch --refresh
       - name: Create pull request
         id: cpr
         uses: peter-evans/create-pull-request@v6
