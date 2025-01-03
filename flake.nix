@@ -87,10 +87,6 @@
 
                 # Crane doesn't know which version to select from a workspace, so we tell it where to look
                 crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.holochain + "/crates/holochain/Cargo.toml"; };
-
-                # On intel macs, the default SDK is still 10.12 and Holochain won't build against that because we're
-                # using a newer Go version. So override with the newest SDK available for x86_64-darwin.
-                apple_sdk = if system == "x86_64-darwin" then [ pkgs.apple-sdk_10_15 ] else [ ];
               in
               craneLib.buildPackage {
                 pname = "holochain";
@@ -105,7 +101,10 @@
                 buildInputs = [
                   pkgs.go
                   pkgs.perl
-                ] ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin apple_sdk);
+                ]
+                # On intel macs, the default SDK is still 10.12 and Holochain won't build against that because we're
+                # using a newer Go version. So override with the newest SDK available for x86_64-darwin.
+                ++ (pkgs.lib.optional (system == "x86_64-darwin") pkgs.apple-sdk_10_15);
 
                 # Build Holochain, CLI and local services (bootstrap + signal server) binaries.
                 # Pass extra arguments like feature flags to build command.
