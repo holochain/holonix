@@ -61,7 +61,7 @@
               inherit system overlays;
             };
 
-            rustVersion = "1.80.0";
+            rustVersion = "1.81.0";
 
             # define Rust toolchain version and targets to be used in this flake
             rust = (pkgs.rust-bin.stable.${rustVersion}.minimal.override
