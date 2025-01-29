@@ -39,7 +39,7 @@ jobs:
     steps:
       - uses: cachix/install-nix-action@v30
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.9/install
+          install_url: https://releases.nixos.org/nix/nix-2.25.4/install
           extra_nix_config: |
             accept-flake-config = true
       - uses: cachix/cachix-action@v15
@@ -110,7 +110,7 @@ jobs:
     steps:
       - uses: cachix/install-nix-action@v30
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.9/install
+          install_url: https://releases.nixos.org/nix/nix-2.25.4/install
           extra_nix_config: |
             accept-flake-config = true
       - uses: cachix/cachix-action@v15
