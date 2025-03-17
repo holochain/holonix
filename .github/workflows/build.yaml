@@ -31,7 +31,7 @@ jobs:
           extra_nix_config: |
             accept-flake-config = true
 
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v16
         with:
           name: holochain-ci
 
@@ -114,7 +114,7 @@ jobs:
           extra_nix_config: |
             accept-flake-config = true
 
-      - uses: cachix/cachix-action@v15
+      - uses: cachix/cachix-action@v16
         with:
           name: holochain-ci
 
