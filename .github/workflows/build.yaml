@@ -75,7 +75,8 @@ jobs:
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-13]
         packages:
-          - [holochain,hc,hc-run-local-services,hc-sandbox,hcterm]
+          - [holochain,hc,hc-sandbox,hcterm]
+          - [bootstrap-srv]
           - [lair-keystore]
           - [hc-launch]
           - [hc-scaffold]
