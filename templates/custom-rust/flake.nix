@@ -37,6 +37,7 @@
             rust
           ] ++ (with inputs'.holonix.packages; [
             holochain
+            bootstrap-srv
             lair-keystore
             hc-launch
             hc-scaffold

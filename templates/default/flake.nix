@@ -16,6 +16,7 @@
       devShells.default = pkgs.mkShell {
         packages = (with inputs'.holonix.packages; [
           holochain
+          bootstrap-srv
           lair-keystore
           hc-launch
           hc-scaffold

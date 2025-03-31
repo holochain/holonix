@@ -20,9 +20,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    kitsune2 = {
+      url = "github:holochain/kitsune2?ref=v0.0.1-alpha.17";
+      flake = false;
+    };
+
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain/holochain-0.5.0-dev.21";
+      url = "github:holochain/holochain?ref=feat/integrate-k2";
       flake = false;
     };
 
@@ -73,6 +78,23 @@
             # instruct crane to use Rust toolchain specified above
             craneLib = (crane.mkLib pkgs).overrideToolchain rust;
 
+            bootstrap-srv =
+              craneLib.buildPackage {
+                pname = "kitsune2-bootstrap-srv";
+                # only build kitsune2-bootstrap-srv binary
+                cargoExtraArgs = "-p kitsune2_bootstrap_srv";
+                # Use Lair keystore sources as defined in input dependencies and include only those files defined in the
+                # filter previously.
+                src = craneLib.cleanCargoSource inputs.kitsune2;
+                # additional packages needed for build
+                nativeBuildInputs = [ pkgs.perl pkgs.cmake ];
+                buildInputs = [
+                  pkgs.openssl
+                ] ++ (pkgs.lib.optional (system == "x86_64-darwin") pkgs.apple-sdk_10_15);
+                # do not check built package as it either builds successfully or not
+                doCheck = false;
+              };
+
             # Define a function to build Holochain binaries. This allows consumers to customize the
             # build by overriding function arguments.
             holochainBuilder =
@@ -101,6 +123,8 @@
                 buildInputs = [
                   pkgs.go
                   pkgs.perl
+                  pkgs.clang
+                  pkgs.cmake
                 ]
                 # On intel macs, the default SDK is still 10.12 and Holochain won't build against that because we're
                 # using a newer Go version. So override with the newest SDK available for x86_64-darwin.
@@ -108,9 +132,12 @@
 
                 # Build Holochain, CLI and local services (bootstrap + signal server) binaries.
                 # Pass extra arguments like feature flags to build command.
-                cargoExtraArgs = "--bin holochain --bin hc --bin hc-sandbox --bin hcterm --bin hc-run-local-services " + cargoExtraArgs;
+                cargoExtraArgs = "--bin holochain --bin hc --bin hc-sandbox --bin hcterm " + cargoExtraArgs;
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
+
+                # Make sure libdatachannel can find C++ standard libraries from clang.
+                LIBCLANG_PATH = "${pkgs.llvmPackages_18.libclang.lib}/lib";
               };
 
             # Default Holochain build, made overridable to allow consumers to extend cargo build arguments.
@@ -274,30 +301,36 @@
               #!/usr/bin/env bash
 
               if command -v "hc-scaffold" > /dev/null; then
-                echo "hc-scaffold     : $(hc-scaffold --version) (${builtins.substring 0 7 inputs.hc-scaffold.rev})"
+                echo "hc-scaffold            : $(hc-scaffold --version) (${builtins.substring 0 7 inputs.hc-scaffold.rev})"
               else
-                echo "hc-scaffold     : not installed"
+                echo "hc-scaffold            : not installed"
               fi
 
               if command -v "hc-launch" > /dev/null; then
-                echo "hc-launch       : $(hc-launch --version) (${builtins.substring 0 7 inputs.hc-launch.rev})"
+                echo "hc-launch              : $(hc-launch --version) (${builtins.substring 0 7 inputs.hc-launch.rev})"
               else
-                echo "hc-launch       : not installed"
+                echo "hc-launch              : not installed"
               fi
 
               if command -v "lair-keystore" > /dev/null; then
-                echo "Lair keystore   : $(lair-keystore --version) (${builtins.substring 0 7 inputs.lair-keystore.rev})"
+                echo "Lair keystore          : $(lair-keystore --version) (${builtins.substring 0 7 inputs.lair-keystore.rev})"
               else
-                echo "Lair keystore   : not installed"
+                echo "Lair keystore          : not installed"
+              fi
+
+              if command -v "kitsune2-bootstrap-srv" > /dev/null; then
+                echo "Holochain              : $(kitsune2-bootstrap-srv --version) (${builtins.substring 0 7 inputs.holochain.rev})"
+              else
+                echo "Kitsune2 bootstrap srv : not installed"
               fi
 
               if command -v "holochain" > /dev/null; then
-                echo "Holochain       : $(holochain --version) (${builtins.substring 0 7 inputs.holochain.rev})"
+                echo "Holochain              : $(holochain --version) (${builtins.substring 0 7 inputs.holochain.rev})"
 
                 printf "\nHolochain build info: "
                 holochain --build-info | ${pkgs.jq}/bin/jq
               else
-                echo "Holochain       : not installed"
+                echo "Holochain              : not installed"
               fi
             '';
           in
@@ -307,6 +340,7 @@
 
             packages = {
               inherit holochain;
+              inherit bootstrap-srv;
               inherit lair-keystore;
               inherit hc-launch;
               inherit hc-scaffold;
@@ -323,6 +357,7 @@
               hc-run-local-services.program = "${holochain}/bin/hc-run-local-services";
               hc-sandbox.program = "${holochain}/bin/hc-sandbox";
               hcterm.program = "${holochain}/bin/hcterm";
+              kitsune2-bootstrap-srv.program = "${bootstrap-srv}/bin/kitsune2-bootstrap-srv";
               lair-keystore.program = "${lair-keystore}/bin/lair-keystore";
               hc-launch.program = "${hc-launch}/bin/hc-launch";
               hc-scaffold.program = "${hc-scaffold}/bin/hc-scaffold";
@@ -332,6 +367,7 @@
               default = pkgs.mkShell {
                 packages = [
                   holochain
+                  bootstrap-srv
                   lair-keystore
                   hc-launch
                   hc-scaffold
