@@ -123,9 +123,13 @@
                 buildInputs = [
                   pkgs.go
                   pkgs.perl
-                  pkgs.clang
                   pkgs.cmake
                 ]
+                # Holochain needs `clang` to build but that should already be available on MacOS so only add
+                # it on Linux.
+                ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
+                  pkgs.clang
+                ])
                 # On intel macs, the default SDK is still 10.12 and Holochain won't build against that because we're
                 # using a newer Go version. So override with the newest SDK available for x86_64-darwin.
                 ++ (pkgs.lib.optional (system == "x86_64-darwin") pkgs.apple-sdk_10_15);
@@ -137,7 +141,7 @@
                 doCheck = false;
 
                 # Make sure libdatachannel can find C++ standard libraries from clang.
-                LIBCLANG_PATH = "${pkgs.llvmPackages_18.libclang.lib}/lib";
+                LIBCLANG_PATH = if pkgs.stdenv.isLinux then "${pkgs.llvmPackages_18.libclang.lib}/lib" else "";
               };
 
             # Default Holochain build, made overridable to allow consumers to extend cargo build arguments.
