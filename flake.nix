@@ -125,9 +125,8 @@
                   pkgs.perl
                   pkgs.cmake
                 ]
-                # Holochain needs `clang` to build but that should already be available on MacOS so only add
-                # it on Linux.
-                ++ (pkgs.lib.optionals pkgs.stdenv.isLinux [
+                # Holochain needs `clang` to build but the clang provided for x86_64-darwin fetches the wrong macos SDK.
+                ++ (pkgs.lib.optionals (system != "x86_64-darwin") [
                   pkgs.clang
                 ])
                 # On intel macs, the default SDK is still 10.12 and Holochain won't build against that because we're
@@ -141,7 +140,7 @@
                 doCheck = false;
 
                 # Make sure libdatachannel can find C++ standard libraries from clang.
-                LIBCLANG_PATH = if pkgs.stdenv.isLinux then "${pkgs.llvmPackages_18.libclang.lib}/lib" else "";
+                LIBCLANG_PATH = "${pkgs.llvmPackages_18.libclang.lib}/lib";
               };
 
             # Default Holochain build, made overridable to allow consumers to extend cargo build arguments.
