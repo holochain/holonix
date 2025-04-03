@@ -83,8 +83,7 @@
                 pname = "kitsune2-bootstrap-srv";
                 # only build kitsune2-bootstrap-srv binary
                 cargoExtraArgs = "-p kitsune2_bootstrap_srv";
-                # Use Lair keystore sources as defined in input dependencies and include only those files defined in the
-                # filter previously.
+                # Use Kitsune2 sources as defined in input dependencies.
                 src = craneLib.cleanCargoSource inputs.kitsune2;
                 # additional packages needed for build
                 nativeBuildInputs = [ pkgs.perl pkgs.cmake ];
