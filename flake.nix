@@ -21,30 +21,30 @@
     };
 
     kitsune2 = {
-      url = "github:holochain/kitsune2?ref=v0.0.1-alpha.17";
+      url = "github:holochain/kitsune2?ref=v0.1.0";
       flake = false;
     };
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain?ref=feat/integrate-k2";
+      url = "github:holochain/holochain?ref=holochain-0.5.0-dev.22";
       flake = false;
     };
 
     # Lair keystore sources
     lair-keystore = {
-      url = "github:holochain/lair/lair_keystore-v0.5.3";
+      url = "github:holochain/lair?ref=lair_keystore-v0.6.0";
       flake = false;
     };
 
     # Holochain Launch CLI
     hc-launch = {
-      url = "github:holochain/hc-launch/holochain-weekly";
+      url = "github:holochain/hc-launch?ref=holochain-weekly";
       flake = false;
     };
 
     hc-scaffold = {
-      url = "github:holochain/scaffolding/holochain-weekly";
+      url = "github:holochain/scaffolding?ref=holochain-weekly";
       flake = false;
     };
   };
