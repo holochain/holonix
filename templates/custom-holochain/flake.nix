@@ -27,6 +27,7 @@
             customHolochain
           ]
           ++ (with inputs'.holonix.packages; [
+            bootstrap-srv
             lair-keystore
             hc-launch
             hc-scaffold
