@@ -319,7 +319,7 @@
               fi
 
               if command -v "kitsune2-bootstrap-srv" > /dev/null; then
-                echo "Holochain              : $(kitsune2-bootstrap-srv --version) (${builtins.substring 0 7 inputs.holochain.rev})"
+                echo "Kitsune2 bootstrap srv : $(kitsune2-bootstrap-srv --version) (${builtins.substring 0 7 inputs.holochain.rev})"
               else
                 echo "Kitsune2 bootstrap srv : not installed"
               fi
