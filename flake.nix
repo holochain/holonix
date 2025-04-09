@@ -68,7 +68,7 @@
 
             rustVersion = "1.83.0";
 
-            # define Rust toolchain version and targets to be used in this flake
+            # define Rust toolchain version and targets to be exported from this flake
             rust = (pkgs.rust-bin.stable.${rustVersion}.minimal.override
               {
                 extensions = [ "clippy" "rustfmt" ];
@@ -76,7 +76,7 @@
               });
 
             # instruct crane to use Rust toolchain specified above
-            craneLib = (crane.mkLib pkgs).overrideToolchain rust;
+            craneLib = (crane.mkLib pkgs).overrideToolchain (p: p.rust-bin.stable.${rustVersion}.minimal);
 
             bootstrap-srv =
               craneLib.buildPackage {
@@ -263,11 +263,11 @@
                   # Override stdenv Apple SDK packages. It's unclear why this is needed, but building on x86_64-darwin
                   # fails without it.
                   # https://discourse.nixos.org/t/need-help-from-darwin-users-syntax-errors-in-library-frameworks-foundation-framework-headers/30467/3
-                  stdenv =
-                    if pkgs.stdenv.isDarwin then
-                      pkgs.overrideSDK pkgs.stdenv "11.0"
+                  stdenv = p:
+                    if p.stdenv.isDarwin then
+                      p.overrideSDK p.stdenv "11.0"
                     else
-                      pkgs.stdenv;
+                      p.stdenv;
                 });
 
             hc-scaffold =
