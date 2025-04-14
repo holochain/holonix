@@ -154,7 +154,7 @@
               craneLib.buildPackage (holochainCommon // { cargoArtifacts = holochainDeps; } // {
                 pname = "holochain";
                 version = crateInfo.version;
-                cargoExtraArgs = "--bin holochain " + cargoExtraArgs;
+                cargoExtraArgs = "--manifest-path crates/holochain/Cargo.toml --bin holochain " + cargoExtraArgs;
               });
 
             # Default Holochain build, made overridable to allow consumers to extend cargo build arguments.
@@ -171,7 +171,7 @@
                 pname = "hc";
                 version = crateInfo.version;
                 # only build hc binary
-                cargoExtraArgs = "--bin hc " + cargoExtraArgs;
+                cargoExtraArgs = "--manifest-path crates/hc/Cargo.toml --bin hc " + cargoExtraArgs;
               });
 
             # Default hc binary.
@@ -187,7 +187,7 @@
                 pname = "hcterm";
                 version = crateInfo.version;
                 # only build hcterm binary
-                cargoExtraArgs = "--bin hcterm";
+                cargoExtraArgs = "--manifest-path crates/holochain_terminal/Cargo.toml --bin hcterm";
               });
 
             # define how to build Lair keystore binary
