@@ -94,24 +94,22 @@
                 doCheck = false;
               };
 
-            # Define a function to build Holochain binaries. This allows consumers to customize the
-            # build by overriding function arguments.
-            holochainBuilder =
-              # Specify features to be built into Holochain. Can be overridden by the consumer.
-              # See the custom feature template for an example.
-              { cargoExtraArgs ? "" }:
+            # Common Crane configuration to build binaries from the Holochain workspace.
+            holochainCommon =
               let
                 # Crane filters out all non-cargo related files. Define include filter with files needed for build.
                 nonCargoBuildFiles = path: _type: builtins.match ".*(json|sql|wasm.gz)$" path != null;
                 includeFilesFilter = path: type:
                   (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
-
-                # Crane doesn't know which version to select from a workspace, so we tell it where to look
-                crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.holochain + "/crates/holochain/Cargo.toml"; };
               in
-              craneLib.buildPackage {
+              {
+                # Set a placeholder name the dependencies derivation.
                 pname = "holochain";
-                version = crateInfo.version;
+
+                # Crane wants a version when it builds dependencies but these arguments get re-used for different
+                # binaries. Set to 0.0.0 and expect packages to override it.
+                version = "0.0.0";
+
                 # Use Holochain sources as defined in input dependencies and include only those files defined in the
                 # filter previously.
                 src = pkgs.lib.cleanSourceWith {
@@ -131,9 +129,6 @@
                 # using a newer Go version. So override with the newest SDK available for x86_64-darwin.
                 ++ (pkgs.lib.optional (system == "x86_64-darwin") pkgs.apple-sdk_10_15);
 
-                # Build Holochain, CLI and local services (bootstrap + signal server) binaries.
-                # Pass extra arguments like feature flags to build command.
-                cargoExtraArgs = "--bin holochain --bin hc --bin hc-sandbox --bin hcterm " + cargoExtraArgs;
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
 
@@ -141,8 +136,59 @@
                 LIBCLANG_PATH = "${pkgs.llvmPackages_18.libclang.lib}/lib";
               };
 
+            # Define a derivation for just the Holochain dependencies.
+            holochainDeps = craneLib.buildDepsOnly holochainCommon;
+
+            # Define a function to build the Holochain binary. This allows consumers to customize the
+            # build by overriding function arguments.
+            holochainBuilder =
+              {
+                # Specify features to be built into Holochain. Can be overridden by the consumer.
+                # See the custom feature template for an example.
+                cargoExtraArgs ? ""
+              }:
+              let
+                # Crane doesn't know which version to select from a workspace, so we tell it where to look
+                crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.holochain + "/crates/holochain/Cargo.toml"; };
+              in
+              craneLib.buildPackage (holochainCommon // { cargoArtifacts = holochainDeps; } // {
+                pname = "holochain";
+                version = crateInfo.version;
+                cargoExtraArgs = "--bin holochain " + cargoExtraArgs;
+              });
+
             # Default Holochain build, made overridable to allow consumers to extend cargo build arguments.
             holochain = pkgs.lib.makeOverridable holochainBuilder { };
+
+            # Similar to the Holochain builder above, but for the hc binary.
+            hcBuilder =
+              { cargoExtraArgs ? "" }:
+              let
+                # Crane doesn't know which version to select from a workspace, so we tell it where to look
+                crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.holochain + "/crates/hc/Cargo.toml"; };
+              in
+              craneLib.buildPackage (holochainCommon // { cargoArtifacts = holochainDeps; } // {
+                pname = "hc";
+                version = crateInfo.version;
+                # only build hc binary
+                cargoExtraArgs = "--bin hc " + cargoExtraArgs;
+              });
+
+            # Default hc binary.
+            hc = pkgs.lib.makeOverridable hcBuilder { };
+
+            # The Holochain terminal, which has no feature flags and can just be defined as a normal package.
+            hcterm =
+              let
+                # Crane doesn't know which version to select from a workspace, so we tell it where to look
+                crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.holochain + "/crates/holochain_terminal/Cargo.toml"; };
+              in
+              craneLib.buildPackage (holochainCommon // { cargoArtifacts = holochainDeps; } // {
+                pname = "hcterm";
+                version = crateInfo.version;
+                # only build hcterm binary
+                cargoExtraArgs = "--bin hcterm";
+              });
 
             # define how to build Lair keystore binary
             lair-keystore =
@@ -319,9 +365,21 @@
               fi
 
               if command -v "kitsune2-bootstrap-srv" > /dev/null; then
-                echo "Kitsune2 bootstrap srv : $(kitsune2-bootstrap-srv --version) (${builtins.substring 0 7 inputs.holochain.rev})"
+                echo "Kitsune2 bootstrap srv : $(kitsune2-bootstrap-srv --version) (${builtins.substring 0 7 inputs.kitsune2.rev})"
               else
                 echo "Kitsune2 bootstrap srv : not installed"
+              fi
+
+              if command -v "hc" > /dev/null; then
+                echo "Holochain CLI          : $(hc --version) (${builtins.substring 0 7 inputs.holochain.rev})"
+              else
+                echo "Holochain CLI          : not installed"
+              fi
+
+              if command -v "hcterm" > /dev/null; then
+                echo "Holochain terminal     : $(hcterm --version) (${builtins.substring 0 7 inputs.holochain.rev})"
+              else
+                echo "Holochain terminal     : not installed"
               fi
 
               if command -v "holochain" > /dev/null; then
@@ -340,6 +398,8 @@
 
             packages = {
               inherit holochain;
+              inherit hc;
+              inherit hcterm;
               inherit bootstrap-srv;
               inherit lair-keystore;
               inherit hc-launch;
@@ -353,10 +413,8 @@
             # https://flake.parts/options/flake-parts.html?highlight=perSystem.apps#opt-perSystem.apps
             apps = {
               holochain.program = "${holochain}/bin/holochain";
-              hc.program = "${holochain}/bin/hc";
-              hc-run-local-services.program = "${holochain}/bin/hc-run-local-services";
-              hc-sandbox.program = "${holochain}/bin/hc-sandbox";
-              hcterm.program = "${holochain}/bin/hcterm";
+              hc.program = "${hc}/bin/hc";
+              hcterm.program = "${hcterm}/bin/hcterm";
               kitsune2-bootstrap-srv.program = "${bootstrap-srv}/bin/kitsune2-bootstrap-srv";
               lair-keystore.program = "${lair-keystore}/bin/lair-keystore";
               hc-launch.program = "${hc-launch}/bin/hc-launch";
@@ -367,6 +425,8 @@
               default = pkgs.mkShell {
                 packages = [
                   holochain
+                  hc
+                  hcterm
                   bootstrap-srv
                   lair-keystore
                   hc-launch
