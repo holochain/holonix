@@ -44,7 +44,7 @@
     };
 
     hc-scaffold = {
-      url = "github:holochain/scaffolding?ref=holochain-0.5";
+      url = "github:holochain/scaffolding?ref=holochain-weekly";
       flake = false;
     };
   };
