@@ -103,7 +103,7 @@
                   (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
               in
               {
-                # Set a placeholder name the dependencies derivation.
+                # Set a placeholder name for the dependencies derivation.
                 pname = "holochain";
 
                 # Crane wants a version when it builds dependencies but these arguments get re-used for different
