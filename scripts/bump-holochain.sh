@@ -29,7 +29,7 @@ CURRENT_BRANCH=${1:-$(git branch --show-current)}
 SEARCH_PATTERN="no-tag"
 case $CURRENT_BRANCH in
     main)
-        SEARCH_PATTERN="^holochain-0.5.[0-9]+-dev.[0-9]+$"
+        SEARCH_PATTERN="^holochain-0.6.[0-9]+-dev.[0-9]+$"
         ;;
     main-*-rc)
         VERSION_STR=$(echo "$CURRENT_BRANCH" | awk -F '-' '{print $2}')

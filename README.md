@@ -1,6 +1,7 @@
 [![Holonix cache trigger](https://github.com/holochain/holonix/actions/workflows/holonix-cache-trigger.yaml/badge.svg)](https://github.com/holochain/holonix/actions/workflows/holonix-cache-trigger.yaml)
 
 `main` [![Holonix cache](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml/badge.svg)](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml)
+`main-0.5` [![Holonix cache](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml/badge.svg?branch=main-0.5)](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml)
 `main-0.4` [![Holonix cache](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml/badge.svg?branch=main-0.4)](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml)
 `main-0.3` [![Holonix cache](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml/badge.svg?branch=main-0.3)](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml)
 

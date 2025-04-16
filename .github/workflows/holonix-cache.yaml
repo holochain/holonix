@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - main-0.5
       - main-0.4
       - main-0.3
   workflow_call:
@@ -23,6 +24,7 @@ on:
         type: choice
         options:
           - main
+          - main-0.5
           - main-0.4
           - main-0.3
 
