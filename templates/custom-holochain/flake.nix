@@ -12,21 +12,29 @@
     systems = builtins.attrNames inputs.holonix.devShells;
     perSystem = { inputs', pkgs, ... }:
       let
-        # Disable default features and enable wasmer_wamr for a wasm interpreter,
-        # as well as re-enabling tx5 and sqlite-encrypted.
-        cargoExtraArgs = "--no-default-features --features wasmer_wamr,sqlite-encrypted,tx5";
         # Override arguments passed in to Holochain build with above feature arguments.
-        customHolochain = inputs'.holonix.packages.holochain.override { inherit cargoExtraArgs; };
+        customHolochain = inputs'.holonix.packages.holochain.override {
+          # Disable default features and enable CHC and unstable sharding.
+          cargoExtraArgs = "--features chc,unstable-sharding";
+        };
+        # Customize the Holochain CLI build.
+        customHc = inputs'.holonix.packages.hc.override {
+          # Check whether you need to customize the Holochain CLI build because it
+          # might be that the default (cached) binary will work for you even when adding features to Holochain.
+          cargoExtraArgs = "--features chc";
+        };
       in
       {
         formatter = pkgs.nixpkgs-fmt;
 
         devShells.default = pkgs.mkShell {
           packages = [
-            # Include custom build of Holochain in dev shell.
+            # Include custom builds of Holochain and the Holochain CLI in dev shell.
             customHolochain
+            customHc
           ]
           ++ (with inputs'.holonix.packages; [
+            hcterm
             bootstrap-srv
             lair-keystore
             hc-launch
