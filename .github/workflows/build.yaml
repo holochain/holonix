@@ -83,7 +83,6 @@ jobs:
           - [lair-keystore]
           - [hc-launch]
           - [hc-scaffold]
-          - [hc-playground]
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
