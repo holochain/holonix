@@ -58,7 +58,7 @@ jobs:
           ref: ${{ inputs.branch }}
       - uses: cachix/install-nix-action@v31
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.9/install
+          install_url: https://releases.nixos.org/nix/nix-2.28.3/install
           extra_nix_config: |
             accept-flake-config = true
       - name: Run the Holochain and Lair bump scripts
