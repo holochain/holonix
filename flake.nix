@@ -21,13 +21,13 @@
     };
 
     kitsune2 = {
-      url = "github:holochain/kitsune2?ref=v0.1.5";
+      url = "github:holochain/kitsune2?ref=v0.2.2";
       flake = false;
     };
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain?ref=holochain-0.6.0-dev.1";
+      url = "github:holochain/holochain?ref=holochain-0.6.0-dev.3";
       flake = false;
     };
 
@@ -51,7 +51,7 @@
 
     # Third-party tool from Darksoil Studio for exploring DHT data.
     playground = {
-      url = "github:darksoil-studio/holochain-playground?ref=main-0.5";
+      url = "github:darksoil-studio/holochain-playground?ref=main";
       flake = false;
     };
   };
@@ -385,7 +385,7 @@
                   # fetched in the build phase.
                   pnpmDeps = pkgs.pnpm_9.fetchDeps {
                     inherit (finalAttrs) pname version src;
-                    hash = "sha256-gakSG1K/DkS/7pt5PCdS9ODsUEiv56ZkHBdFcJgmlk4=";
+                    hash = "sha256-e0JKsgLZvyn6cqkBzC7N5xqf65oizoMjveX7TCNw7p0=";
                   };
 
                   buildPhase = ''
