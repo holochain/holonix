@@ -21,13 +21,13 @@
     };
 
     kitsune2 = {
-      url = "github:holochain/kitsune2?ref=v0.2.2";
+      url = "github:holochain/kitsune2?ref=v0.2.7";
       flake = false;
     };
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain?ref=holochain-0.6.0-dev.3";
+      url = "github:holochain/holochain?ref=holochain-0.6.0-dev.5";
       flake = false;
     };
 
