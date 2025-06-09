@@ -4,7 +4,7 @@
 
   # specify all input dependencies needed to create the outputs of the flake
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.05";
 
     # utility to iterate over multiple target platforms
     flake-parts.url = "github:hercules-ci/flake-parts";
