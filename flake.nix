@@ -62,7 +62,7 @@
     flake-parts.lib.mkFlake { inherit inputs; }
       {
         # systems that his flake can be used on
-        systems = [ "aarch64-darwin" "x86_64-linux" "aarch64-linux" ];
+        systems = [ "aarch64-darwin" "x86_64-linux" "x86_64-darwin" "aarch64-linux" ];
 
         # for each system...
         perSystem = { config, pkgs, system, ... }:
