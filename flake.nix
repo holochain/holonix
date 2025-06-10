@@ -62,7 +62,7 @@
     flake-parts.lib.mkFlake { inherit inputs; }
       {
         # systems that his flake can be used on
-        systems = [ "aarch64-darwin" "x86_64-linux" "x86_64-darwin" "aarch64-linux" ];
+        systems = [ "aarch64-darwin" "x86_64-linux" "aarch64-linux" ];
 
         # for each system...
         perSystem = { config, pkgs, system, ... }:
@@ -96,7 +96,7 @@
                 nativeBuildInputs = [ pkgs.perl pkgs.cmake ];
                 buildInputs = [
                   pkgs.openssl
-                ] ++ (pkgs.lib.optional (system == "x86_64-darwin") pkgs.apple-sdk_10_15);
+                ];
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
               };
@@ -127,14 +127,8 @@
                 buildInputs = [
                   pkgs.perl
                   pkgs.cmake
-                ]
-                # Holochain needs `clang` to build but the clang provided for x86_64-darwin fetches the wrong macos SDK.
-                ++ (pkgs.lib.optionals (system != "x86_64-darwin") [
                   pkgs.clang
-                ])
-                # On intel macs, the default SDK is still 10.12 and Holochain won't build against that because we're
-                # using a newer Go version. So override with the newest SDK available for x86_64-darwin.
-                ++ (pkgs.lib.optional (system == "x86_64-darwin") pkgs.apple-sdk_10_15);
+                ];
 
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
@@ -221,14 +215,7 @@
                 };
                 # additional packages needed for build
                 # perl needed for openssl on all platforms
-                buildInputs = [ pkgs.perl ]
-                ++ (pkgs.lib.optionals pkgs.stdenv.isDarwin [
-                  # additional packages needed for darwin platforms
-                  pkgs.libiconv
-                  pkgs.darwin.apple_sdk.frameworks.Security
-                  # additional packages needed for darwin platforms on x86_64
-                  pkgs.darwin.apple_sdk_11_0.frameworks.CoreFoundation
-                ]);
+                buildInputs = [ pkgs.perl ];
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
               };
@@ -243,13 +230,6 @@
 
                 # Crane doesn't know which version to select from a workspace, so we tell it where to look
                 crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.hc-launch + "/crates/hc_launch/src-tauri/Cargo.toml"; };
-
-                # Use consistent version of Apple SDK throughout. Without this, building on x86_64-darwin fails.
-                # See below.
-                apple_sdk =
-                  if system == "x86_64-darwin"
-                  then pkgs.darwin.apple_sdk_10_12
-                  else pkgs.darwin.apple_sdk_11_0;
 
                 commonArgs = {
                   pname = "hc-launch";
@@ -278,28 +258,7 @@
                       pkgs.glib
                       pkgs.go
                       pkgs.webkitgtk.dev
-                    ])
-                  ++ pkgs.lib.optionals pkgs.stdenv.isDarwin
-                    [
-                      apple_sdk.frameworks.AppKit
-                      apple_sdk.frameworks.WebKit
-
-                      (if pkgs.system == "x86_64-darwin" then
-                        pkgs.darwin.apple_sdk_11_0.stdenv.mkDerivation
-                          {
-                            name = "go";
-                            nativeBuildInputs = with pkgs; [
-                              makeBinaryWrapper
-                              go
-                            ];
-                            dontBuild = true;
-                            dontUnpack = true;
-                            installPhase = ''
-                              makeWrapper ${pkgs.go}/bin/go $out/bin/go
-                            '';
-                          }
-                      else pkgs.go)
-                    ];
+                    ]);
 
                   # do not check built package as it either builds successfully or not
                   doCheck = false;
@@ -313,14 +272,7 @@
                 (commonArgs // {
                   cargoArtifacts = deps;
 
-                  # Override stdenv Apple SDK packages. It's unclear why this is needed, but building on x86_64-darwin
-                  # fails without it.
-                  # https://discourse.nixos.org/t/need-help-from-darwin-users-syntax-errors-in-library-frameworks-foundation-framework-headers/30467/3
-                  stdenv = p:
-                    if p.stdenv.isDarwin then
-                      p.overrideSDK p.stdenv "11.0"
-                    else
-                      p.stdenv;
+                  stdenv = p: p.stdenv;
                 });
 
             hc-scaffold =
@@ -341,10 +293,6 @@
 
                 buildInputs = [
                   pkgs.perl
-                ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
-                  # Required by the git2 crate, see https://github.com/rust-lang/git2-rs/blob/master/libgit2-sys/build.rs#L251
-                  pkgs.darwin.apple_sdk.frameworks.Security
-                  pkgs.darwin.apple_sdk.frameworks.CoreFoundation
                 ];
               };
 
@@ -476,13 +424,21 @@
             # https://flake.parts/options/flake-parts.html?highlight=perSystem.apps#opt-perSystem.apps
             apps = {
               holochain.program = "${holochain}/bin/holochain";
+              holochain.meta.description = "Holochain conductor";
               hc.program = "${hc}/bin/hc";
+              hc.meta.description = "Holochain CLI";
               hcterm.program = "${hcterm}/bin/hcterm";
+              hcterm.meta.description = "Holochain terminal";
               kitsune2-bootstrap-srv.program = "${bootstrap-srv}/bin/kitsune2-bootstrap-srv";
+              kitsune2-bootstrap-srv.meta.description = "Kitsune2 bootstrap server";
               lair-keystore.program = "${lair-keystore}/bin/lair-keystore";
+              lair-keystore.meta.description = "Lair keystore";
               hc-launch.program = "${hc-launch}/bin/hc-launch";
+              hc-launch.meta.description = "Holochain launcher CLI";
               hc-scaffold.program = "${hc-scaffold}/bin/hc-scaffold";
+              hc-scaffold.meta.description = "Holochain scaffolding CLI";
               hc-playground.program = "${hc-playground}/bin/hc-playground";
+              hc-playground.meta.description = "Holochain Playground";
             };
 
             devShells = {
