@@ -333,7 +333,7 @@
                   # fetched in the build phase.
                   pnpmDeps = pkgs.pnpm_9.fetchDeps {
                     inherit (finalAttrs) pname version src;
-                    hash = "sha256-e0JKsgLZvyn6cqkBzC7N5xqf65oizoMjveX7TCNw7p0=";
+                    hash = "";
                   };
 
                   buildPhase = ''
