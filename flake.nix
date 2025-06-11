@@ -128,6 +128,7 @@
                   pkgs.perl
                   pkgs.cmake
                   pkgs.clang
+                  pkgs.llvmPackages_18.libunwind
                 ];
 
                 # do not check built package as it either builds successfully or not
