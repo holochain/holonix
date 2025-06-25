@@ -21,19 +21,19 @@
     };
 
     kitsune2 = {
-      url = "github:holochain/kitsune2?ref=v0.2.7";
+      url = "github:holochain/kitsune2?ref=v0.2.9";
       flake = false;
     };
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain?ref=holochain-0.6.0-dev.8";
+      url = "github:holochain/holochain?ref=holochain-0.6.0-dev.10";
       flake = false;
     };
 
     # Lair keystore sources
     lair-keystore = {
-      url = "github:holochain/lair?ref=lair_keystore-v0.6.1";
+      url = "github:holochain/lair?ref=v0.6.2";
       flake = false;
     };
 
@@ -201,7 +201,7 @@
                   (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
 
                 # Crane doesn't know which version to select from a workspace, so we tell it where to look
-                crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.lair-keystore + "/crates/lair_keystore/Cargo.toml"; };
+                crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.lair-keystore + "/Cargo.toml"; };
               in
               craneLib.buildPackage {
                 pname = "lair-keystore";
