@@ -21,19 +21,19 @@
     };
 
     kitsune2 = {
-      url = "github:holochain/kitsune2?ref=v0.1.8";
+      url = "github:holochain/kitsune2?ref=v0.1.9";
       flake = false;
     };
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain?ref=holochain-0.5.2";
+      url = "github:holochain/holochain?ref=holochain-0.5.3";
       flake = false;
     };
 
     # Lair keystore sources
     lair-keystore = {
-      url = "github:holochain/lair?ref=lair_keystore-v0.6.1";
+      url = "github:holochain/lair?ref=v0.6.2";
       flake = false;
     };
 
@@ -73,7 +73,7 @@
               inherit system overlays;
             };
 
-            rustVersion = "1.83.0";
+            rustVersion = "1.85.0";
 
             # define Rust toolchain version and targets to be exported from this flake
             rust = (pkgs.rust-bin.stable.${rustVersion}.minimal.override
@@ -128,6 +128,7 @@
                   pkgs.perl
                   pkgs.cmake
                   pkgs.clang
+                  pkgs.llvmPackages_18.libunwind
                 ];
 
                 # do not check built package as it either builds successfully or not
@@ -200,7 +201,7 @@
                   (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
 
                 # Crane doesn't know which version to select from a workspace, so we tell it where to look
-                crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.lair-keystore + "/crates/lair_keystore/Cargo.toml"; };
+                crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.lair-keystore + "/Cargo.toml"; };
               in
               craneLib.buildPackage {
                 pname = "lair-keystore";
