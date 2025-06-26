@@ -258,7 +258,7 @@
                     [
                       pkgs.glib
                       pkgs.go
-                      pkgs.webkitgtk.dev
+                      pkgs.webkitgtk_4_0.dev
                     ]);
 
                   # do not check built package as it either builds successfully or not
