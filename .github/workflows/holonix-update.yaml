@@ -89,10 +89,11 @@ jobs:
             You must be in the list of allowed users for this to work!
           branch: holochain-update
           branch-suffix: short-commit-hash
+          commit-message: "chore: Update Holonix versions"
           draft: false
           delete-branch: true
       - name: Enable auto-merge
         if: steps.cpr.outputs.pull-request-operation == 'created' && github.event_name == 'workflow_dispatch'
         env:
           GH_TOKEN: ${{ secrets.HRA_GITHUB_TOKEN }}
-        run: gh pr merge --squash --auto "${{ steps.cpr.outputs.pull-request-number }}"
+        run: gh pr merge --rebase --auto "${{ steps.cpr.outputs.pull-request-number }}"

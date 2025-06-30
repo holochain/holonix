@@ -63,7 +63,7 @@ jobs:
           ./scripts/bump-holochain.sh
           ./scripts/bump-lair.sh
           git add flake.nix flake.lock
-          git commit -m "Bump Holochain version"
+          git commit -m "chore: Bump Holochain version"
           git pull --rebase
           git push
   bump_hc_launch:
@@ -89,7 +89,7 @@ jobs:
           gh pr checkout $PR_NUMBER --repo holochain/holonix
           nix flake update hc-launch
           git add flake.lock
-          git commit -m "Bump hc-launch version"
+          git commit -m "chore: Bump hc-launch version"
           git pull --rebase
           git push
   bump_hc_scaffold:
@@ -115,6 +115,6 @@ jobs:
           gh pr checkout $PR_NUMBER --repo holochain/holonix
           nix flake update hc-scaffold
           git add flake.lock
-          git commit -m "Bump hc-scaffold version"
+          git commit -m "chore: Bump hc-scaffold version"
           git pull --rebase
           git push
