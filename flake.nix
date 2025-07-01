@@ -22,7 +22,7 @@
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain/holochain-0.4.2";
+      url = "github:holochain/holochain?ref=backport-0.4-patch-serde-json-to-enable-byte-arrays-values";
       flake = false;
     };
 
@@ -61,7 +61,7 @@
               inherit system overlays;
             };
 
-            rustVersion = "1.81.0";
+            rustVersion = "1.85.0";
 
             # define Rust toolchain version and targets to be used in this flake
             rust = (pkgs.rust-bin.stable.${rustVersion}.minimal.override
