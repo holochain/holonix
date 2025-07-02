@@ -27,15 +27,15 @@ lair_version=${2:-$(nix shell nixpkgs#jq --command nix run .#holochain -- --buil
 
 echo "Holochain depends on Lair version: $lair_version"
 
-if grep -q "github:holochain/lair/lair_keystore-v${lair_version}" ./flake.nix; then
+if grep -q "github:holochain/lair?ref=v${lair_version}" ./flake.nix; then
     echo "Lair version is already up to date"
     exit 0
 fi
 
 APPLY=${1:-true}
 if [ "$APPLY" == "true" ]; then
-    sed --in-place "s#url = \"github:holochain/lair/.*\";#url = \"github:holochain/lair/lair_keystore-v${lair_version}\";#" ./flake.nix
+    sed --in-place "s#url = \"github:holochain/lair?ref=.*\";#url = \"github:holochain/lair?ref=v${lair_version}\";#" ./flake.nix
     nix flake update lair-keystore
 else
-    printf "Would have updated flake.nix to use: \nlair_keystore-v%s\n" "$lair_version"
+    printf "Would have updated flake.nix to use: \nv%s\n" "$lair_version"
 fi
