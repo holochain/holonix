@@ -75,7 +75,7 @@ echo "Latest matching tag: $LATEST_MATCHING_TAG"
 
 APPLY=${2:-true}
 if [ "$APPLY" == "true" ]; then
-    sed --in-place "s#url = \"github:holochain/holochain/.*\";#url = \"github:holochain/holochain/${LATEST_MATCHING_TAG}\";#" ./flake.nix
+    sed --in-place "s#url = \"github:holochain/holochain?ref=.*\";#url = \"github:holochain/holochain?ref=${LATEST_MATCHING_TAG}\";#" ./flake.nix
     nix flake update holochain
 else
     printf "Would have updated flake.nix to use: \n%s\n" "$LATEST_MATCHING_TAG"
