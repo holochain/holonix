@@ -128,8 +128,16 @@
                   pkgs.perl
                   pkgs.cmake
                   pkgs.clang
+                  pkgs.go
                   pkgs.llvmPackages_18.libunwind
                 ];
+
+                # Avoid Go trying to init modules in a directory that isn't writable while building tx5-go-pion-sys.
+                preBuild = ''
+                  export HOME=$(mktemp -d)
+                '';
+                # Don't fetch the toolchain specified in tx5-go-pion-sys, use the local one provided by the Nix build env.
+                GOTOOLCHAIN="local";
 
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
