@@ -128,8 +128,14 @@
                   pkgs.perl
                   pkgs.cmake
                   pkgs.clang
+                  pkgs.go
                   pkgs.llvmPackages_18.libunwind
                 ];
+
+                # Avoid Go trying to init modules in a directory that isn't writable while building tx5-go-pion-sys.
+                preBuild = ''
+                  export HOME=$(mktemp -d)
+                '';
 
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
