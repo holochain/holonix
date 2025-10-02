@@ -27,13 +27,13 @@
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain?ref=holochain-0.6.0-dev.23";
+      url = "github:holochain/holochain?ref=holochain-0.6.0-dev.25";
       flake = false;
     };
 
     # Lair keystore sources
     lair-keystore = {
-      url = "github:holochain/lair?ref=v0.6.2";
+      url = "github:holochain/lair?ref=v0.6.3";
       flake = false;
     };
 
@@ -73,7 +73,7 @@
               inherit system overlays;
             };
 
-            rustVersion = "1.87.0";
+            rustVersion = "1.88.0";
 
             # define Rust toolchain version and targets to be exported from this flake
             rust = (pkgs.rust-bin.stable.${rustVersion}.minimal.override
