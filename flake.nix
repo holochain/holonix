@@ -45,7 +45,7 @@
 
     # Holochain scaffolding CLI
     hc-scaffold = {
-      url = "github:holochain/scaffolding?ref=holochain-weekly";
+      url = "github:holochain/scaffolding?ref=0.600.0-dev.0";
       flake = false;
     };
 
