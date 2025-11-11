@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest, macos-13 ]
+        os: [ ubuntu-latest, macos-latest, macos-15-intel ]
 
     runs-on: ${{ matrix.os }}
 
@@ -104,13 +104,13 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest, macos-13 ]
+        os: [ ubuntu-latest, macos-latest, macos-15-intel ]
         include:
           - os: ubuntu-latest
             platform: x86_64-linux
           - os: macos-latest
             platform: aarch64-darwin
-          - os: macos-13
+          - os: macos-15-intel
             platform: x86_64-darwin
     runs-on: ubuntu-latest
     steps:
