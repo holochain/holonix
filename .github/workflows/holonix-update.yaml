@@ -10,6 +10,7 @@ on:
         type: choice
         options:
           - main
+          - main-0.6
           - main-0.5
           - main-0.4
           - main-0.3
@@ -83,12 +84,12 @@ jobs:
           title: "Update Holonix versions on ${{ inputs.branch }}"
           body: |
             Automated Holochain version bump.
-            
+
             To apply more updates to this PR you can ask the bot to make changes. Try commenting with:
               - `@hra bump holochain`
               - `@hra bump hc-launch`
               - `@hra bump hc-scaffold`
-            
+
             You must be in the list of allowed users for this to work!
           branch: holochain-update
           branch-suffix: short-commit-hash

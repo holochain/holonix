@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - main
+      - main-0.6
       - main-0.5
       - main-0.4
       - main-0.3
@@ -24,6 +25,7 @@ on:
         type: choice
         options:
           - main
+          - main-0.6
           - main-0.5
           - main-0.4
           - main-0.3
@@ -75,11 +77,11 @@ jobs:
         run: |
           # Figure out what branch was used to trigger the workflow (i.e. the `push` trigger)
           changed_branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
-          
+
           # Get the input branch override if it exists. This will be set if the workflow is triggered manually or by a
           # workflow call.
           input_branch='${{ inputs.branch }}'
-          
+
           # Pick a branch to work with, preferring the input branch if it exists.
           echo "branch=${input_branch:-$changed_branch}" >> $GITHUB_OUTPUT
 
