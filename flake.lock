@@ -45,7 +45,7 @@
       },
       "original": {
         "owner": "holochain",
-        "ref": "holochain-weekly",
+        "ref": "holochain-0.6",
         "repo": "hc-launch",
         "type": "github"
       }

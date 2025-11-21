@@ -39,7 +39,7 @@
 
     # Holochain Launch CLI
     hc-launch = {
-      url = "github:holochain/hc-launch?ref=holochain-weekly";
+      url = "github:holochain/hc-launch?ref=holochain-0.6";
       flake = false;
     };
 
