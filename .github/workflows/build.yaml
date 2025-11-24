@@ -7,14 +7,12 @@ on:
       - main-0.6
       - main-0.5
       - main-0.4
-      - main-0.3
   pull_request:
     branches:
       - main
       - main-0.6
       - main-0.5
       - main-0.4
-      - main-0.3
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
