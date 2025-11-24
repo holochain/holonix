@@ -14,11 +14,11 @@ jobs:
         id: dispatch
         env:
           USER: ${{ github.event.sender.login }}
-          ALLOWED_USERS: ${{ join(fromJson('["ThetaSinner", "jost-s", "neonphog", "matthme", "c12i", "cdunster"]'), '\n') }}
+          ALLOWED_USERS: ${{ join(fromJson('["ThetaSinner", "jost-s", "matthme", "cdunster", "mattyg", "veeso"]'), '\n') }}
           COMMENT: ${{ github.event.comment.body }}
         run: |
           set -euo pipefail
-          
+
           COMMAND=""
           if [[ "$COMMENT" == @hra* ]]; then
             echo "Comment is a command"
@@ -27,7 +27,7 @@ jobs:
             echo "Comment is not a command"
             exit 0
           fi
-          
+
           if echo "$ALLOWED_USERS" | grep -q "${USER}"; then
             echo "User $USER is allowed to run commands"
           else
@@ -35,7 +35,7 @@ jobs:
             exit 1
           fi
 
-          echo "Setting command '$COMMAND'"  
+          echo "Setting command '$COMMAND'"
           echo "action=${COMMAND}" >> "$GITHUB_OUTPUT"
     outputs:
       action: ${{ steps.dispatch.outputs.action }}
