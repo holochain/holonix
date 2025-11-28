@@ -37,12 +37,6 @@
       flake = false;
     };
 
-    # Holochain Launch CLI
-    hc-launch = {
-      url = "github:holochain/hc-launch?ref=holochain-0.6";
-      flake = false;
-    };
-
     # Holochain scaffolding CLI
     hc-scaffold = {
       url = "github:holochain/scaffolding?ref=v0.600.0";
