@@ -71,10 +71,6 @@ jobs:
         if: ${{ inputs.update-scaffolding }}
         run: |
           nix flake update hc-scaffold
-      - name: Run the Launcher bump script
-        if: ${{ inputs.update-launcher }}
-        run: |
-          nix flake update hc-launch
       - name: Create pull request
         id: cpr
         uses: peter-evans/create-pull-request@v7
@@ -87,7 +83,6 @@ jobs:
 
             To apply more updates to this PR you can ask the bot to make changes. Try commenting with:
               - `@hra bump holochain`
-              - `@hra bump hc-launch`
               - `@hra bump hc-scaffold`
 
             You must be in the list of allowed users for this to work!
