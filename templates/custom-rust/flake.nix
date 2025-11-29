@@ -41,7 +41,6 @@
             hcterm
             bootstrap-srv
             lair-keystore
-            hc-launch
             hc-scaffold
             hn-introspect
             hc-playground
