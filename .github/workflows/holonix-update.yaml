@@ -24,11 +24,6 @@ on:
         type: boolean
         default: false
         required: true
-      update-launcher:
-        description: "Should Launcher be updated?"
-        type: boolean
-        default: false
-        required: true
   workflow_call:
     inputs:
       branch:
@@ -39,10 +34,6 @@ on:
         default: false
         required: false
       update-scaffolding:
-        type: boolean
-        default: false
-        required: false
-      update-launcher:
         type: boolean
         default: false
         required: false
