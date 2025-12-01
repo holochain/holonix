@@ -33,36 +33,19 @@
         "type": "github"
       }
     },
-    "hc-launch": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1764005928,
-        "narHash": "sha256-M1KiSMltyhLMsIageC3rCeVHnlzQU/8lwdGTNpf8Yhk=",
-        "owner": "holochain",
-        "repo": "hc-launch",
-        "rev": "b19fe6be4edff94043b7936496f5604bf7917e97",
-        "type": "github"
-      },
-      "original": {
-        "owner": "holochain",
-        "ref": "holochain-weekly",
-        "repo": "hc-launch",
-        "type": "github"
-      }
-    },
     "hc-scaffold": {
       "flake": false,
       "locked": {
-        "lastModified": 1764011819,
-        "narHash": "sha256-dGFCjYlgvGiQQx0ubpYh2hf39+YjIirekeo/ZABe21Q=",
+        "lastModified": 1764163563,
+        "narHash": "sha256-KigJ3h25yNJfeQunPm5QYFPtLSk6nU3IEEvZY8w01Vo=",
         "owner": "holochain",
         "repo": "scaffolding",
-        "rev": "2d71d47b9a2fec079671f3f385e01c238dee7f7e",
+        "rev": "87e997a7361d4aa7c1bb96261483ebba50223bd0",
         "type": "github"
       },
       "original": {
         "owner": "holochain",
-        "ref": "v0.600.0",
+        "ref": "v0.600.1",
         "repo": "scaffolding",
         "type": "github"
       }
@@ -170,7 +153,6 @@
       "inputs": {
         "crane": "crane",
         "flake-parts": "flake-parts",
-        "hc-launch": "hc-launch",
         "hc-scaffold": "hc-scaffold",
         "holochain": "holochain",
         "kitsune2": "kitsune2",

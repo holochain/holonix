@@ -108,7 +108,6 @@ It may be that you want to add or remove packages included in the dev shell. If 
 packages = (with inputs'.holonix.packages; [
     holochain
 -   lair-keystore
--   hc-launch
 -   hc-scaffold
 -   hn-introspect
     rust # For Rust development, with the WASM target included for zome builds
