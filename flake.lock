@@ -33,23 +33,6 @@
         "type": "github"
       }
     },
-    "hc-launch": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1764005928,
-        "narHash": "sha256-M1KiSMltyhLMsIageC3rCeVHnlzQU/8lwdGTNpf8Yhk=",
-        "owner": "holochain",
-        "repo": "hc-launch",
-        "rev": "b19fe6be4edff94043b7936496f5604bf7917e97",
-        "type": "github"
-      },
-      "original": {
-        "owner": "holochain",
-        "ref": "holochain-weekly",
-        "repo": "hc-launch",
-        "type": "github"
-      }
-    },
     "hc-scaffold": {
       "flake": false,
       "locked": {
@@ -170,7 +153,6 @@
       "inputs": {
         "crane": "crane",
         "flake-parts": "flake-parts",
-        "hc-launch": "hc-launch",
         "hc-scaffold": "hc-scaffold",
         "holochain": "holochain",
         "kitsune2": "kitsune2",

@@ -37,12 +37,6 @@
       flake = false;
     };
 
-    # Holochain Launch CLI
-    hc-launch = {
-      url = "github:holochain/hc-launch?ref=holochain-weekly";
-      flake = false;
-    };
-
     # Holochain scaffolding CLI
     hc-scaffold = {
       url = "github:holochain/scaffolding?ref=v0.600.0";
@@ -227,61 +221,6 @@
                 doCheck = false;
               };
 
-            # define how to build hc-launch binary
-            hc-launch =
-              let
-                # Crane filters out all non-cargo related files. Define include filter with files needed for build.
-                nonCargoBuildFiles = path: _type: builtins.match ".*(js|json|png)$" path != null;
-                includeFilesFilter = path: type:
-                  (craneLib.filterCargoSources path type) || (nonCargoBuildFiles path type);
-
-                # Crane doesn't know which version to select from a workspace, so we tell it where to look
-                crateInfo = craneLib.crateNameFromCargoToml { cargoToml = inputs.hc-launch + "/crates/hc_launch/src-tauri/Cargo.toml"; };
-
-                commonArgs = {
-                  pname = "hc-launch";
-                  version = crateInfo.version;
-                  # Use hc-launch sources as defined in input dependencies and include only those files defined in the
-                  # filter previously.
-                  src = pkgs.lib.cleanSourceWith {
-                    src = inputs.hc-launch;
-                    filter = includeFilesFilter;
-                  };
-                  # Only build hc-launch command
-                  cargoExtraArgs = "--bin hc-launch";
-
-                  # commands required at build time
-                  nativeBuildInputs = (
-                    if pkgs.stdenv.isLinux then [ pkgs.pkg-config ]
-                    else [ ]
-                  );
-
-                  # build inputs required for linking to execute at runtime
-                  buildInputs = [
-                    pkgs.perl
-                  ]
-                  ++ (pkgs.lib.optionals pkgs.stdenv.isLinux
-                    [
-                      pkgs.glib
-                      pkgs.go
-                      pkgs.webkitgtk_4_0.dev
-                    ]);
-
-                  # do not check built package as it either builds successfully or not
-                  doCheck = false;
-                };
-
-                # derivation building all dependencies
-                deps = craneLib.buildDepsOnly commonArgs;
-              in
-              # derivation with the main crates
-              craneLib.buildPackage
-                (commonArgs // {
-                  cargoArtifacts = deps;
-
-                  stdenv = p: p.stdenv;
-                });
-
             hc-scaffold =
               let
                 # Crane filters out all non-cargo related files. Define include filter with files needed for build.
@@ -370,12 +309,6 @@
                 echo "hc-scaffold            : not installed"
               fi
 
-              if command -v "hc-launch" > /dev/null; then
-                echo "hc-launch              : $(hc-launch --version) (${builtins.substring 0 7 inputs.hc-launch.rev})"
-              else
-                echo "hc-launch              : not installed"
-              fi
-
               if command -v "lair-keystore" > /dev/null; then
                 echo "Lair keystore          : $(lair-keystore --version) (${builtins.substring 0 7 inputs.lair-keystore.rev})"
               else
@@ -420,7 +353,6 @@
               inherit hcterm;
               inherit bootstrap-srv;
               inherit lair-keystore;
-              inherit hc-launch;
               inherit hc-scaffold;
               inherit rust;
               inherit hn-introspect;
@@ -441,8 +373,6 @@
               kitsune2-bootstrap-srv.meta.description = "Kitsune2 bootstrap server";
               lair-keystore.program = "${lair-keystore}/bin/lair-keystore";
               lair-keystore.meta.description = "Lair keystore";
-              hc-launch.program = "${hc-launch}/bin/hc-launch";
-              hc-launch.meta.description = "Holochain launcher CLI";
               hc-scaffold.program = "${hc-scaffold}/bin/hc-scaffold";
               hc-scaffold.meta.description = "Holochain scaffolding CLI";
               hc-playground.program = "${hc-playground}/bin/hc-playground";
@@ -457,7 +387,6 @@
                   hcterm
                   bootstrap-srv
                   lair-keystore
-                  hc-launch
                   hc-scaffold
                   hn-introspect
                   hc-playground
