@@ -63,7 +63,7 @@ jobs:
           nix flake update hc-scaffold
       - name: Create pull request
         id: cpr
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           branch-token: ${{ secrets.HRA_GITHUB_TOKEN }}
           committer: "Holochain Release Automation <hra+gh@holochain.org>"
