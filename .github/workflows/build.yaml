@@ -47,7 +47,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6
-      - uses: azohra/shell-linter@latest
+      - uses: Azbagheri/shell-linter@latest
 
       - name: Test bump-holochain.sh
         run: |
