@@ -29,19 +29,7 @@ CURRENT_BRANCH=${1:-$(git branch --show-current)}
 SEARCH_PATTERN="no-tag"
 case $CURRENT_BRANCH in
     main)
-        SEARCH_PATTERN="^holochain-0.7.[0-9]+-.*.[0-9]+$"
-        ;;
-    main-*-rc)
-        VERSION_STR=$(echo "$CURRENT_BRANCH" | awk -F '-' '{print $2}')
-
-        # Protect against this code trying to bump 1.2.3 versions if one of those shows up.
-        SEP_COUNT=$(echo "$VERSION_STR" | tr -d -c '.' | awk '{ print length; }')
-        if [ "$SEP_COUNT" -ne "1" ]; then
-            echo "Invalid version format: $VERSION_STR"
-            exit 1
-        fi
-
-        SEARCH_PATTERN=$(echo "$VERSION_STR" | awk -F '.' 'BEGIN { OFS="" } {print "^holochain-", $1, ".", $2, ".[0-9]+-rc.[0-9]+$"}')
+        SEARCH_PATTERN="^holochain-0.[0-9]+.[0-9]+-(dev|rc).[0-9]+$"
         ;;
     main-*)
         VERSION_STR=$(echo "$CURRENT_BRANCH" | awk -F '-' '{print $2}')
@@ -56,18 +44,18 @@ case $CURRENT_BRANCH in
         SEARCH_PATTERN=$(echo "$VERSION_STR" | awk -F '.' 'BEGIN { OFS="" } {print "^holochain-", $1, ".", $2, ".[0-9]+$"}')
         ;;
     *)
-        echo "Not on branch main or main-X.Y, skipping for branch [${CURRENT_BRANCH}]"
+        echo "Not on branch \`main\` or \`main-X.Y\`, skipping for branch \`${CURRENT_BRANCH}\`"
         exit 0
         ;;
 esac
 
 echo "Looking for tags matching pattern: $SEARCH_PATTERN"
 
-ALL_HOLOCHAIN_TAGS=$(git -c 'versionsort.suffix=-beta-dev' -c 'versionsort.suffix=-dev' -c 'versionsort.suffix=-rc' ls-remote -q --tags --sort='v:refname' https://github.com/holochain/holochain.git | cut --delimiter='/' --fields=3)
-LATEST_MATCHING_TAG=$(echo "$ALL_HOLOCHAIN_TAGS" | grep -E "$SEARCH_PATTERN" | tail -n 1)
+ALL_HOLOCHAIN_TAGS=$(git -c 'versionsort.suffix=-dev' -c 'versionsort.suffix=-rc' ls-remote -q --tags --sort='v:refname' https://github.com/holochain/holochain.git holochain-* | cut --delimiter='/' --fields=3)
+LATEST_MATCHING_TAG=$(echo "$ALL_HOLOCHAIN_TAGS" | { grep -E "$SEARCH_PATTERN" || true; } | tail -n 1)
 
 if [ -z "$LATEST_MATCHING_TAG" ]; then
-    echo "No matching tag found for: $VERSION_STR"
+    echo "No matching tags found on \`$CURRENT_BRANCH\` for pattern: $SEARCH_PATTERN"
     exit 1
 fi
 
@@ -78,5 +66,5 @@ if [ "$APPLY" == "true" ]; then
     sed --in-place "s#url = \"github:holochain/holochain?ref=.*\";#url = \"github:holochain/holochain?ref=${LATEST_MATCHING_TAG}\";#" ./flake.nix
     nix flake update holochain
 else
-    printf "Would have updated flake.nix to use: \n%s\n" "$LATEST_MATCHING_TAG"
+    echo "Would have updated flake.nix to use: $LATEST_MATCHING_TAG"
 fi
