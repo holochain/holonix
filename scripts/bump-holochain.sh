@@ -66,5 +66,5 @@ if [ "$APPLY" == "true" ]; then
     sed --in-place "s#url = \"github:holochain/holochain?ref=.*\";#url = \"github:holochain/holochain?ref=${LATEST_MATCHING_TAG}\";#" ./flake.nix
     nix flake update holochain
 else
-    echo "Would have updated flake.nix to use: $LATEST_MATCHING_TAG"
+    printf "Would have updated flake.nix to use: \n%s\n" "$LATEST_MATCHING_TAG"
 fi
