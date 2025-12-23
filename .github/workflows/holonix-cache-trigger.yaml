@@ -23,7 +23,3 @@ jobs:
     uses: holochain/holonix/.github/workflows/holonix-cache.yaml@main
     with:
       branch: main-0.5
-  update-cache-main-0_4:
-    uses: holochain/holonix/.github/workflows/holonix-cache.yaml@main
-    with:
-      branch: main-0.4

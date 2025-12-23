@@ -6,13 +6,11 @@ on:
       - main
       - main-0.6
       - main-0.5
-      - main-0.4
   pull_request:
     branches:
       - main
       - main-0.6
       - main-0.5
-      - main-0.4
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref_name }}
@@ -29,7 +27,7 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v31
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.28.3/install
+          install_url: https://releases.nixos.org/nix/nix-2.33.0/install
           extra_nix_config: |
             accept-flake-config = true
 
@@ -113,7 +111,7 @@ jobs:
       - name: Install nix
         uses: cachix/install-nix-action@v31
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.24.6/install
+          install_url: https://releases.nixos.org/nix/nix-2.33.0/install
           extra_nix_config: |
             accept-flake-config = true
 
@@ -152,7 +150,7 @@ jobs:
 
       - uses: cachix/install-nix-action@v31
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.28.3/install
+          install_url: https://releases.nixos.org/nix/nix-2.33.0/install
           extra_nix_config: |
             accept-flake-config = true
 
