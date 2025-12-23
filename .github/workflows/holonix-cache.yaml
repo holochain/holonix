@@ -36,7 +36,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest, macos-15-intel ]
+        os: [ ubuntu-latest, macos-26, macos-15-intel ]
 
     runs-on: ${{ matrix.os }}
 
@@ -98,15 +98,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-latest, macos-15-intel ]
         include:
           - os: ubuntu-latest
             platform: x86_64-linux
-          - os: macos-latest
+          - os: macos-26
             platform: aarch64-darwin
           - os: macos-15-intel
             platform: x86_64-darwin
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: cachix/install-nix-action@v31
         with:
@@ -118,8 +117,8 @@ jobs:
           name: holochain-ci
       - name: Check the Holonix cache
         uses: holochain/nix-cache-check@v1
-        # env:
-        #  NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
+        env:
+          NIX_CONFIG: "access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}"
         with:
           # The default shell in the Holonix flake
           derivation: "github:holochain/holonix?ref=${{ needs.cache-update.outputs.branch }}#devShells.${{ matrix.platform }}.default"
