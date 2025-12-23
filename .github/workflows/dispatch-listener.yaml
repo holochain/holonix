@@ -22,9 +22,3 @@ jobs:
     with:
       branch: main-0.5
       update-holochain: true
-  bump_holochain-0_4:
-    if: ${{ github.event.action == 'holochain-released' && startsWith(github.event.client_payload.tag, 'holochain-0.4') }}
-    uses: holochain/holonix/.github/workflows/holonix-update.yaml@main
-    with:
-      branch: main-0.4
-      update-holochain: true

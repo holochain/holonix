@@ -8,7 +8,6 @@ on:
       - main
       - main-0.6
       - main-0.5
-      - main-0.4
   workflow_call:
     inputs:
       branch:
@@ -26,7 +25,6 @@ on:
           - main
           - main-0.6
           - main-0.5
-          - main-0.4
 
 concurrency:
   group: ${{ github.workflow }}-${{ inputs.branch }}-${{ github.ref_name }}
@@ -45,7 +43,7 @@ jobs:
     steps:
       - uses: cachix/install-nix-action@v31
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.28.3/install
+          install_url: https://releases.nixos.org/nix/nix-2.33.0/install
           extra_nix_config: |
             accept-flake-config = true
       - uses: cachix/cachix-action@v16
@@ -89,12 +87,9 @@ jobs:
           CACHIX_AUTH_TOKEN: "${{ secrets.CACHIX_AUTH_TOKEN }}"
         run: |
           # See https://docs.cachix.org/pushing#id1
-          nix develop --build -L --profile result-develop "github:holochain/holonix?ref=${{ steps.select_branch.outputs.branch }}"
+          nix develop --profile result-develop -c true "github:holochain/holonix?ref=${{ steps.select_branch.outputs.branch }}"
 
-          # Push both results to the cache
-          for i in result-*; do
-            cachix push holochain-ci $i
-          done
+          cachix push holochain-ci result-develop
     outputs:
       branch: ${{ steps.select_branch.outputs.branch }}
 
@@ -116,7 +111,7 @@ jobs:
     steps:
       - uses: cachix/install-nix-action@v31
         with:
-          install_url: https://releases.nixos.org/nix/nix-2.28.3/install
+          install_url: https://releases.nixos.org/nix/nix-2.33.0/install
           extra_nix_config: |
             accept-flake-config = true
       - uses: cachix/cachix-action@v16
