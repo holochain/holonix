@@ -21,7 +21,8 @@
     };
 
     kitsune2 = {
-      url = "github:holochain/kitsune2?ref=v0.4.0-dev.2";
+      # Right after v0.4.0-dev.2, with the kitsune2 bootstrap srv fix of the TLS provider
+      url = "github:holochain/kitsune2?ref=2b809bcf0bff3d493cd5ba230677240432fff58a";
       flake = false;
     };
 
@@ -39,7 +40,7 @@
 
     # Holochain scaffolding CLI
     hc-scaffold = {
-      url = "github:holochain/scaffolding?ref=v0.600.1";
+      url = "github:holochain/scaffolding?ref=v0.600.1-rc.0";
       flake = false;
     };
   };
@@ -77,7 +78,7 @@
               craneLib.buildPackage {
                 pname = "kitsune2-bootstrap-srv";
                 # only build kitsune2-bootstrap-srv binary
-                cargoExtraArgs = "-p kitsune2_bootstrap_srv";
+                cargoExtraArgs = "-p kitsune2_bootstrap_srv --no-default-features --features iroh-relay";
                 # Use Kitsune2 sources as defined in input dependencies.
                 src = craneLib.cleanCargoSource inputs.kitsune2;
                 # additional packages needed for build
