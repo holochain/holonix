@@ -43,9 +43,8 @@
             lair-keystore
             hc-scaffold
             hn-introspect
-            hc-playground
           ]) ++ (with pkgs; [
-            nodejs_20 # For UI development
+            nodejs_24 # For UI development
             binaryen # For WASM optimisation
             # Add any other packages you need here
           ]);
