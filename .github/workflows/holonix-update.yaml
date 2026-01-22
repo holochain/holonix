@@ -12,8 +12,6 @@ on:
           - main
           - main-0.6
           - main-0.5
-          - main-0.4
-          - main-0.3
       update-holochain:
         description: "Should Holochain be updated?"
         type: boolean

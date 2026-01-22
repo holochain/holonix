@@ -4,7 +4,7 @@
 
   # specify all input dependencies needed to create the outputs of the flake
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.11";
 
     # utility to iterate over multiple target platforms
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -21,13 +21,13 @@
     };
 
     kitsune2 = {
-      url = "github:holochain/kitsune2?ref=v0.3.2";
+      url = "github:holochain/kitsune2?ref=v0.4.0-dev.2";
       flake = false;
     };
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain?ref=holochain-0.6.0";
+      url = "github:holochain/holochain?ref=holochain-0.6.1-rc.0";
       flake = false;
     };
 
@@ -40,12 +40,6 @@
     # Holochain scaffolding CLI
     hc-scaffold = {
       url = "github:holochain/scaffolding?ref=v0.600.1";
-      flake = false;
-    };
-
-    # Third-party tool from Darksoil Studio for exploring DHT data.
-    playground = {
-      url = "github:darksoil-studio/holochain-playground?ref=main";
       flake = false;
     };
   };
@@ -242,62 +236,6 @@
                 ];
               };
 
-            # Define how to build the Holochain Playground CLI.
-            hc-playground =
-              let
-                # Filter down to required files for the CLI build.
-                pnpmFilter = path: type: type == "directory" || builtins.match ".*(ts|js|json|yaml|html)$" path != null;
-
-                cli = pkgs.stdenv.mkDerivation (finalAttrs: {
-                  pname = "hc-playground";
-                  # See the `package.json` version for the source code being imported.
-                  version = "0.500.0";
-
-                  src = pkgs.lib.sources.cleanSourceWith {
-                    src = inputs.playground;
-                    filter = pnpmFilter;
-                  };
-
-                  nativeBuildInputs = with pkgs; [
-                    nodejs
-                    pnpm_9.configHook
-                  ];
-
-                  # See what is required by the `pnpm build:cli` command.
-                  # This filters down to just the dependencies needed for the CLI.
-                  pnpmWorkspaces = [
-                    "@holochain-playground/simulator"
-                    "@holochain-playground/elements"
-                    "@holochain-playground/cli-client"
-                    "@holochain-playground/cli"
-                  ];
-
-                  # Fetch dependencies with a fixed-output-derivation.
-                  #
-                  # When updating the input, this fixed derivation will need to be updated.
-                  # If you leave this hash alone, you'll get errors about dependencies needing to be
-                  # fetched in the build phase.
-                  pnpmDeps = pkgs.pnpm_9.fetchDeps {
-                    inherit (finalAttrs) pname version src;
-                    hash = "sha256-gakSG1K/DkS/7pt5PCdS9ODsUEiv56ZkHBdFcJgmlk4=";
-                    fetcherVersion = 1;
-                  };
-
-                  buildPhase = ''
-                    runHook preBuild
-                    pnpm build:cli
-                    runHook postBuild
-
-                    mkdir $out
-                    cp -R packages/cli/server/dist $out
-                  '';
-                });
-              in
-              # Turn the built JS into a runnable CLI.
-              pkgs.writeShellScriptBin "hc-playground" ''
-                node ${cli}/dist/app.js "$@"
-              '';
-
             # Shell script to show what versions of the Holochain tools are installed.
             # It can be included as a package into the dev shell and is then available by its name - `hn-introspect`.
             hn-introspect = pkgs.writeShellScriptBin "hn-introspect" ''
@@ -356,7 +294,6 @@
               inherit hc-scaffold;
               inherit rust;
               inherit hn-introspect;
-              inherit hc-playground;
             };
 
             # Define runnable applications for use with `nix run`.
@@ -375,8 +312,6 @@
               lair-keystore.meta.description = "Lair keystore";
               hc-scaffold.program = "${hc-scaffold}/bin/hc-scaffold";
               hc-scaffold.meta.description = "Holochain scaffolding CLI";
-              hc-playground.program = "${hc-playground}/bin/hc-playground";
-              hc-playground.meta.description = "Holochain Playground";
             };
 
             devShells = {
@@ -389,7 +324,6 @@
                   lair-keystore
                   hc-scaffold
                   hn-introspect
-                  hc-playground
                   rust
                 ];
               };
