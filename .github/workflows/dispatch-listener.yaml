@@ -10,18 +10,21 @@ jobs:
     with:
       branch: main
       update-holochain: true
-    secrets: inherit
+    secrets:
+      HRA_GITHUB_TOKEN: ${{ secrets.HRA_GITHUB_TOKEN }}
   bump_holochain-main-0_6:
     if: ${{ github.event.action == 'holochain-released' && startsWith(github.event.client_payload.tag, 'holochain-0.6') }}
     uses: holochain/holonix/.github/workflows/holonix-update.yaml@main
     with:
       branch: main-0.6
       update-holochain: true
-    secrets: inherit
+    secrets:
+      HRA_GITHUB_TOKEN: ${{ secrets.HRA_GITHUB_TOKEN }}
   bump_holochain-main-0_5:
     if: ${{ github.event.action == 'holochain-released' && startsWith(github.event.client_payload.tag, 'holochain-0.5') }}
     uses: holochain/holonix/.github/workflows/holonix-update.yaml@main
     with:
       branch: main-0.5
       update-holochain: true
-    secrets: inherit
+    secrets:
+      HRA_GITHUB_TOKEN: ${{ secrets.HRA_GITHUB_TOKEN }}
