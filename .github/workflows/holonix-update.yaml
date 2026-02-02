@@ -35,6 +35,9 @@ on:
         type: boolean
         default: false
         required: false
+    secrets:
+      HRA_GITHUB_TOKEN:
+        required: true
 
 concurrency:
   group: ${{ github.workflow }}-${{ inputs.branch }}
@@ -64,6 +67,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v8
         with:
+          token: ${{ secrets.HRA_GITHUB_TOKEN }}
           branch-token: ${{ secrets.HRA_GITHUB_TOKEN }}
           committer: "Holochain Release Automation <hra+gh@holochain.org>"
           title: "Update Holonix versions on ${{ inputs.branch }}"
