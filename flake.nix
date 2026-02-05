@@ -82,15 +82,10 @@
             bootstrap-srv =
               craneLib.buildPackage {
                 pname = "kitsune2-bootstrap-srv";
-                # only build kitsune2-bootstrap-srv binary
-                cargoExtraArgs = "-p kitsune2_bootstrap_srv";
+                # only build kitsune2-bootstrap-srv binary with SBD (default) disabled and the Iroh relay enabled
+                cargoExtraArgs = "-p kitsune2_bootstrap_srv --no-default-features --features=iroh-relay";
                 # Use Kitsune2 sources as defined in input dependencies.
                 src = craneLib.cleanCargoSource inputs.kitsune2;
-                # additional packages needed for build
-                nativeBuildInputs = [ pkgs.perl pkgs.cmake ];
-                buildInputs = [
-                  pkgs.openssl
-                ];
                 # do not check built package as it either builds successfully or not
                 doCheck = false;
               };
