@@ -21,7 +21,7 @@
     };
 
     kitsune2 = {
-      url = "github:holochain/kitsune2?ref=v0.3.2";
+      url = "github:holochain/kitsune2?ref=main";
       flake = false;
     };
 
