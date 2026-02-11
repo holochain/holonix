@@ -132,23 +132,6 @@
         "type": "github"
       }
     },
-    "playground": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1756729856,
-        "narHash": "sha256-xJnIfcIyLRTXsf+N8OOMnqzRkx2gT/DSta7qCm8yU7Y=",
-        "owner": "darksoil-studio",
-        "repo": "holochain-playground",
-        "rev": "5e858641de8ac6113cfa6b47ea1350762a629a61",
-        "type": "github"
-      },
-      "original": {
-        "owner": "darksoil-studio",
-        "ref": "main",
-        "repo": "holochain-playground",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "crane": "crane",
@@ -158,7 +141,6 @@
         "kitsune2": "kitsune2",
         "lair-keystore": "lair-keystore",
         "nixpkgs": "nixpkgs",
-        "playground": "playground",
         "rust-overlay": "rust-overlay"
       }
     },
