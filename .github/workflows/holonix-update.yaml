@@ -36,7 +36,7 @@ on:
         default: false
         required: false
     secrets:
-      HRA_GITHUB_TOKEN:
+      HRA2_GITHUB_TOKEN:
         required: true
 
 concurrency:
@@ -67,7 +67,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v8
         with:
-          token: ${{ secrets.HRA_GITHUB_TOKEN }}
+          token: ${{ secrets.HRA2_GITHUB_TOKEN }}
           committer: "Holochain Release Automation <hra+gh@holochain.org>"
           title: "Update Holonix versions on ${{ inputs.branch }}"
           body: |
@@ -86,5 +86,5 @@ jobs:
       - name: Enable auto-merge
         if: steps.cpr.outputs.pull-request-operation == 'created' && github.event_name == 'workflow_dispatch'
         env:
-          GH_TOKEN: ${{ secrets.HRA_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.HRA2_GITHUB_TOKEN }}
         run: gh pr merge --rebase --auto "${{ steps.cpr.outputs.pull-request-number }}"
