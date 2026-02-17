@@ -57,7 +57,7 @@ jobs:
       - name: Flake update
         env:
           PR_NUMBER: ${{ github.event.issue.number }}
-          GH_TOKEN: ${{ secrets.HRA_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.HRA2_GITHUB_TOKEN }}
         run: |
           gh pr checkout $PR_NUMBER --repo holochain/holonix
           ./scripts/bump-holochain.sh
@@ -84,7 +84,7 @@ jobs:
       - name: Flake update
         env:
           PR_NUMBER: ${{ github.event.issue.number }}
-          GH_TOKEN: ${{ secrets.HRA_GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.HRA2_GITHUB_TOKEN }}
         run: |
           gh pr checkout $PR_NUMBER --repo holochain/holonix
           nix flake update hc-scaffold
