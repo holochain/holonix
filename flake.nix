@@ -61,7 +61,7 @@
               inherit system overlays;
             };
 
-            rustVersion = "1.89.0";
+            rustVersion = "1.94.0";
 
             # define Rust toolchain version and targets to be exported from this flake
             rust = (pkgs.rust-bin.stable.${rustVersion}.minimal.override
