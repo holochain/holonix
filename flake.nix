@@ -21,14 +21,13 @@
     };
 
     kitsune2 = {
-      # Right after v0.4.0-dev.2, with the kitsune2 bootstrap srv fix of the TLS provider
-      url = "github:holochain/kitsune2?ref=2b809bcf0bff3d493cd5ba230677240432fff58a";
+      url = "github:holochain/kitsune2?ref=v0.4.0-dev.4";
       flake = false;
     };
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain?ref=holochain-0.6.1-rc.1";
+      url = "github:holochain/holochain?ref=holochain-0.6.1-rc.3";
       flake = false;
     };
 
@@ -62,7 +61,7 @@
               inherit system overlays;
             };
 
-            rustVersion = "1.88.0";
+            rustVersion = "1.89.0";
 
             # define Rust toolchain version and targets to be exported from this flake
             rust = (pkgs.rust-bin.stable.${rustVersion}.minimal.override
