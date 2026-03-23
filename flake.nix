@@ -27,7 +27,7 @@
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain?ref=holochain-0.7.0-dev.14";
+      url = "github:holochain/holochain?ref=holochain-0.7.0-dev.17";
       flake = false;
     };
 
