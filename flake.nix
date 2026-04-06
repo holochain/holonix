@@ -77,7 +77,7 @@
               craneLib.buildPackage {
                 pname = "kitsune2-bootstrap-srv";
                 # only build kitsune2-bootstrap-srv binary
-                cargoExtraArgs = "-p kitsune2_bootstrap_srv --no-default-features --features iroh-relay";
+                cargoExtraArgs = "-p kitsune2_bootstrap_srv";
                 # Use Kitsune2 sources as defined in input dependencies.
                 src = craneLib.cleanCargoSource inputs.kitsune2;
                 # additional packages needed for build
