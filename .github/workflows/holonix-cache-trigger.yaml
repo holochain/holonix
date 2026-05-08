@@ -15,11 +15,17 @@ jobs:
     uses: holochain/holonix/.github/workflows/holonix-cache.yaml@main
     with:
       branch: main
+    secrets:
+      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
   update-cache-main-0_6:
     uses: holochain/holonix/.github/workflows/holonix-cache.yaml@main
     with:
       branch: main-0.6
+    secrets:
+      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
   update-cache-main-0_5:
     uses: holochain/holonix/.github/workflows/holonix-cache.yaml@main
     with:
       branch: main-0.5
+    secrets:
+      CACHIX_AUTH_TOKEN: ${{ secrets.CACHIX_AUTH_TOKEN }}
