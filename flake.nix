@@ -21,19 +21,19 @@
     };
 
     kitsune2 = {
-      url = "github:holochain/kitsune2?ref=main";
+      url = "github:holochain/kitsune2?ref=v0.5.0-dev.2";
       flake = false;
     };
 
     # Holochain sources
     holochain = {
-      url = "github:holochain/holochain?ref=holochain-0.7.0-dev.22";
+      url = "github:holochain/holochain?ref=holochain-0.7.0-dev.23";
       flake = false;
     };
 
     # Lair keystore sources
     lair-keystore = {
-      url = "github:holochain/lair?ref=v0.6.3";
+      url = "github:holochain/lair?ref=v0.7.0";
       flake = false;
     };
 
