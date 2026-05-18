@@ -83,6 +83,7 @@ jobs:
           commit-message: "chore: Update Holonix versions"
           draft: false
           delete-branch: true
+          team-reviewers: holochain-devs
       - name: Enable auto-merge
         if: steps.cpr.outputs.pull-request-operation == 'created' && github.event_name == 'workflow_dispatch'
         env:
