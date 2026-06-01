@@ -53,16 +53,16 @@
     "holochain": {
       "flake": false,
       "locked": {
-        "lastModified": 1779670783,
-        "narHash": "sha256-eJYmN76eij9ETbj89UL3TTMRLC527EzVSwAk3pJ/3uI=",
+        "lastModified": 1780275647,
+        "narHash": "sha256-OrQXjyAE2On2GPMf8NsBvwoBRLTbr/9b/kUs4J659Y4=",
         "owner": "holochain",
         "repo": "holochain",
-        "rev": "739163ece378c69c8c9bf7cd46bf33af070d5f7b",
+        "rev": "0c27eb3bfe9aa4848feae1af7efdb220111f9472",
         "type": "github"
       },
       "original": {
         "owner": "holochain",
-        "ref": "holochain-0.7.0-dev.26",
+        "ref": "holochain-0.7.0-dev.27",
         "repo": "holochain",
         "type": "github"
       }
@@ -70,16 +70,16 @@
     "kitsune2": {
       "flake": false,
       "locked": {
-        "lastModified": 1777655006,
-        "narHash": "sha256-cw6eTQRh7he4+ELZKu7k9z3N4i+fd/M0cpFgkoMxUz0=",
+        "lastModified": 1779317833,
+        "narHash": "sha256-3HYAaNT2iO4psf3+7jKee6gw/Isns6Ao2iAHC3OlxDw=",
         "owner": "holochain",
         "repo": "kitsune2",
-        "rev": "672659519a99c18eabf6da9eaacb7b4e85a21a5a",
+        "rev": "674525a8ebc80bae27fe480443bc2dc2b3f5c039",
         "type": "github"
       },
       "original": {
         "owner": "holochain",
-        "ref": "v0.5.0-dev.2",
+        "ref": "v0.5.0-dev.3",
         "repo": "kitsune2",
         "type": "github"
       }
