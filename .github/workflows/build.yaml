@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Check out source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install nix
         uses: cachix/install-nix-action@v31
@@ -46,7 +46,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: Azbagheri/shell-linter@latest
 
       - name: Test bump-holochain.sh
@@ -100,7 +100,7 @@ jobs:
         run: uname -ms
 
       - name: Check out source code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install nix
         uses: cachix/install-nix-action@v31
@@ -140,7 +140,7 @@ jobs:
           remove-codeql: "true"
           remove-docker-images: "true"
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - uses: cachix/install-nix-action@v31
         with:
