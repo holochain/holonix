@@ -45,7 +45,7 @@ jobs:
     needs: [action_pr_comment]
     if: ${{ startsWith(needs.action_pr_comment.outputs.action, 'bump holochain') }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@v31
         with:
           install_url: https://releases.nixos.org/nix/nix-2.33.0/install
@@ -72,7 +72,7 @@ jobs:
     needs: [ action_pr_comment ]
     if: ${{ startsWith(needs.action_pr_comment.outputs.action, 'bump hc-scaffold') }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: cachix/install-nix-action@v31
         with:
           install_url: https://releases.nixos.org/nix/nix-2.33.0/install
