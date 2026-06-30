@@ -4,7 +4,7 @@
 
   # specify all input dependencies needed to create the outputs of the flake
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-26.05";
 
     # utility to iterate over multiple target platforms
     flake-parts.url = "github:hercules-ci/flake-parts";
@@ -21,7 +21,7 @@
     };
 
     kitsune2 = {
-      url = "github:holochain/kitsune2?ref=v0.5.0-dev.3";
+      url = "github:holochain/kitsune2?ref=v0.5.0-dev.4";
       flake = false;
     };
 
