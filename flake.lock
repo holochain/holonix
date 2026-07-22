@@ -36,16 +36,16 @@
     "hc-scaffold": {
       "flake": false,
       "locked": {
-        "lastModified": 1783085215,
-        "narHash": "sha256-TUSnOUOn6jKggtp7eF6n2ogqlwt8V1cOtkSAsh+KXSQ=",
+        "lastModified": 1784725594,
+        "narHash": "sha256-V8x4UJhnVounU2YzhV848A9deMRRFbkFBIi1LGiLtP4=",
         "owner": "holochain",
         "repo": "scaffolding",
-        "rev": "30d061bb846a057d897a7441a163e70db0375d1a",
+        "rev": "b3aa80e81c51ea7e2cec0bc55be818e448b117a9",
         "type": "github"
       },
       "original": {
         "owner": "holochain",
-        "ref": "v0.602.0",
+        "ref": "v0.603.0",
         "repo": "scaffolding",
         "type": "github"
       }
