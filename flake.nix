@@ -39,7 +39,7 @@
 
     # Holochain scaffolding CLI
     hc-scaffold = {
-      url = "github:holochain/scaffolding?ref=v0.600.1";
+      url = "github:holochain/scaffolding?ref=v0.700.0-rc.0";
       flake = false;
     };
   };
