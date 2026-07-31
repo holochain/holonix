@@ -1,8 +1,8 @@
 [![Holonix cache trigger](https://github.com/holochain/holonix/actions/workflows/holonix-cache-trigger.yaml/badge.svg)](https://github.com/holochain/holonix/actions/workflows/holonix-cache-trigger.yaml)
 
 `main` [![Holonix cache](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml/badge.svg)](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml)
+`main-0.7` [![Holonix cache](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml/badge.svg?branch=main-0.7)](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml)
 `main-0.6` [![Holonix cache](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml/badge.svg?branch=main-0.6)](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml)
-`main-0.5` [![Holonix cache](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml/badge.svg?branch=main-0.5)](https://github.com/holochain/holonix/actions/workflows/holonix-cache.yaml)
 
 # Holonix
 
@@ -63,7 +63,7 @@ The next time you enter the dev shell, the updated binaries will be downloaded a
 
 ## Including other versions of Holochain
 
-By default the Holonix input references the `main` branch of the Holonix repository. Whatever the current revision of that branch at the moment of invoking the dev shell for the first time is will be written to the `flake.lock` file. At the time of writing, the `main` branch uses version 0.6 of Holochain and compatible versions of scaffolding etc.
+By default, the Holonix input references the `main` branch of the Holonix repository. Whatever the current revision of that branch at the moment of invoking the dev shell for the first time is will be written to the `flake.lock` file. At the time of writing, the `main` branch uses version 0.8 of Holochain and compatible versions of scaffolding etc.
 
 If you want to develop using another series of Holochain instead, you can create the corresponding Nix flake by running this command inside your project folder, replacing `<ver>` with the desired version number:
 
@@ -76,12 +76,12 @@ Alternatively you can modify an existing `flake.nix` file, changing the `holonix
 ```diff
 inputs = {
 -   holonix.url = "github:holochain/holonix?ref=main";
-+   holonix.url = "github:holochain/holonix?ref=main-0.5";
++   holonix.url = "github:holochain/holonix?ref=main-0.7";
     ...
 };
 ```
 
-Running `nix develop` now will update the flake lock file with the current revision of the `main-0.5` branch of the Holonix repository and enter the dev shell.
+Running `nix develop` now will update the flake lock file with the current revision of the `main-0.7` branch of the Holonix repository and enter the dev shell.
 
 ### Overriding Holochain version
 

@@ -5,10 +5,18 @@ on:
 
 jobs:
   bump_holochain-main:
-    if: ${{ github.event.action == 'holochain-released' && startsWith(github.event.client_payload.tag, 'holochain-0.7') }}
+    if: ${{ github.event.action == 'holochain-released' && startsWith(github.event.client_payload.tag, 'holochain-0.8') }}
     uses: holochain/holonix/.github/workflows/holonix-update.yaml@main
     with:
       branch: main
+      update-holochain: true
+    secrets:
+      HRA2_GITHUB_TOKEN: ${{ secrets.HRA2_GITHUB_TOKEN }}
+  bump_holochain-main-0_7:
+    if: ${{ github.event.action == 'holochain-released' && startsWith(github.event.client_payload.tag, 'holochain-0.7') }}
+    uses: holochain/holonix/.github/workflows/holonix-update.yaml@main
+    with:
+      branch: main-0.7
       update-holochain: true
     secrets:
       HRA2_GITHUB_TOKEN: ${{ secrets.HRA2_GITHUB_TOKEN }}
@@ -17,14 +25,6 @@ jobs:
     uses: holochain/holonix/.github/workflows/holonix-update.yaml@main
     with:
       branch: main-0.6
-      update-holochain: true
-    secrets:
-      HRA2_GITHUB_TOKEN: ${{ secrets.HRA2_GITHUB_TOKEN }}
-  bump_holochain-main-0_5:
-    if: ${{ github.event.action == 'holochain-released' && startsWith(github.event.client_payload.tag, 'holochain-0.5') }}
-    uses: holochain/holonix/.github/workflows/holonix-update.yaml@main
-    with:
-      branch: main-0.5
       update-holochain: true
     secrets:
       HRA2_GITHUB_TOKEN: ${{ secrets.HRA2_GITHUB_TOKEN }}
