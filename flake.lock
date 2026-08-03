@@ -53,16 +53,16 @@
     "holochain": {
       "flake": false,
       "locked": {
-        "lastModified": 1785425000,
-        "narHash": "sha256-LJWSWZHNNxLGRjlQoBgqzIfFLMt0HBF+csLKuYoktC4=",
+        "lastModified": 1785724763,
+        "narHash": "sha256-UXiyLxX9Cdm1PeW1x6zsRZxSOFBH7VS714SBNMT9dr0=",
         "owner": "holochain",
         "repo": "holochain",
-        "rev": "84cdce7d4df17b95189324d5cecc3f1bfd5db30f",
+        "rev": "390835a42aa3a744f1d813a5022fd3ad47253b5f",
         "type": "github"
       },
       "original": {
         "owner": "holochain",
-        "ref": "holochain-0.7.0",
+        "ref": "holochain-0.8.0-dev.0",
         "repo": "holochain",
         "type": "github"
       }
