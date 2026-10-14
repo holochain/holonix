@@ -10,8 +10,8 @@ on:
         type: choice
         options:
           - main
+          - main-0.7
           - main-0.6
-          - main-0.5
       update-holochain:
         description: "Should Holochain be updated?"
         type: boolean

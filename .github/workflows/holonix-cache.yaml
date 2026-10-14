@@ -6,8 +6,8 @@ on:
   push:
     branches:
       - main
+      - main-0.7
       - main-0.6
-      - main-0.5
   workflow_call:
     inputs:
       branch:
@@ -26,8 +26,8 @@ on:
         type: choice
         options:
           - main
+          - main-0.7
           - main-0.6
-          - main-0.5
 
 concurrency:
   group: ${{ github.workflow }}-${{ inputs.branch }}-${{ github.ref_name }}
