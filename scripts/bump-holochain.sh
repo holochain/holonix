@@ -51,7 +51,7 @@ esac
 
 echo "Looking for tags matching pattern: $SEARCH_PATTERN"
 
-ALL_HOLOCHAIN_TAGS=$(git -c 'versionsort.suffix=-dev' -c 'versionsort.suffix=-rc' ls-remote -q --tags --sort='v:refname' https://github.com/holochain/holochain.git holochain-* | cut --delimiter='/' --fields=3)
+ALL_HOLOCHAIN_TAGS=$(git -c 'versionsort.suffix=-dev' -c 'versionsort.suffix=-rc' ls-remote -q --tags --sort='v:refname' https://github.com/holochain/holochain.git holochain-* | cut -d '/' -f 3)
 LATEST_MATCHING_TAG=$(echo "$ALL_HOLOCHAIN_TAGS" | { grep -E "$SEARCH_PATTERN" || true; } | tail -n 1)
 
 if [ -z "$LATEST_MATCHING_TAG" ]; then
@@ -63,7 +63,7 @@ echo "Latest matching tag: $LATEST_MATCHING_TAG"
 
 APPLY=${2:-true}
 if [ "$APPLY" == "true" ]; then
-    sed --in-place "s#url = \"github:holochain/holochain?ref=.*\";#url = \"github:holochain/holochain?ref=${LATEST_MATCHING_TAG}\";#" ./flake.nix
+    sed -i '' "s#url = \"github:holochain/holochain?ref=.*\";#url = \"github:holochain/holochain?ref=${LATEST_MATCHING_TAG}\";#" ./flake.nix
     nix flake update holochain
 else
     printf "Would have updated flake.nix to use: \n%s\n" "$LATEST_MATCHING_TAG"
