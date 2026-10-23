@@ -13,7 +13,7 @@
     flake-parts.lib.mkFlake { inherit inputs; } {
       systems = builtins.attrNames inputs.holonix.devShells;
       perSystem = { inputs', pkgs, ... }: {
-        formatter = pkgs.nixpkgs-fmt;
+        formatter = pkgs.nixfmt-tree;
 
         devShells.default = pkgs.mkShell {
           packages =

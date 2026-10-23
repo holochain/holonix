@@ -28,7 +28,7 @@
           ...
         }:
         {
-          formatter = pkgs.nixpkgs-fmt;
+          formatter = pkgs.nixfmt-tree;
 
           devShells.default =
             let
