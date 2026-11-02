@@ -63,7 +63,9 @@ echo "Latest matching tag: $LATEST_MATCHING_TAG"
 
 APPLY=${2:-true}
 if [ "$APPLY" == "true" ]; then
-    sed -i '.bak' "s#url = \"github:holochain/holochain?ref=.*\";#url = \"github:holochain/holochain?ref=${LATEST_MATCHING_TAG}\";#" ./flake.nix
+    # sed -i doesn't work on macos and sed -i '' doesn't work on Linux. The following notation works on both, but creates a backup file.
+    # Delete the backup file after sed.
+    sed -i.bak "s#url = \"github:holochain/holochain?ref=.*\";#url = \"github:holochain/holochain?ref=${LATEST_MATCHING_TAG}\";#" ./flake.nix && rm ./flake.nix.bak
     nix flake update holochain
 else
     printf "Would have updated flake.nix to use: \n%s\n" "$LATEST_MATCHING_TAG"
